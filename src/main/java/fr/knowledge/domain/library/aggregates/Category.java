@@ -18,6 +18,10 @@ public class Category {
     events = new ArrayList<>();
   }
 
+  public Name getName() {
+    return name;
+  }
+
   public void addEvent(CategoryCreatedEvent categoryCreatedEvent) {
     events.add(categoryCreatedEvent);
   }
