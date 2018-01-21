@@ -3,6 +3,7 @@ package fr.knowledge.domain.library.handlers;
 import fr.knowledge.domain.common.utils.IdGenerator;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.AddKnowledgeCommand;
+import fr.knowledge.domain.library.exceptions.AddKnowledgeException;
 import fr.knowledge.domain.library.exceptions.CategoryNotFoundException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
@@ -16,7 +17,7 @@ public class AddKnowledgeCommandHandler {
     this.categoryRepository = categoryRepository;
   }
 
-  public void handle(AddKnowledgeCommand command) throws CategoryNotFoundException {
+  public void handle(AddKnowledgeCommand command) throws CategoryNotFoundException, AddKnowledgeException {
     Category category = categoryRepository.get(command.getAggregateId())
             .orElseThrow(CategoryNotFoundException::new);
 

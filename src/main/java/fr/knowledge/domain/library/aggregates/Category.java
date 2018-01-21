@@ -4,6 +4,7 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.events.AddedKnowledgeEvent;
 import fr.knowledge.domain.library.events.CategoryCreatedEvent;
 import fr.knowledge.domain.library.events.DomainEvent;
+import fr.knowledge.domain.library.exceptions.AddKnowledgeException;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
 import fr.knowledge.domain.library.valueobjects.Name;
 
@@ -27,7 +28,8 @@ public class Category {
     return name;
   }
 
-  public void addKnowledge(Knowledge knowledge) {
+  public void addKnowledge(Knowledge knowledge) throws AddKnowledgeException {
+    verifyKnowledge(knowledge);
     AddedKnowledgeEvent event = new AddedKnowledgeEvent(id, knowledge);
     apply(event);
   }
@@ -39,6 +41,17 @@ public class Category {
 
   public void saveChanges(DomainEvent event) {
     changes.add(event);
+  }
+
+  private void verifyKnowledge(Knowledge knowledge) throws AddKnowledgeException {
+    if (knowledge.hasEmptyCreator())
+      throw new AddKnowledgeException("Creator cannot be empty.");
+
+    if (knowledge.hasEmptyTitle())
+      throw new AddKnowledgeException("Title cannot be empty.");
+
+    if (knowledge.hasEmptyContent())
+      throw new AddKnowledgeException("Content cannot be empty.");
   }
 
   public static Category of(String id, String name) {

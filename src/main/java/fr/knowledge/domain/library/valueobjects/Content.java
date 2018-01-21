@@ -7,6 +7,10 @@ public class Content {
     this.content = content;
   }
 
+  public boolean isEmpty() {
+    return content.isEmpty();
+  }
+
   public static Content of(String content) {
     return new Content(content);
   }

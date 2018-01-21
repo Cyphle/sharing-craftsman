@@ -7,6 +7,10 @@ public class Username {
     this.username = username;
   }
 
+  public boolean isEmpty() {
+    return username.isEmpty();
+  }
+
   public static Username from(String username) {
     return new Username(username);
   }

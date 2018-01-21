@@ -16,6 +16,18 @@ public class Knowledge {
     this.content = content;
   }
 
+  public boolean hasEmptyCreator() {
+    return creator.isEmpty();
+  }
+
+  public boolean hasEmptyTitle() {
+    return title.isEmpty();
+  }
+
+  public boolean hasEmptyContent() {
+    return content.isEmpty();
+  }
+
   public static Knowledge of(String id, String creator, String title, String content) {
     return new Knowledge(Id.of(id), Username.from(creator), Title.of(title), Content.of(content));
   }

@@ -7,6 +7,10 @@ public class Title {
     this.title = title;
   }
 
+  public boolean isEmpty() {
+    return title.isEmpty();
+  }
+
   public static Title of(String title) {
     return new Title(title);
   }
