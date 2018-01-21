@@ -8,14 +8,14 @@ public class AddKnowledgeCommand {
   private final String title;
   private final String content;
 
-  public AddKnowledgeCommand(String id, String creator, String title, String content) {
-    this.id = id;
+  public AddKnowledgeCommand(String categoryId, String creator, String title, String content) {
+    this.id = categoryId;
     this.creator = creator;
     this.title = title;
     this.content = content;
   }
 
-  public Id getAggregateId() {
+  public Id getCategoryId() {
     return Id.of(id);
   }
 

@@ -18,7 +18,7 @@ class AddKnowledgeCommandHandler {
   }
 
   public void handle(AddKnowledgeCommand command) throws CategoryNotFoundException, AddKnowledgeException {
-    Category category = categoryRepository.get(command.getAggregateId())
+    Category category = categoryRepository.get(command.getCategoryId())
             .orElseThrow(CategoryNotFoundException::new);
 
     category.addKnowledge(Knowledge.of(idGenerator.generate(), command.getCreator(), command.getTitle(), command.getContent()));
