@@ -1,9 +1,9 @@
 package fr.knowledge.domain.library.valueobjects;
 
 public class Content {
-  private String content;
+  private final String content;
 
-  public Content(String content) {
+  private Content(String content) {
     this.content = content;
   }
 

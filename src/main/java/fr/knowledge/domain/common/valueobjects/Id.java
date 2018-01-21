@@ -1,9 +1,9 @@
 package fr.knowledge.domain.common.valueobjects;
 
 public class Id {
-  private String id;
+  private final String id;
 
-  public Id(String id) {
+  private Id(String id) {
     this.id = id;
   }
 

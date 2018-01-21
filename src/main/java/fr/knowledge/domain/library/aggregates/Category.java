@@ -14,10 +14,10 @@ import java.util.List;
 public class Category {
   private final Id id;
   private final Name name;
-  private List<Knowledge> knowledges;
-  private List<DomainEvent> changes;
+  private final List<Knowledge> knowledges;
+  private final List<DomainEvent> changes;
 
-  public Category(Id id, Name name) {
+  private Category(Id id, Name name) {
     this.id = id;
     this.name = name;
     knowledges = new ArrayList<>();

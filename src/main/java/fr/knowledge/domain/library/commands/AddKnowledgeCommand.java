@@ -3,7 +3,7 @@ package fr.knowledge.domain.library.commands;
 import fr.knowledge.domain.common.valueobjects.Id;
 
 public class AddKnowledgeCommand {
-  private String id;
+  private final String id;
   private final String creator;
   private final String title;
   private final String content;

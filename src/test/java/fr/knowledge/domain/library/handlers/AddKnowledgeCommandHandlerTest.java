@@ -24,7 +24,6 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddKnowledgeCommandHandlerTest {
-  private Category category;
   private AddKnowledgeCommandHandler addKnowledgeCommandHandler;
   @Mock
   private IdGenerator idGenerator;
@@ -34,8 +33,7 @@ public class AddKnowledgeCommandHandlerTest {
   @Before
   public void setUp() throws Exception {
     given(idGenerator.generate()).willReturn("aaa");
-    category = Category.of("aaa", "Architecture");
-    given(categoryRepository.get(Id.of("aaa"))).willReturn(Optional.of(category));
+    given(categoryRepository.get(Id.of("aaa"))).willReturn(Optional.of(Category.of("aaa", "Architecture")));
     addKnowledgeCommandHandler = new AddKnowledgeCommandHandler(idGenerator, categoryRepository);
   }
 

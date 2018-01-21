@@ -9,9 +9,9 @@ import fr.knowledge.domain.library.valueobjects.Name;
 
 import java.util.List;
 
-public class CreateCategoryCommandHandler {
-  private IdGenerator idGenerator;
-  private CategoryRepository categoryRepository;
+class CreateCategoryCommandHandler {
+  private final IdGenerator idGenerator;
+  private final CategoryRepository categoryRepository;
 
   public CreateCategoryCommandHandler(IdGenerator idGenerator, CategoryRepository categoryRepository) {
     this.idGenerator = idGenerator;

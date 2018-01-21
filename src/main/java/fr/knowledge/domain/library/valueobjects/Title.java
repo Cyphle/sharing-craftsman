@@ -1,9 +1,9 @@
 package fr.knowledge.domain.library.valueobjects;
 
 public class Title {
-  private String title;
+  private final String title;
 
-  public Title(String title) {
+  private Title(String title) {
     this.title = title;
   }
 

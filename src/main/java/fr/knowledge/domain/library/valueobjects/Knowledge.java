@@ -9,7 +9,7 @@ public class Knowledge {
   private final Title title;
   private final Content content;
 
-  public Knowledge(Id id, Username creator, Title title, Content content) {
+  private Knowledge(Id id, Username creator, Title title, Content content) {
     this.id = id;
     this.creator = creator;
     this.title = title;

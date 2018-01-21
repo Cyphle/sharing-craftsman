@@ -1,9 +1,9 @@
 package fr.knowledge.domain.common.valueobjects;
 
 public class Username {
-  private String username;
+  private final String username;
 
-  public Username(String username) {
+  private Username(String username) {
     this.username = username;
   }
 
