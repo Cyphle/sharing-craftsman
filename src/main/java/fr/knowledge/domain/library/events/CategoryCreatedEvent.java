@@ -3,7 +3,7 @@ package fr.knowledge.domain.library.events;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.valueobjects.Name;
 
-public class CategoryCreatedEvent {
+public class CategoryCreatedEvent implements DomainEvent {
   private final Id id;
   private final Name name;
 

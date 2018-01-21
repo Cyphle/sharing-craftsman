@@ -1,4 +1,4 @@
-package fr.knowledge.domain.library;
+package fr.knowledge.domain.library.handlers;
 
 import fr.knowledge.domain.common.utils.IdGenerator;
 import fr.knowledge.domain.common.valueobjects.Id;
@@ -6,7 +6,6 @@ import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
 import fr.knowledge.domain.library.events.CategoryCreatedEvent;
 import fr.knowledge.domain.library.exceptions.CreateCategoryException;
-import fr.knowledge.domain.library.handlers.CreateCategoryCommandHandler;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.domain.library.valueobjects.Name;
 import org.junit.Before;
@@ -15,7 +14,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,7 +46,7 @@ public class CreateCategoryCommandHandlerTest {
 
     verify(categoryRepository).getAll();
     Category category = Category.of("aaa", "Architecture");
-    category.addEvent(new CategoryCreatedEvent(Id.of("aaa"), Name.of("Architecture")));
+    category.saveChanges(new CategoryCreatedEvent(Id.of("aaa"), Name.of("Architecture")));
     verify(categoryRepository).save(category);
   }
 

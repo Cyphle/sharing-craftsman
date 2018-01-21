@@ -1,7 +1,10 @@
 package fr.knowledge.domain.library.aggregates;
 
 import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.library.events.AddedKnowledgeEvent;
 import fr.knowledge.domain.library.events.CategoryCreatedEvent;
+import fr.knowledge.domain.library.events.DomainEvent;
+import fr.knowledge.domain.library.valueobjects.Knowledge;
 import fr.knowledge.domain.library.valueobjects.Name;
 
 import java.util.ArrayList;
@@ -10,20 +13,32 @@ import java.util.List;
 public class Category {
   private final Id id;
   private final Name name;
-  private List<CategoryCreatedEvent> events;
+  private List<Knowledge> knowledges;
+  private List<DomainEvent> changes;
 
   public Category(Id id, Name name) {
     this.id = id;
     this.name = name;
-    events = new ArrayList<>();
+    knowledges = new ArrayList<>();
+    changes = new ArrayList<>();
   }
 
   public Name getName() {
     return name;
   }
 
-  public void addEvent(CategoryCreatedEvent categoryCreatedEvent) {
-    events.add(categoryCreatedEvent);
+  public void addKnowledge(Knowledge knowledge) {
+    AddedKnowledgeEvent event = new AddedKnowledgeEvent(id, knowledge);
+    apply(event);
+  }
+
+  public void apply(AddedKnowledgeEvent event) {
+    knowledges.add(event.getKnowledge());
+    saveChanges(event);
+  }
+
+  public void saveChanges(DomainEvent event) {
+    changes.add(event);
   }
 
   public static Category of(String id, String name) {
@@ -32,7 +47,7 @@ public class Category {
 
   public static Category newCategory(String id, String name) {
     Category category = Category.of(id, name);
-    category.addEvent(new CategoryCreatedEvent(Id.of(id), Name.of(name)));
+    category.saveChanges(new CategoryCreatedEvent(Id.of(id), Name.of(name)));
     return category;
   }
 
@@ -45,14 +60,14 @@ public class Category {
 
     if (id != null ? !id.equals(category.id) : category.id != null) return false;
     if (name != null ? !name.equals(category.name) : category.name != null) return false;
-    return events != null ? events.equals(category.events) : category.events == null;
+    return changes != null ? changes.equals(category.changes) : category.changes == null;
   }
 
   @Override
   public int hashCode() {
     int result = id != null ? id.hashCode() : 0;
     result = 31 * result + (name != null ? name.hashCode() : 0);
-    result = 31 * result + (events != null ? events.hashCode() : 0);
+    result = 31 * result + (changes != null ? changes.hashCode() : 0);
     return result;
   }
 
@@ -61,7 +76,7 @@ public class Category {
     return "Category{" +
             "id=" + id +
             ", name=" + name +
-            ", events=" + events +
+            ", changes=" + changes +
             '}';
   }
 }
