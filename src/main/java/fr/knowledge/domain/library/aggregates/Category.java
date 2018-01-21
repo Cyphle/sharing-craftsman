@@ -1,7 +1,10 @@
 package fr.knowledge.domain.library.aggregates;
 
 import fr.knowledge.domain.common.valueobjects.Id;
-import fr.knowledge.domain.library.events.*;
+import fr.knowledge.domain.library.events.AddedKnowledgeEvent;
+import fr.knowledge.domain.library.events.CategoryCreatedEvent;
+import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
+import fr.knowledge.domain.library.events.DomainEvent;
 import fr.knowledge.domain.library.exceptions.AddKnowledgeException;
 import fr.knowledge.domain.library.exceptions.CreateCategoryException;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
@@ -27,7 +30,7 @@ public class Category {
     return name;
   }
 
-  public void update(Name newName) throws CreateCategoryException {
+  public void update(Name newName) throws UpdateCategoryException {
     verifyCategory(newName);
     CategoryUpdatedEvent event = new CategoryUpdatedEvent(id, newName);
     apply(event);
@@ -64,9 +67,9 @@ public class Category {
       throw new AddKnowledgeException("Content cannot be empty.");
   }
 
-  private void verifyCategory(Name name) throws CreateCategoryException {
+  private void verifyCategory(Name name) throws UpdateCategoryException {
     if (name.isEmpty())
-      throw new CreateCategoryException("Name cannot be empty.");
+      throw new UpdateCategoryException("Name cannot be empty.");
   }
 
   public static Category of(String id, String name) {
