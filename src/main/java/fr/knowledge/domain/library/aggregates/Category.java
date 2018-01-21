@@ -1,9 +1,7 @@
 package fr.knowledge.domain.library.aggregates;
 
 import fr.knowledge.domain.common.valueobjects.Id;
-import fr.knowledge.domain.library.events.AddedKnowledgeEvent;
-import fr.knowledge.domain.library.events.CategoryCreatedEvent;
-import fr.knowledge.domain.library.events.DomainEvent;
+import fr.knowledge.domain.library.events.*;
 import fr.knowledge.domain.library.exceptions.AddKnowledgeException;
 import fr.knowledge.domain.library.exceptions.CreateCategoryException;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
@@ -14,7 +12,7 @@ import java.util.List;
 
 public class Category {
   private final Id id;
-  private final Name name;
+  private Name name;
   private final List<Knowledge> knowledges;
   private final List<DomainEvent> changes;
 
@@ -29,6 +27,12 @@ public class Category {
     return name;
   }
 
+  public void update(Name newName) throws CreateCategoryException {
+    verifyCategory(newName);
+    CategoryUpdatedEvent event = new CategoryUpdatedEvent(id, newName);
+    apply(event);
+  }
+
   public void addKnowledge(Knowledge knowledge) throws AddKnowledgeException {
     verifyKnowledge(knowledge);
     AddedKnowledgeEvent event = new AddedKnowledgeEvent(id, knowledge);
@@ -37,6 +41,11 @@ public class Category {
 
   public void apply(AddedKnowledgeEvent event) {
     knowledges.add(event.getKnowledge());
+    saveChanges(event);
+  }
+
+  private void apply(CategoryUpdatedEvent event) {
+    name = event.getNewName();
     saveChanges(event);
   }
 
@@ -55,7 +64,7 @@ public class Category {
       throw new AddKnowledgeException("Content cannot be empty.");
   }
 
-  private static void verifyCategory(String name) throws CreateCategoryException {
+  private void verifyCategory(Name name) throws CreateCategoryException {
     if (name.isEmpty())
       throw new CreateCategoryException("Name cannot be empty.");
   }
@@ -69,6 +78,11 @@ public class Category {
     Category category = Category.of(id, name);
     category.saveChanges(new CategoryCreatedEvent(Id.of(id), Name.of(name)));
     return category;
+  }
+
+  private static void verifyCategory(String name) throws CreateCategoryException {
+    if (name.isEmpty())
+      throw new CreateCategoryException("Name cannot be empty.");
   }
 
   @Override

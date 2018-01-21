@@ -7,6 +7,10 @@ public class Name {
     this.name = name;
   }
 
+  public boolean isEmpty() {
+    return name.isEmpty();
+  }
+
   public static Name of(String name) {
     return new Name(name);
   }
