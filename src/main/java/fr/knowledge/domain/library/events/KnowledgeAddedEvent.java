@@ -3,11 +3,11 @@ package fr.knowledge.domain.library.events;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
 
-public class AddedKnowledgeEvent implements DomainEvent {
+public class KnowledgeAddedEvent implements DomainEvent {
   private final Id id;
   private final Knowledge knowledge;
 
-  public AddedKnowledgeEvent(Id id, Knowledge knowledge) {
+  public KnowledgeAddedEvent(Id id, Knowledge knowledge) {
     this.id = id;
     this.knowledge = knowledge;
   }
@@ -21,7 +21,7 @@ public class AddedKnowledgeEvent implements DomainEvent {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    AddedKnowledgeEvent that = (AddedKnowledgeEvent) o;
+    KnowledgeAddedEvent that = (KnowledgeAddedEvent) o;
 
     if (id != null ? !id.equals(that.id) : that.id != null) return false;
     return knowledge != null ? knowledge.equals(that.knowledge) : that.knowledge == null;
@@ -36,7 +36,7 @@ public class AddedKnowledgeEvent implements DomainEvent {
 
   @Override
   public String toString() {
-    return "AddedKnowledgeEvent{" +
+    return "KnowledgeAddedEvent{" +
             "id=" + id +
             ", knowledge=" + knowledge +
             '}';

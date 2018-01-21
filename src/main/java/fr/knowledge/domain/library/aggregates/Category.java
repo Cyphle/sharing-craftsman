@@ -1,10 +1,7 @@
 package fr.knowledge.domain.library.aggregates;
 
 import fr.knowledge.domain.common.valueobjects.Id;
-import fr.knowledge.domain.library.events.AddedKnowledgeEvent;
-import fr.knowledge.domain.library.events.CategoryCreatedEvent;
-import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
-import fr.knowledge.domain.library.events.DomainEvent;
+import fr.knowledge.domain.library.events.*;
 import fr.knowledge.domain.library.exceptions.AddKnowledgeException;
 import fr.knowledge.domain.library.exceptions.CreateCategoryException;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
@@ -36,13 +33,22 @@ public class Category {
     apply(event);
   }
 
-  public void addKnowledge(Knowledge knowledge) throws AddKnowledgeException {
-    verifyKnowledge(knowledge);
-    AddedKnowledgeEvent event = new AddedKnowledgeEvent(id, knowledge);
+  public void delete() {
+    CategoryDeletedEvent event = new CategoryDeletedEvent(id);
     apply(event);
   }
 
-  public void apply(AddedKnowledgeEvent event) {
+  public void addKnowledge(Knowledge knowledge) throws AddKnowledgeException {
+    verifyKnowledge(knowledge);
+    KnowledgeAddedEvent event = new KnowledgeAddedEvent(id, knowledge);
+    apply(event);
+  }
+
+  private void apply(CategoryDeletedEvent event) {
+    saveChanges(event);
+  }
+
+  public void apply(KnowledgeAddedEvent event) {
     knowledges.add(event.getKnowledge());
     saveChanges(event);
   }

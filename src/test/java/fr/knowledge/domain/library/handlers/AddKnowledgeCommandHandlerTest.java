@@ -4,7 +4,7 @@ import fr.knowledge.domain.common.utils.IdGenerator;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.AddKnowledgeCommand;
-import fr.knowledge.domain.library.events.AddedKnowledgeEvent;
+import fr.knowledge.domain.library.events.KnowledgeAddedEvent;
 import fr.knowledge.domain.library.exceptions.AddKnowledgeException;
 import fr.knowledge.domain.library.exceptions.CategoryNotFoundException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
@@ -45,7 +45,7 @@ public class AddKnowledgeCommandHandlerTest {
 
     Knowledge knowledge = Knowledge.of("aaa", "john@doe.fr", "Architecture hexagonale", "This is my content");
     Category updatedCategory = Category.of("aaa", "Architecture");
-    updatedCategory.apply(new AddedKnowledgeEvent(Id.of("aaa"), knowledge));
+    updatedCategory.apply(new KnowledgeAddedEvent(Id.of("aaa"), knowledge));
     verify(categoryRepository).save(updatedCategory);
   }
 
