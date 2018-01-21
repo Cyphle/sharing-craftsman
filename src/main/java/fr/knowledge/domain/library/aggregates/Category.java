@@ -5,6 +5,7 @@ import fr.knowledge.domain.library.events.AddedKnowledgeEvent;
 import fr.knowledge.domain.library.events.CategoryCreatedEvent;
 import fr.knowledge.domain.library.events.DomainEvent;
 import fr.knowledge.domain.library.exceptions.AddKnowledgeException;
+import fr.knowledge.domain.library.exceptions.CreateCategoryException;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
 import fr.knowledge.domain.library.valueobjects.Name;
 
@@ -54,11 +55,17 @@ public class Category {
       throw new AddKnowledgeException("Content cannot be empty.");
   }
 
+  private static void verifyCategory(String name) throws CreateCategoryException {
+    if (name.isEmpty())
+      throw new CreateCategoryException("Name cannot be empty.");
+  }
+
   public static Category of(String id, String name) {
     return new Category(Id.of(id), Name.of(name));
   }
 
-  public static Category newCategory(String id, String name) {
+  public static Category newCategory(String id, String name) throws CreateCategoryException {
+    verifyCategory(name);
     Category category = Category.of(id, name);
     category.saveChanges(new CategoryCreatedEvent(Id.of(id), Name.of(name)));
     return category;

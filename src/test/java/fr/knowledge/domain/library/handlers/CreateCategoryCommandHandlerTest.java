@@ -6,6 +6,7 @@ import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
 import fr.knowledge.domain.library.events.CategoryCreatedEvent;
 import fr.knowledge.domain.library.exceptions.AlreadyExistingCategoryException;
+import fr.knowledge.domain.library.exceptions.CreateCategoryException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.domain.library.valueobjects.Name;
 import org.junit.Before;
@@ -16,6 +17,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Collections;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -44,6 +47,18 @@ public class CreateCategoryCommandHandlerTest {
     Category category = Category.of("aaa", "Architecture");
     category.saveChanges(new CategoryCreatedEvent(Id.of("aaa"), Name.of("Architecture")));
     verify(categoryRepository).save(category);
+  }
+
+  @Test
+  public void should_not_add_category_if_name_is_empty() throws Exception {
+    CreateCategoryCommand command = new CreateCategoryCommand("");
+
+    try {
+      createCategoryCommandHandler.handle(command);
+      fail("Should have thrown CreateCategoryException");
+    } catch (CreateCategoryException e) {
+      assertThat(e.getMessage()).isEqualTo("Name cannot be empty.");
+    }
   }
 
   @Test(expected = AlreadyExistingCategoryException.class)
