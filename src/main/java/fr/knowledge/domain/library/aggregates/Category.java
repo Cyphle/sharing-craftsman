@@ -8,22 +8,25 @@ import fr.knowledge.domain.library.exceptions.KnowledgeNotFoundException;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
 import fr.knowledge.domain.library.valueobjects.Name;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Category {
   private final Id id;
   private Name name;
-  private final List<Knowledge> knowledges;
+  private final Map<Id, Knowledge> knowledges;
   private final List<DomainEvent> changes;
 
   private Category(Id id, Name name) {
     this.id = id;
     this.name = name;
-    knowledges = new ArrayList<>();
+    knowledges = new HashMap<>();
     changes = new ArrayList<>();
   }
 
-  private Category(Id id, Name name, List<Knowledge> knowledges) {
+  private Category(Id id, Name name, Map<Id, Knowledge> knowledges) {
     this.id = id;
     this.name = name;
     this.knowledges = knowledges;
@@ -57,12 +60,17 @@ public class Category {
     apply(event);
   }
 
+  public void deleteKnowledge(Id knowledgeId) throws KnowledgeNotFoundException {
+    KnowledgeDeletedEvent event = new KnowledgeDeletedEvent(id, knowledgeId);
+    apply(event);
+  }
+
   private void apply(CategoryDeletedEvent event) {
     saveChanges(event);
   }
 
   public void apply(KnowledgeAddedEvent event) {
-    knowledges.add(event.getKnowledge());
+    knowledges.put(event.getKnowledgeId(), event.getKnowledge());
     saveChanges(event);
   }
 
@@ -72,11 +80,17 @@ public class Category {
   }
 
   public void apply(KnowledgeUpdatedEvent event) throws KnowledgeNotFoundException {
-    Knowledge knowledgeToUpdate = knowledges.stream()
-            .filter(knowledge -> knowledge.isSameAs(event.getKnowledge()))
-            .findAny()
-            .orElseThrow(KnowledgeNotFoundException::new);
+    Knowledge knowledgeToUpdate = knowledges.get(event.getKnowledgeId());
+
+    if (knowledgeToUpdate == null)
+      throw new KnowledgeNotFoundException();
+
     knowledgeToUpdate.update(event.getKnowledge());
+    saveChanges(event);
+  }
+
+  private void apply(KnowledgeDeletedEvent event) throws KnowledgeNotFoundException {
+    knowledges.remove(event.getKnowledgeId());
     saveChanges(event);
   }
 
@@ -104,7 +118,7 @@ public class Category {
     return new Category(Id.of(id), Name.of(name));
   }
 
-  public static Category of(String id, String name, List<Knowledge> knowledges) {
+  public static Category of(String id, String name, Map<Id, Knowledge> knowledges) {
     return new Category(Id.of(id), Name.of(name), knowledges);
   }
 

@@ -16,6 +16,10 @@ public class Knowledge {
     this.content = content;
   }
 
+  public Id getId() {
+    return id;
+  }
+
   public boolean hasEmptyCreator() {
     return creator.isEmpty();
   }
@@ -30,6 +34,10 @@ public class Knowledge {
 
   public boolean isSameAs(Knowledge knowledge) {
     return id.equals(knowledge.id);
+  }
+
+  public boolean hasId(Id id) {
+    return this.id.equals(id);
   }
 
   public void update(Knowledge knowledge) {

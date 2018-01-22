@@ -12,6 +12,10 @@ public class KnowledgeUpdatedEvent implements DomainEvent {
     this.updatedKnowledge = updatedKnowledge;
   }
 
+  public Id getKnowledgeId() {
+    return updatedKnowledge.getId();
+  }
+
   public Knowledge getKnowledge() {
     return updatedKnowledge;
   }

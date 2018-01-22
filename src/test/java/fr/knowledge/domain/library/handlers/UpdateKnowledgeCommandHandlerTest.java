@@ -13,8 +13,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,9 +31,9 @@ public class UpdateKnowledgeCommandHandlerTest {
 
   @Before
   public void setUp() throws Exception {
-    Category category = Category.of("aaa", "Architecture", Collections.singletonList(
-            Knowledge.of("aaa", "john@doe.fr", "Architecture hexagonale", "This is my content.")
-    ));
+    Map<Id, Knowledge> knowledges = new HashMap<>();
+    knowledges.put(Id.of("aaa"), Knowledge.of("aaa", "john@doe.fr", "Architecture hexagonale", "This is my content."));
+    Category category = Category.of("aaa", "Architecture", knowledges);
     given(categoryRepository.get(Id.of("aaa"))).willReturn(Optional.of(category));
 
     updateKnowledgeCommandHandler = new UpdateKnowledgeCommandHandler(categoryRepository);
@@ -44,9 +45,10 @@ public class UpdateKnowledgeCommandHandlerTest {
 
     updateKnowledgeCommandHandler.handle(command);
 
-    Knowledge updatedKnowledge = Knowledge.of("aaa", "john@doe.fr", "Architecture hexagonale", "This is not my content.");
-    Category updatedCategory = Category.of("aaa", "Architecture", Collections.singletonList(updatedKnowledge));
-    updatedCategory.saveChanges(new KnowledgeUpdatedEvent(Id.of("aaa"), updatedKnowledge));
+    Map<Id, Knowledge> updatedKnowledges = new HashMap<>();
+    updatedKnowledges.put(Id.of("aaa"), Knowledge.of("aaa", "john@doe.fr", "Architecture hexagonale", "This is not my content."));
+    Category updatedCategory = Category.of("aaa", "Architecture", updatedKnowledges);
+    updatedCategory.saveChanges(new KnowledgeUpdatedEvent(Id.of("aaa"), Knowledge.of("aaa", "john@doe.fr", "Architecture hexagonale", "This is not my content.")));
     verify(categoryRepository).save(updatedCategory);
   }
 

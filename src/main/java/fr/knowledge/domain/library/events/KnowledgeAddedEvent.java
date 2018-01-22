@@ -6,6 +6,7 @@ import fr.knowledge.domain.library.valueobjects.Knowledge;
 public class KnowledgeAddedEvent implements DomainEvent {
   private final Id id;
   private final Knowledge knowledge;
+  private Id k;
 
   public KnowledgeAddedEvent(Id id, Knowledge knowledge) {
     this.id = id;
@@ -14,6 +15,10 @@ public class KnowledgeAddedEvent implements DomainEvent {
 
   public Knowledge getKnowledge() {
     return knowledge;
+  }
+
+  public Id getKnowledgeId() {
+    return knowledge.getId();
   }
 
   @Override
