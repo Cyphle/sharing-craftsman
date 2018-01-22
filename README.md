@@ -1,3 +1,3 @@
 # Sharing craftsman
 
-Software to share knowledge and skills
+Microservice to share knowledge

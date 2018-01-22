@@ -4,11 +4,11 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.events.*;
 import fr.knowledge.domain.library.exceptions.AddKnowledgeException;
 import fr.knowledge.domain.library.exceptions.CreateCategoryException;
+import fr.knowledge.domain.library.exceptions.KnowledgeNotFoundException;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
 import fr.knowledge.domain.library.valueobjects.Name;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Category {
   private final Id id;
@@ -20,6 +20,13 @@ public class Category {
     this.id = id;
     this.name = name;
     knowledges = new ArrayList<>();
+    changes = new ArrayList<>();
+  }
+
+  private Category(Id id, Name name, List<Knowledge> knowledges) {
+    this.id = id;
+    this.name = name;
+    this.knowledges = knowledges;
     changes = new ArrayList<>();
   }
 
@@ -44,6 +51,12 @@ public class Category {
     apply(event);
   }
 
+  public void updateKnowledge(Knowledge knowledge) throws AddKnowledgeException, KnowledgeNotFoundException {
+    verifyKnowledge(knowledge);
+    KnowledgeUpdatedEvent event = new KnowledgeUpdatedEvent(id, knowledge);
+    apply(event);
+  }
+
   private void apply(CategoryDeletedEvent event) {
     saveChanges(event);
   }
@@ -55,6 +68,15 @@ public class Category {
 
   private void apply(CategoryUpdatedEvent event) {
     name = event.getNewName();
+    saveChanges(event);
+  }
+
+  public void apply(KnowledgeUpdatedEvent event) throws KnowledgeNotFoundException {
+    Knowledge knowledgeToUpdate = knowledges.stream()
+            .filter(knowledge -> knowledge.isSameAs(event.getKnowledge()))
+            .findAny()
+            .orElseThrow(KnowledgeNotFoundException::new);
+    knowledgeToUpdate.update(event.getKnowledge());
     saveChanges(event);
   }
 
@@ -82,6 +104,10 @@ public class Category {
     return new Category(Id.of(id), Name.of(name));
   }
 
+  public static Category of(String id, String name, List<Knowledge> knowledges) {
+    return new Category(Id.of(id), Name.of(name), knowledges);
+  }
+
   public static Category newCategory(String id, String name) throws CreateCategoryException {
     verifyCategory(name);
     Category category = Category.of(id, name);
@@ -103,6 +129,7 @@ public class Category {
 
     if (id != null ? !id.equals(category.id) : category.id != null) return false;
     if (name != null ? !name.equals(category.name) : category.name != null) return false;
+    if (knowledges != null ? !knowledges.equals(category.knowledges) : category.knowledges != null) return false;
     return changes != null ? changes.equals(category.changes) : category.changes == null;
   }
 
@@ -110,6 +137,7 @@ public class Category {
   public int hashCode() {
     int result = id != null ? id.hashCode() : 0;
     result = 31 * result + (name != null ? name.hashCode() : 0);
+    result = 31 * result + (knowledges != null ? knowledges.hashCode() : 0);
     result = 31 * result + (changes != null ? changes.hashCode() : 0);
     return result;
   }
@@ -119,6 +147,7 @@ public class Category {
     return "Category{" +
             "id=" + id +
             ", name=" + name +
+            ", knowledges=" + knowledges +
             ", changes=" + changes +
             '}';
   }

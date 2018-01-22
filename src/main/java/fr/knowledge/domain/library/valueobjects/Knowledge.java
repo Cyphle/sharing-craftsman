@@ -5,9 +5,9 @@ import fr.knowledge.domain.common.valueobjects.Username;
 
 public class Knowledge {
   private final Id id;
-  private final Username creator;
-  private final Title title;
-  private final Content content;
+  private Username creator;
+  private Title title;
+  private Content content;
 
   private Knowledge(Id id, Username creator, Title title, Content content) {
     this.id = id;
@@ -26,6 +26,16 @@ public class Knowledge {
 
   public boolean hasEmptyContent() {
     return content.isEmpty();
+  }
+
+  public boolean isSameAs(Knowledge knowledge) {
+    return id.equals(knowledge.id);
+  }
+
+  public void update(Knowledge knowledge) {
+    creator = knowledge.creator;
+    title = knowledge.title;
+    content = knowledge.content;
   }
 
   public static Knowledge of(String id, String creator, String title, String content) {
