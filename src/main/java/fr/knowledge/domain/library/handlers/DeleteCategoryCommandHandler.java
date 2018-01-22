@@ -5,8 +5,8 @@ import fr.knowledge.domain.library.commands.DeleteCategoryCommand;
 import fr.knowledge.domain.library.exceptions.CategoryNotFoundException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 
-public class DeleteCategoryCommandHandler {
-  private CategoryRepository categoryRepository;
+class DeleteCategoryCommandHandler {
+  private final CategoryRepository categoryRepository;
 
   public DeleteCategoryCommandHandler(CategoryRepository categoryRepository) {
     this.categoryRepository = categoryRepository;

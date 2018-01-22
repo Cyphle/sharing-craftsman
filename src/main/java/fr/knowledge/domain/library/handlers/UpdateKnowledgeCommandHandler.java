@@ -8,8 +8,8 @@ import fr.knowledge.domain.library.exceptions.KnowledgeNotFoundException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
 
-public class UpdateKnowledgeCommandHandler {
-  private CategoryRepository categoryRepository;
+class UpdateKnowledgeCommandHandler {
+  private final CategoryRepository categoryRepository;
 
   public UpdateKnowledgeCommandHandler(CategoryRepository categoryRepository) {
     this.categoryRepository = categoryRepository;

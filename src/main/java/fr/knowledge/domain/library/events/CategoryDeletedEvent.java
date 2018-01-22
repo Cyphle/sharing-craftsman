@@ -3,7 +3,7 @@ package fr.knowledge.domain.library.events;
 import fr.knowledge.domain.common.valueobjects.Id;
 
 public class CategoryDeletedEvent implements DomainEvent {
-  private Id id;
+  private final Id id;
 
   public CategoryDeletedEvent(Id id) {
     this.id = id;

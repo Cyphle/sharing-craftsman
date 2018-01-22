@@ -6,8 +6,8 @@ import fr.knowledge.domain.library.commands.UpdateCategoryCommand;
 import fr.knowledge.domain.library.exceptions.CategoryNotFoundException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 
-public class UpdateCategoryCommandHandler {
-  private CategoryRepository categoryRepository;
+class UpdateCategoryCommandHandler {
+  private final CategoryRepository categoryRepository;
 
   public UpdateCategoryCommandHandler(CategoryRepository categoryRepository) {
     this.categoryRepository = categoryRepository;

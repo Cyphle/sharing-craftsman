@@ -32,14 +32,6 @@ public class Knowledge {
     return content.isEmpty();
   }
 
-  public boolean isSameAs(Knowledge knowledge) {
-    return id.equals(knowledge.id);
-  }
-
-  public boolean hasId(Id id) {
-    return this.id.equals(id);
-  }
-
   public void update(Knowledge knowledge) {
     creator = knowledge.creator;
     title = knowledge.title;
