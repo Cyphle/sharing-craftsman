@@ -1,15 +1,15 @@
 package fr.knowledge.domain.favorites.commands;
 
-import fr.knowledge.domain.favorites.SelectionType;
+import fr.knowledge.domain.common.valueobjects.ContentType;
 
 public class AddToMySelectionCommand {
   private final String username;
-  private final SelectionType selectionType;
+  private final ContentType contentType;
   private final String contentId;
 
-  public AddToMySelectionCommand(String username, SelectionType selectionType, String contentId) {
+  public AddToMySelectionCommand(String username, ContentType contentType, String contentId) {
     this.username = username;
-    this.selectionType = selectionType;
+    this.contentType = contentType;
     this.contentId = contentId;
   }
 
@@ -17,8 +17,8 @@ public class AddToMySelectionCommand {
     return username;
   }
 
-  public SelectionType getSelectionType() {
-    return selectionType;
+  public ContentType getContentType() {
+    return contentType;
   }
 
   public String getContentId() {

@@ -20,12 +20,12 @@ public class AddToMySelectionCommandHandler {
   }
 
   public void handle(AddToMySelectionCommand command) throws AlreadyExistingSelectionException {
-    Optional<Selection> selection = selectionRepository.get(Username.from(command.getUsername()), command.getSelectionType(), Id.of(command.getContentId()));
+    Optional<Selection> selection = selectionRepository.get(Username.from(command.getUsername()), command.getContentType(), Id.of(command.getContentId()));
 
     if (selection.isPresent())
       throw new AlreadyExistingSelectionException();
 
-    Selection newSelection = Selection.newSelection(idGenerator.generate(), command.getUsername(), command.getSelectionType(), command.getContentId());
+    Selection newSelection = Selection.newSelection(idGenerator.generate(), command.getUsername(), command.getContentType(), command.getContentId());
     selectionRepository.save(newSelection);
   }
 }

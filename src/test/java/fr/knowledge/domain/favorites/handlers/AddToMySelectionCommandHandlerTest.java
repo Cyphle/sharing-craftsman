@@ -1,9 +1,9 @@
 package fr.knowledge.domain.favorites.handlers;
 
 import fr.knowledge.domain.common.utils.IdGenerator;
+import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
-import fr.knowledge.domain.favorites.SelectionType;
 import fr.knowledge.domain.favorites.aggregates.Selection;
 import fr.knowledge.domain.favorites.commands.AddToMySelectionCommand;
 import fr.knowledge.domain.favorites.events.SelectionCreatedEvent;
@@ -33,31 +33,26 @@ public class AddToMySelectionCommandHandlerTest {
   @Before
   public void setUp() throws Exception {
     given(idGenerator.generate()).willReturn("aaa");
-    given(selectionRepository.get(Username.from("john@doe.fr"), SelectionType.CATEGORY, Id.of("aaa"))).willReturn(Optional.empty());
+    given(selectionRepository.get(Username.from("john@doe.fr"), ContentType.CATEGORY, Id.of("aaa"))).willReturn(Optional.empty());
     addToMySelectionCommandHandler = new AddToMySelectionCommandHandler(idGenerator, selectionRepository);
   }
 
   @Test
   public void should_add_category_to_my_selection() throws Exception {
-    AddToMySelectionCommand command = new AddToMySelectionCommand("john@doe.fr", SelectionType.CATEGORY, "aaa");
+    AddToMySelectionCommand command = new AddToMySelectionCommand("john@doe.fr", ContentType.CATEGORY, "aaa");
 
     addToMySelectionCommandHandler.handle(command);
 
-    Selection savedSelection = Selection.of("aaa", "john@doe.fr", SelectionType.CATEGORY, "aaa");
-    savedSelection.saveChanges(new SelectionCreatedEvent(Id.of("aaa"), Username.from("john@doe.fr"), SelectionType.CATEGORY, Id.of("aaa")));
+    Selection savedSelection = Selection.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa");
+    savedSelection.saveChanges(new SelectionCreatedEvent(Id.of("aaa"), Username.from("john@doe.fr"), ContentType.CATEGORY, Id.of("aaa")));
     verify(selectionRepository).save(savedSelection);
   }
 
-  @Test
+  @Test(expected = AlreadyExistingSelectionException.class)
   public void should_throw_exception_if_selection_already_exists() throws Exception {
-    given(selectionRepository.get(Username.from("john@doe.fr"), SelectionType.CATEGORY, Id.of("aaa"))).willReturn(Optional.of(Selection.of("aaa", "john@doe.fr", SelectionType.CATEGORY, "aaa")));
-    AddToMySelectionCommand command = new AddToMySelectionCommand("john@doe.fr", SelectionType.CATEGORY, "aaa");
+    given(selectionRepository.get(Username.from("john@doe.fr"), ContentType.CATEGORY, Id.of("aaa"))).willReturn(Optional.of(Selection.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa")));
+    AddToMySelectionCommand command = new AddToMySelectionCommand("john@doe.fr", ContentType.CATEGORY, "aaa");
 
-    try {
-      addToMySelectionCommandHandler.handle(command);
-      fail("Should have throw AlreadyExistingSelectionException.");
-    } catch (AlreadyExistingSelectionException e) {
-      assertThat(e).isNotNull();
-    }
+    addToMySelectionCommandHandler.handle(command);
   }
 }
