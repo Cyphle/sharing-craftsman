@@ -48,16 +48,11 @@ public class AddToMySelectionCommandHandlerTest {
     verify(selectionRepository).save(savedSelection);
   }
 
-  @Test
+  @Test(expected = AlreadyExistingSelectionException.class)
   public void should_throw_exception_if_selection_already_exists() throws Exception {
     given(selectionRepository.get(Username.from("john@doe.fr"), ContentType.CATEGORY, Id.of("aaa"))).willReturn(Optional.of(Selection.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa")));
     AddToMySelectionCommand command = new AddToMySelectionCommand("john@doe.fr", ContentType.CATEGORY, "aaa");
 
-    try {
-      addToMySelectionCommandHandler.handle(command);
-      fail("Should have throw AlreadyExistingSelectionException.");
-    } catch (AlreadyExistingSelectionException e) {
-      assertThat(e).isNotNull();
-    }
+    addToMySelectionCommandHandler.handle(command);
   }
 }
