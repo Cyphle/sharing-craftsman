@@ -6,6 +6,7 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.domain.scores.Mark;
 import fr.knowledge.domain.scores.events.ScoreCreatedEvent;
+import fr.knowledge.domain.scores.events.ScoreDeletedEvent;
 import fr.knowledge.domain.scores.events.ScoreUpdatedEvent;
 
 import java.util.ArrayList;
@@ -33,8 +34,17 @@ public class Score {
     apply(event);
   }
 
+  public void delete() {
+    ScoreDeletedEvent event = new ScoreDeletedEvent(id);
+    apply(event);
+  }
+
   private void apply(ScoreUpdatedEvent event) {
     mark = event.getMark();
+    saveChanges(event);
+  }
+
+  private void apply(ScoreDeletedEvent event) {
     saveChanges(event);
   }
 
