@@ -7,6 +7,8 @@ import fr.knowledge.domain.scores.aggregates.Score;
 import java.util.Optional;
 
 public interface ScoreRepository {
+  Optional<Score> get(Id id, Username giver);
+
   Optional<Score> get(Username giver, Id contentId);
 
   void save(Score score);

@@ -6,6 +6,7 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.domain.scores.Mark;
 import fr.knowledge.domain.scores.events.ScoreCreatedEvent;
+import fr.knowledge.domain.scores.events.ScoreUpdatedEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class Score {
   private final Username giver;
   private final ContentType contentType;
   private final Id contentId;
-  private final Mark mark;
+  private Mark mark;
   private List<DomainEvent> events;
 
   private Score(Id id, Username giver, ContentType contentType, Id contentId, Mark mark) {
@@ -25,6 +26,16 @@ public class Score {
     this.contentId = contentId;
     this.mark = mark;
     this.events = new ArrayList<>();
+  }
+
+  public void update(Mark mark) {
+    ScoreUpdatedEvent event = new ScoreUpdatedEvent(id, mark);
+    apply(event);
+  }
+
+  private void apply(ScoreUpdatedEvent event) {
+    mark = event.getMark();
+    saveChanges(event);
   }
 
   public void saveChanges(DomainEvent event) {
