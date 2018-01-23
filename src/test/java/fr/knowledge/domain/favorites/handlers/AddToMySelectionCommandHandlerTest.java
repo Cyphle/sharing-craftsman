@@ -60,6 +60,4 @@ public class AddToMySelectionCommandHandlerTest {
       assertThat(e).isNotNull();
     }
   }
-
-  // Should throw exception if category does not exists
 }

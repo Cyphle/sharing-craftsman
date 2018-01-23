@@ -8,6 +8,8 @@ import fr.knowledge.domain.favorites.aggregates.Selection;
 import java.util.Optional;
 
 public interface SelectionRepository {
+  Optional<Selection> get(Id id, Username username);
+
   Optional<Selection> get(Username username, SelectionType selectionType, Id id);
 
   void save(Selection selection);

@@ -5,6 +5,7 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.domain.favorites.SelectionType;
 import fr.knowledge.domain.favorites.events.SelectionCreatedEvent;
+import fr.knowledge.domain.favorites.events.SelectionRemovedEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,19 @@ public class Selection {
     this.changes = new ArrayList<>();
   }
 
+  public void delete() {
+    SelectionRemovedEvent event = new SelectionRemovedEvent(id);
+    apply(event);
+  }
+
+  private void apply(SelectionRemovedEvent event) {
+    saveChanges(event);
+  }
+
+  public void saveChanges(DomainEvent event) {
+    changes.add(event);
+  }
+
   public static Selection of(String id, String username, SelectionType selectionType, String contentId) {
     return new Selection(Id.of(id), Username.from(username), selectionType, Id.of(contentId));
   }
@@ -32,10 +46,6 @@ public class Selection {
     Selection selection = Selection.of(id, username, selectionType, contentId);
     selection.saveChanges(new SelectionCreatedEvent(Id.of(id), Username.from(username), selectionType, Id.of(contentId)));
     return selection;
-  }
-
-  public void saveChanges(DomainEvent event) {
-    changes.add(event);
   }
 
   @Override
