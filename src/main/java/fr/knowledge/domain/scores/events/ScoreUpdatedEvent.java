@@ -2,7 +2,7 @@ package fr.knowledge.domain.scores.events;
 
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
-import fr.knowledge.domain.scores.Mark;
+import fr.knowledge.domain.scores.valueobjects.Mark;
 
 public class ScoreUpdatedEvent implements DomainEvent {
   private final Id id;

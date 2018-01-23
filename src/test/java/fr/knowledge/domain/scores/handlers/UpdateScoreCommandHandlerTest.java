@@ -3,7 +3,7 @@ package fr.knowledge.domain.scores.handlers;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
-import fr.knowledge.domain.scores.Mark;
+import fr.knowledge.domain.scores.valueobjects.Mark;
 import fr.knowledge.domain.scores.aggregates.Score;
 import fr.knowledge.domain.scores.commands.UpdateScoreCommand;
 import fr.knowledge.domain.scores.events.ScoreUpdatedEvent;

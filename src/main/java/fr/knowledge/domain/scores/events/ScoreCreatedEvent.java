@@ -4,7 +4,7 @@ import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
-import fr.knowledge.domain.scores.Mark;
+import fr.knowledge.domain.scores.valueobjects.Mark;
 
 public class ScoreCreatedEvent implements DomainEvent {
   private final Id id;

@@ -1,7 +1,7 @@
 package fr.knowledge.domain.scores.commands;
 
 import fr.knowledge.domain.common.valueobjects.ContentType;
-import fr.knowledge.domain.scores.Mark;
+import fr.knowledge.domain.scores.valueobjects.Mark;
 
 public class AddScoreCommand {
   private final String giver;

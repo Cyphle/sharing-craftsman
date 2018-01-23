@@ -4,7 +4,7 @@ import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
-import fr.knowledge.domain.scores.Mark;
+import fr.knowledge.domain.scores.valueobjects.Mark;
 import fr.knowledge.domain.scores.events.ScoreCreatedEvent;
 import fr.knowledge.domain.scores.events.ScoreDeletedEvent;
 import fr.knowledge.domain.scores.events.ScoreUpdatedEvent;

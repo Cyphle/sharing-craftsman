@@ -1,6 +1,6 @@
 package fr.knowledge.domain.scores.commands;
 
-import fr.knowledge.domain.scores.Mark;
+import fr.knowledge.domain.scores.valueobjects.Mark;
 
 public class UpdateScoreCommand {
   private final String id;
