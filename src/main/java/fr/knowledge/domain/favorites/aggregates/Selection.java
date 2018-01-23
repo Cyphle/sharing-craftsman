@@ -1,9 +1,9 @@
 package fr.knowledge.domain.favorites.aggregates;
 
 import fr.knowledge.domain.common.DomainEvent;
+import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
-import fr.knowledge.domain.favorites.SelectionType;
 import fr.knowledge.domain.favorites.events.SelectionCreatedEvent;
 import fr.knowledge.domain.favorites.events.SelectionRemovedEvent;
 
@@ -13,14 +13,14 @@ import java.util.List;
 public class Selection {
   private Id id;
   private final Username username;
-  private final SelectionType selectionType;
+  private final ContentType contentType;
   private final Id contentId;
   private List<DomainEvent> changes;
 
-  private Selection(Id id, Username username, SelectionType selectionType, Id contentId) {
+  private Selection(Id id, Username username, ContentType contentType, Id contentId) {
     this.id = id;
     this.username = username;
-    this.selectionType = selectionType;
+    this.contentType = contentType;
     this.contentId = contentId;
     this.changes = new ArrayList<>();
   }
@@ -38,13 +38,13 @@ public class Selection {
     changes.add(event);
   }
 
-  public static Selection of(String id, String username, SelectionType selectionType, String contentId) {
-    return new Selection(Id.of(id), Username.from(username), selectionType, Id.of(contentId));
+  public static Selection of(String id, String username, ContentType contentType, String contentId) {
+    return new Selection(Id.of(id), Username.from(username), contentType, Id.of(contentId));
   }
 
-  public static Selection newSelection(String id, String username, SelectionType selectionType, String contentId) {
-    Selection selection = Selection.of(id, username, selectionType, contentId);
-    selection.saveChanges(new SelectionCreatedEvent(Id.of(id), Username.from(username), selectionType, Id.of(contentId)));
+  public static Selection newSelection(String id, String username, ContentType contentType, String contentId) {
+    Selection selection = Selection.of(id, username, contentType, contentId);
+    selection.saveChanges(new SelectionCreatedEvent(Id.of(id), Username.from(username), contentType, Id.of(contentId)));
     return selection;
   }
 
@@ -57,7 +57,7 @@ public class Selection {
 
     if (id != null ? !id.equals(selection.id) : selection.id != null) return false;
     if (username != null ? !username.equals(selection.username) : selection.username != null) return false;
-    if (selectionType != selection.selectionType) return false;
+    if (contentType != selection.contentType) return false;
     if (contentId != null ? !contentId.equals(selection.contentId) : selection.contentId != null) return false;
     return changes != null ? changes.equals(selection.changes) : selection.changes == null;
   }
@@ -66,7 +66,7 @@ public class Selection {
   public int hashCode() {
     int result = id != null ? id.hashCode() : 0;
     result = 31 * result + (username != null ? username.hashCode() : 0);
-    result = 31 * result + (selectionType != null ? selectionType.hashCode() : 0);
+    result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
     result = 31 * result + (contentId != null ? contentId.hashCode() : 0);
     result = 31 * result + (changes != null ? changes.hashCode() : 0);
     return result;
@@ -77,7 +77,7 @@ public class Selection {
     return "Selection{" +
             "id=" + id +
             ", username=" + username +
-            ", selectionType=" + selectionType +
+            ", contentType=" + contentType +
             ", contentId=" + contentId +
             ", changes=" + changes +
             '}';

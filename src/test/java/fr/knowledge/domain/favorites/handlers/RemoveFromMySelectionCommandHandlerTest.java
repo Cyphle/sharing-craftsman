@@ -1,8 +1,8 @@
 package fr.knowledge.domain.favorites.handlers;
 
+import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
-import fr.knowledge.domain.favorites.SelectionType;
 import fr.knowledge.domain.favorites.aggregates.Selection;
 import fr.knowledge.domain.favorites.commands.RemoveFromMySelectionCommand;
 import fr.knowledge.domain.favorites.events.SelectionRemovedEvent;
@@ -26,7 +26,7 @@ public class RemoveFromMySelectionCommandHandlerTest {
 
   @Before
   public void setUp() throws Exception {
-    given(selectionRepository.get(Id.of("aaa"), Username.from("john@doe.fr"))).willReturn(Optional.of(Selection.of("aaa", "john@doe.fr", SelectionType.KNOWLEDGE, "aaa")));
+    given(selectionRepository.get(Id.of("aaa"), Username.from("john@doe.fr"))).willReturn(Optional.of(Selection.of("aaa", "john@doe.fr", ContentType.KNOWLEDGE, "aaa")));
     removeFromMySelectionCommandHandler = new RemoveFromMySelectionCommandHandler(selectionRepository);
   }
 
@@ -36,7 +36,7 @@ public class RemoveFromMySelectionCommandHandlerTest {
 
     removeFromMySelectionCommandHandler.handle(command);
 
-    Selection deletedSelection = Selection.of("aaa", "john@doe.fr", SelectionType.KNOWLEDGE, "aaa");
+    Selection deletedSelection = Selection.of("aaa", "john@doe.fr", ContentType.KNOWLEDGE, "aaa");
     deletedSelection.saveChanges(new SelectionRemovedEvent(Id.of("aaa")));
     verify(selectionRepository).save(deletedSelection);
   }

@@ -1,21 +1,24 @@
-package fr.knowledge.domain.favorites.events;
+package fr.knowledge.domain.scores.events;
 
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
+import fr.knowledge.domain.scores.Mark;
 
-public class SelectionCreatedEvent implements DomainEvent {
+public class ScoreCreatedEvent implements DomainEvent {
   private final Id id;
-  private final Username username;
+  private final Username giver;
   private final ContentType contentType;
   private final Id contentId;
+  private final Mark mark;
 
-  public SelectionCreatedEvent(Id id, Username username, ContentType contentType, Id contentId) {
+  public ScoreCreatedEvent(Id id, Username giver, ContentType contentType, Id contentId, Mark mark) {
     this.id = id;
-    this.username = username;
+    this.giver = giver;
     this.contentType = contentType;
     this.contentId = contentId;
+    this.mark = mark;
   }
 
   @Override
@@ -23,30 +26,33 @@ public class SelectionCreatedEvent implements DomainEvent {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    SelectionCreatedEvent that = (SelectionCreatedEvent) o;
+    ScoreCreatedEvent that = (ScoreCreatedEvent) o;
 
     if (id != null ? !id.equals(that.id) : that.id != null) return false;
-    if (username != null ? !username.equals(that.username) : that.username != null) return false;
+    if (giver != null ? !giver.equals(that.giver) : that.giver != null) return false;
     if (contentType != that.contentType) return false;
-    return contentId != null ? contentId.equals(that.contentId) : that.contentId == null;
+    if (contentId != null ? !contentId.equals(that.contentId) : that.contentId != null) return false;
+    return mark == that.mark;
   }
 
   @Override
   public int hashCode() {
     int result = id != null ? id.hashCode() : 0;
-    result = 31 * result + (username != null ? username.hashCode() : 0);
+    result = 31 * result + (giver != null ? giver.hashCode() : 0);
     result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
     result = 31 * result + (contentId != null ? contentId.hashCode() : 0);
+    result = 31 * result + (mark != null ? mark.hashCode() : 0);
     return result;
   }
 
   @Override
   public String toString() {
-    return "SelectionCreatedEvent{" +
+    return "ScoreCreatedEvent{" +
             "id=" + id +
-            ", username=" + username +
+            ", giver=" + giver +
             ", contentType=" + contentType +
             ", contentId=" + contentId +
+            ", mark=" + mark +
             '}';
   }
 }
