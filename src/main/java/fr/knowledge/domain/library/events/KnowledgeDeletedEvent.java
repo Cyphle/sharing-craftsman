@@ -1,5 +1,6 @@
 package fr.knowledge.domain.library.events;
 
+import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 
 public class KnowledgeDeletedEvent implements DomainEvent {
