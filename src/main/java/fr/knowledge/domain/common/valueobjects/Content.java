@@ -1,4 +1,4 @@
-package fr.knowledge.domain.library.valueobjects;
+package fr.knowledge.domain.common.valueobjects;
 
 public class Content {
   private final String content;
