@@ -1,12 +1,12 @@
-package fr.knowledge.domain.favorites.events;
+package fr.knowledge.domain.comments.events;
 
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 
-public class SelectionRemovedEvent implements DomainEvent {
+public class CommentDeletedEvent implements DomainEvent {
   private final Id id;
 
-  public SelectionRemovedEvent(Id id) {
+  public CommentDeletedEvent(Id id) {
     this.id = id;
   }
 
@@ -15,7 +15,7 @@ public class SelectionRemovedEvent implements DomainEvent {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    SelectionRemovedEvent that = (SelectionRemovedEvent) o;
+    CommentDeletedEvent that = (CommentDeletedEvent) o;
 
     return id != null ? id.equals(that.id) : that.id == null;
   }
@@ -27,7 +27,7 @@ public class SelectionRemovedEvent implements DomainEvent {
 
   @Override
   public String toString() {
-    return "SelectionRemovedEvent{" +
+    return "CommentDeletedEvent{" +
             "id=" + id +
             '}';
   }

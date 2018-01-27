@@ -61,7 +61,7 @@ public class Category {
     apply(event);
   }
 
-  public void deleteKnowledge(Id knowledgeId) throws KnowledgeNotFoundException {
+  public void deleteKnowledge(Id knowledgeId) {
     KnowledgeDeletedEvent event = new KnowledgeDeletedEvent(id, knowledgeId);
     apply(event);
   }

@@ -7,10 +7,8 @@ import fr.knowledge.domain.scores.commands.UpdateScoreCommand;
 import fr.knowledge.domain.scores.exceptions.ScoreNotFoundException;
 import fr.knowledge.domain.scores.ports.ScoreRepository;
 
-import java.util.Optional;
-
-public class UpdateScoreCommandHandler {
-  private ScoreRepository scoreRepository;
+class UpdateScoreCommandHandler {
+  private final ScoreRepository scoreRepository;
 
   public UpdateScoreCommandHandler(ScoreRepository scoreRepository) {
     this.scoreRepository = scoreRepository;

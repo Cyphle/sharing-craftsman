@@ -4,7 +4,7 @@ import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 
 public class ScoreDeletedEvent implements DomainEvent {
-  private Id id;
+  private final Id id;
 
   public ScoreDeletedEvent(Id id) {
     this.id = id;

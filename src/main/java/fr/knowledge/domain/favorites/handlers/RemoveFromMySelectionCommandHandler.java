@@ -5,8 +5,8 @@ import fr.knowledge.domain.favorites.commands.RemoveFromMySelectionCommand;
 import fr.knowledge.domain.favorites.exceptions.SelectionNotFoundException;
 import fr.knowledge.domain.favorites.ports.SelectionRepository;
 
-public class RemoveFromMySelectionCommandHandler {
-  private SelectionRepository selectionRepository;
+class RemoveFromMySelectionCommandHandler {
+  private final SelectionRepository selectionRepository;
 
   public RemoveFromMySelectionCommandHandler(SelectionRepository selectionRepository) {
     this.selectionRepository = selectionRepository;

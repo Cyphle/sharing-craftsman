@@ -10,9 +10,9 @@ import fr.knowledge.domain.favorites.ports.SelectionRepository;
 
 import java.util.Optional;
 
-public class AddToMySelectionCommandHandler {
-  private SelectionRepository selectionRepository;
-  private IdGenerator idGenerator;
+class AddToMySelectionCommandHandler {
+  private final SelectionRepository selectionRepository;
+  private final IdGenerator idGenerator;
 
   public AddToMySelectionCommandHandler(IdGenerator idGenerator, SelectionRepository selectionRepository) {
     this.idGenerator = idGenerator;
