@@ -6,8 +6,8 @@ import fr.knowledge.domain.comments.exceptions.CommentNotFoundException;
 import fr.knowledge.domain.comments.ports.CommentRepository;
 import fr.knowledge.domain.common.valueobjects.Id;
 
-public class DeleteCommentCommandHandler {
-  private CommentRepository commentRepository;
+class DeleteCommentCommandHandler {
+  private final CommentRepository commentRepository;
 
   public DeleteCommentCommandHandler(CommentRepository commentRepository) {
     this.commentRepository = commentRepository;

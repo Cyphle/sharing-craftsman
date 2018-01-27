@@ -10,9 +10,9 @@ import fr.knowledge.domain.scores.ports.ScoreRepository;
 
 import java.util.Optional;
 
-public class AddScoreCommandHandler {
-  private ScoreRepository scoreRepository;
-  private IdGenerator idGenerator;
+class AddScoreCommandHandler {
+  private final ScoreRepository scoreRepository;
+  private final IdGenerator idGenerator;
 
   public AddScoreCommandHandler(IdGenerator idGenerator, ScoreRepository scoreRepository) {
     this.idGenerator = idGenerator;

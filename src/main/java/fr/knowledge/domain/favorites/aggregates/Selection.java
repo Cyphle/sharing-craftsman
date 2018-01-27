@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Selection {
-  private Id id;
+  private final Id id;
   private final Username username;
   private final ContentType contentType;
   private final Id contentId;
-  private List<DomainEvent> changes;
+  private final List<DomainEvent> changes;
 
   private Selection(Id id, Username username, ContentType contentType, Id contentId) {
     this.id = id;

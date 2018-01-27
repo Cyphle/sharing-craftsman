@@ -19,7 +19,7 @@ public class Comment {
   private final ContentType contentType;
   private final Id contentId;
   private Content content;
-  private List<DomainEvent> events;
+  private final List<DomainEvent> events;
 
   private Comment(Id id, Username commenter, ContentType contentType, Id contentId, Content content) {
     this.id = id;

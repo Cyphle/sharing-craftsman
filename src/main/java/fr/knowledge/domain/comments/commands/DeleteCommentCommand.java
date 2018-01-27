@@ -1,7 +1,7 @@
 package fr.knowledge.domain.comments.commands;
 
 public class DeleteCommentCommand {
-  private String id;
+  private final String id;
 
   public DeleteCommentCommand(String id) {
     this.id = id;

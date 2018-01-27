@@ -18,7 +18,7 @@ public class Score {
   private final ContentType contentType;
   private final Id contentId;
   private Mark mark;
-  private List<DomainEvent> events;
+  private final List<DomainEvent> events;
 
   private Score(Id id, Username giver, ContentType contentType, Id contentId, Mark mark) {
     this.id = id;

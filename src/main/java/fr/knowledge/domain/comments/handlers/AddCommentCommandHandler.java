@@ -5,7 +5,7 @@ import fr.knowledge.domain.comments.commands.AddCommentCommand;
 import fr.knowledge.domain.comments.ports.CommentRepository;
 import fr.knowledge.domain.common.utils.IdGenerator;
 
-public class AddCommentCommandHandler {
+class AddCommentCommandHandler {
   private final IdGenerator idGenerator;
   private final CommentRepository commentRepository;
 

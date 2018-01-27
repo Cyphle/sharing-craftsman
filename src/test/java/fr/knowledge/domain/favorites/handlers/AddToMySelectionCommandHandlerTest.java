@@ -17,8 +17,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Fail.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 

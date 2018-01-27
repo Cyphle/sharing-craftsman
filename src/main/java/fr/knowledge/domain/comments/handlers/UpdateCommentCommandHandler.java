@@ -8,8 +8,8 @@ import fr.knowledge.domain.comments.ports.CommentRepository;
 import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.Id;
 
-public class UpdateCommentCommandHandler {
-  private CommentRepository commentRepository;
+class UpdateCommentCommandHandler {
+  private final CommentRepository commentRepository;
 
   public UpdateCommentCommandHandler(CommentRepository commentRepository) {
     this.commentRepository = commentRepository;
