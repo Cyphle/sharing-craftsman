@@ -2,6 +2,7 @@ package fr.knowledge.domain.comments.aggregates;
 
 import fr.knowledge.domain.comments.events.CommentAddedEvent;
 import fr.knowledge.domain.comments.events.CommentUpdatedEvent;
+import fr.knowledge.domain.comments.exceptions.UpdateCommentException;
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.ContentType;
@@ -28,9 +29,14 @@ public class Comment {
     events = new ArrayList<>();
   }
 
-  public void update(Content newContent) {
+  public void update(Content newContent) throws UpdateCommentException {
+    verifyContent(newContent);
     CommentUpdatedEvent event = new CommentUpdatedEvent(id, newContent);
     apply(event);
+  }
+
+  public void saveChanges(DomainEvent event) {
+    events.add(event);
   }
 
   private void apply(CommentUpdatedEvent event) {
@@ -38,8 +44,9 @@ public class Comment {
     saveChanges(event);
   }
 
-  public void saveChanges(DomainEvent event) {
-    events.add(event);
+  private void verifyContent(Content newContent) throws UpdateCommentException {
+    if (newContent.isEmpty())
+      throw new UpdateCommentException("Content cannot be empty.");
   }
 
   public static Comment of(String id, String commenter, ContentType contentType, String contentId, String content) {
