@@ -1,6 +1,7 @@
 package fr.knowledge.domain.comments.aggregates;
 
 import fr.knowledge.domain.comments.events.CommentAddedEvent;
+import fr.knowledge.domain.comments.events.CommentUpdatedEvent;
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.ContentType;
@@ -15,16 +16,26 @@ public class Comment {
   private final Username commenter;
   private final ContentType contentType;
   private final Id contentId;
-  private final Content content;
+  private Content content;
   private List<DomainEvent> events;
 
-  public Comment(Id id, Username commenter, ContentType contentType, Id contentId, Content content) {
+  private Comment(Id id, Username commenter, ContentType contentType, Id contentId, Content content) {
     this.id = id;
     this.commenter = commenter;
     this.contentType = contentType;
     this.contentId = contentId;
     this.content = content;
     events = new ArrayList<>();
+  }
+
+  public void update(Content newContent) {
+    CommentUpdatedEvent event = new CommentUpdatedEvent(id, newContent);
+    apply(event);
+  }
+
+  private void apply(CommentUpdatedEvent event) {
+    content = event.getContent();
+    saveChanges(event);
   }
 
   public void saveChanges(DomainEvent event) {
