@@ -1,6 +1,7 @@
 package fr.knowledge.domain.comments.aggregates;
 
 import fr.knowledge.domain.comments.events.CommentAddedEvent;
+import fr.knowledge.domain.comments.events.CommentDeletedEvent;
 import fr.knowledge.domain.comments.events.CommentUpdatedEvent;
 import fr.knowledge.domain.comments.exceptions.UpdateCommentException;
 import fr.knowledge.domain.common.DomainEvent;
@@ -35,12 +36,21 @@ public class Comment {
     apply(event);
   }
 
+  public void delete() {
+    CommentDeletedEvent event = new CommentDeletedEvent(id);
+    apply(event);
+  }
+
   public void saveChanges(DomainEvent event) {
     events.add(event);
   }
 
   private void apply(CommentUpdatedEvent event) {
     content = event.getContent();
+    saveChanges(event);
+  }
+
+  private void apply(CommentDeletedEvent event) {
     saveChanges(event);
   }
 
