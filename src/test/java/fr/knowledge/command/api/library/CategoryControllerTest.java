@@ -1,4 +1,4 @@
-package fr.knowledge.api.library;
+package fr.knowledge.command.api.library;
 
 import fr.knowledge.KnowledgeLibraryApplication;
 import fr.knowledge.utils.Mapper;
