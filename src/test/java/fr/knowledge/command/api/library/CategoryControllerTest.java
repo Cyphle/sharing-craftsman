@@ -1,6 +1,7 @@
 package fr.knowledge.command.api.library;
 
 import fr.knowledge.KnowledgeLibraryApplication;
+import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.utils.Mapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +45,13 @@ public class CategoryControllerTest {
 
   @Test
   public void should_create_new_category() throws Exception {
-    given(libraryService.createCategory(CategoryDTO.from("Architecture"))).willReturn(ResponseEntity.ok().build());
+    given(libraryService.createCategory(new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"), CategoryDTO.from("Architecture"))).willReturn(ResponseEntity.ok().build());
 
     this.mvc.perform(post("/library/category")
+            .header("client", "client")
+            .header("secret", "clientsecret")
+            .header("username", "john@doe.fr")
+            .header("access-token", "aaa")
             .contentType(MediaType.APPLICATION_JSON)
             .content(Mapper.fromObjectToJsonString(CategoryDTO.from("Architecture"))))
             .andExpect(status().isOk());

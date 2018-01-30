@@ -1,15 +1,13 @@
 package fr.knowledge.command.api.library;
 
+import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/library")
@@ -28,7 +26,12 @@ public class CategoryController {
           @ApiResponse(code = 401, message = "Unauthorized")
   })
   @RequestMapping(method = RequestMethod.POST, value = "/category")
-  public ResponseEntity registerUser(@RequestBody CategoryDTO categoryDTO) {
-    return libraryService.createCategory(categoryDTO);
+  public ResponseEntity registerUser(@RequestHeader("client") String client,
+                                     @RequestHeader("secret") String secret,
+                                     @RequestHeader("username") String username,
+                                     @RequestHeader("access-token") String accessToken,
+                                     @RequestBody CategoryDTO categoryDTO) {
+    AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
+    return libraryService.createCategory(authorizationInfoDTO, categoryDTO);
   }
 }

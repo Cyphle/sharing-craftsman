@@ -1,8 +1,9 @@
 package fr.knowledge.command.api.library;
 
+import com.google.common.collect.Sets;
+import fr.knowledge.command.api.common.*;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
-import fr.knowledge.remote.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,24 +13,35 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LibraryServiceTest {
   @Mock
-  private UserService userService;
-  @Mock
   private CommandBus commandBus;
   private LibraryService libraryService;
+  private AuthorizationInfoDTO authorizationInfoDTO;
+  @Mock
+  private AuthorizationService authorizationServie;
 
   @Before
   public void setUp() throws Exception {
-    libraryService = new LibraryService(userService, commandBus);
+    given(authorizationServie.isUserAuthorized(any(AuthorizationInfoDTO.class))).willReturn(true);
+
+    authorizationInfoDTO = new AuthorizationInfoDTO(
+            "client",
+            "secret",
+            "john@doe.fr",
+            "token"
+    );
+    libraryService = new LibraryService(authorizationServie, commandBus);
   }
 
   @Test
   public void should_create_category() throws Exception {
-    ResponseEntity response = libraryService.createCategory(CategoryDTO.from("Architecture"));
+    ResponseEntity response = libraryService.createCategory(authorizationInfoDTO, CategoryDTO.from("Architecture"));
 
     CreateCategoryCommand command = new CreateCategoryCommand("Architecture");
     verify(commandBus).send(command);
