@@ -7,8 +7,6 @@ import fr.knowledge.domain.common.DomainCommand;
 import java.util.Map;
 
 public interface CommandBus {
-  void initialize(CommandBusConfig commandBusConfig);
-
   Map<Class<? extends DomainCommand>, CommandHandler> getHandlers();
 
   void subscribe(Class<? extends DomainCommand> commandClass, CommandHandler commandHandler);

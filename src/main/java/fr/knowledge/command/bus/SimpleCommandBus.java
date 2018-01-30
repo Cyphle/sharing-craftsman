@@ -17,11 +17,6 @@ public class SimpleCommandBus implements CommandBus {
   }
 
   @Override
-  public void initialize(CommandBusConfig commandBusConfig) {
-    handlers = commandBusConfig.getHandlers();
-  }
-
-  @Override
   public Map<Class<? extends DomainCommand>, CommandHandler> getHandlers() {
     return handlers;
   }
