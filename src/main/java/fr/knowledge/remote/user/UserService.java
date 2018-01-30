@@ -13,4 +13,10 @@ public interface UserService {
                              @RequestHeader("secret") String secret,
                              @RequestHeader("username") String username,
                              @RequestHeader("access-token") String accessToken);
+
+  @RequestMapping(method = RequestMethod.GET, value = "/roles")
+  ResponseEntity getAuthorizationsOfUser(@RequestHeader("client") String client,
+                                         @RequestHeader("secret") String secret,
+                                         @RequestHeader("username") String username,
+                                         @RequestHeader("access-token") String accessToken);
 }

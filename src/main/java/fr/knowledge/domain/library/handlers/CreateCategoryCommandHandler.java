@@ -1,5 +1,6 @@
 package fr.knowledge.domain.library.handlers;
 
+import fr.knowledge.domain.common.CommandHandler;
 import fr.knowledge.domain.common.utils.IdGenerator;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
@@ -10,7 +11,7 @@ import fr.knowledge.domain.library.valueobjects.Name;
 
 import java.util.List;
 
-class CreateCategoryCommandHandler {
+public class CreateCategoryCommandHandler implements CommandHandler {
   private final IdGenerator idGenerator;
   private final CategoryRepository categoryRepository;
 
