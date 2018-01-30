@@ -1,8 +1,9 @@
 package fr.knowledge.domain.library.commands;
 
+import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.valueobjects.Id;
 
-public class DeleteKnowledgeCommand {
+public class DeleteKnowledgeCommand implements DomainCommand {
   private final String categoryId;
   private final String id;
 

@@ -1,5 +1,6 @@
 package fr.knowledge.command.bus;
 
+import fr.knowledge.config.CommandBusConfig;
 import fr.knowledge.domain.common.CommandHandler;
 import fr.knowledge.domain.common.DomainCommand;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,11 @@ public class SimpleCommandBus implements CommandBus {
   }
 
   @Override
+  public void initialize(CommandBusConfig commandBusConfig) {
+    handlers = commandBusConfig.getHandlers();
+  }
+
+  @Override
   public Map<Class<? extends DomainCommand>, CommandHandler> getHandlers() {
     return handlers;
   }
@@ -26,7 +32,12 @@ public class SimpleCommandBus implements CommandBus {
   }
 
   @Override
-  public void send(DomainCommand command) {
+  public void send(DomainCommand command) throws Exception {
+    handlers.get(command.getClass()).handle(command);
+  }
 
+  @Override
+  public void emptyHandlers() {
+    handlers = new HashMap<>();
   }
 }
