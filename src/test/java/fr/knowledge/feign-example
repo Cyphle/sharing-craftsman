@@ -1,0 +1,46 @@
+package fr.knowledge.command.api.library;
+
+import fr.knowledge.remote.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.util.Collections.singletonList;
+import static org.springframework.http.HttpHeaders.ACCEPT;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
+@Service
+public class LibraryService {
+  private UserService userService;
+
+  @Autowired
+  public LibraryService(UserService userService) {
+    this.userService = userService;
+  }
+
+  public ResponseEntity createCategory(CategoryDTO categoryDTO) {
+    Map<String, String> headers = new HashMap<>();
+    headers.put("client", "scuser");
+    headers.put("secret", "uTHw0iPU1ADRTd7Y9DCkukrrdsifg6+FvE5+vclu5UI=");
+    headers.put("username", "john@doe.fr");
+    headers.put("access-token", "token");
+
+    ResponseEntity response = userService.verifyToken(
+            "scuser",
+            "uTHw0iPU1ADRTd7Y9DCkukrrdsifg6+FvE5+vclu5UI=",
+            "Test",
+            "uDLMQYBiqsFdfDJHMkAKisZQCVMTlAAmgrhaRECvGOUhl5Eu_yW_N9mzTl8NzeAL3U3Bs3_GhpaWm-vtGJ3BI8wI9J588h7mpdA15doWT8ud9KPjlVR0waHAlN4v5O0J");
+//    ResponseEntity response = userService.verifyToken(headers);
+
+    System.out.println("*****************");
+    System.out.println(response);
+    System.out.println("*****************");
+
+    return ResponseEntity.ok().build();
+  }
+}

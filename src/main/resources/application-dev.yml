@@ -24,9 +24,11 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://192.168.1.12:8099/eureka}
+      defaultZone: ${EUREKA_URI:http://127.0.0.1:8099/eureka}
+    fetch-registry: true
   instance:
     preferIpAddress: true
+    hostname: 127.0.0.1
 
 logging:
   level:
