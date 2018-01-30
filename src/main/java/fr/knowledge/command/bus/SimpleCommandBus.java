@@ -1,6 +1,5 @@
 package fr.knowledge.command.bus;
 
-import fr.knowledge.config.CommandBusConfig;
 import fr.knowledge.domain.common.CommandHandler;
 import fr.knowledge.domain.common.DomainCommand;
 import org.springframework.stereotype.Service;
