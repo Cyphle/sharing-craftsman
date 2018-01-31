@@ -26,12 +26,27 @@ public class CategoryController {
           @ApiResponse(code = 401, message = "Unauthorized")
   })
   @RequestMapping(method = RequestMethod.POST, value = "/category")
-  public ResponseEntity registerUser(@RequestHeader("client") String client,
+  public ResponseEntity createCategory(@RequestHeader("client") String client,
                                      @RequestHeader("secret") String secret,
                                      @RequestHeader("username") String username,
                                      @RequestHeader("access-token") String accessToken,
                                      @RequestBody CategoryDTO categoryDTO) {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
     return libraryService.createCategory(authorizationInfoDTO, categoryDTO);
+  }
+
+  @ApiOperation(value = "Endpoint to update a category", response = ResponseEntity.class)
+  @ApiResponses(value = {
+          @ApiResponse(code = 200, message = ""),
+          @ApiResponse(code = 401, message = "Unauthorized")
+  })
+  @RequestMapping(method = RequestMethod.PUT, value = "/category")
+  public ResponseEntity updateCategory(@RequestHeader("client") String client,
+                                       @RequestHeader("secret") String secret,
+                                       @RequestHeader("username") String username,
+                                       @RequestHeader("access-token") String accessToken,
+                                       @RequestBody CategoryDTO categoryDTO) {
+    AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
+    return libraryService.updateCategory(authorizationInfoDTO, categoryDTO);
   }
 }

@@ -20,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -54,6 +55,20 @@ public class CategoryControllerTest {
             .header("access-token", "aaa")
             .contentType(MediaType.APPLICATION_JSON)
             .content(Mapper.fromObjectToJsonString(CategoryDTO.from("Architecture"))))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  public void should_update_category() throws Exception {
+    given(libraryService.updateCategory(new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"), CategoryDTO.from("aaa", "Architecture"))).willReturn(ResponseEntity.ok().build());
+
+    this.mvc.perform(put("/library/category")
+            .header("client", "client")
+            .header("secret", "clientsecret")
+            .header("username", "john@doe.fr")
+            .header("access-token", "aaa")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(Mapper.fromObjectToJsonString(CategoryDTO.from("aaa", "Architecture"))))
             .andExpect(status().isOk());
   }
 }

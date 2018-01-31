@@ -6,9 +6,15 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class CategoryDTO {
+  private String id;
   private String name;
 
   public CategoryDTO() {
+  }
+
+  public CategoryDTO(String id, String name) {
+    this.id = id;
+    this.name = name;
   }
 
   public CategoryDTO(String name) {
@@ -25,5 +31,9 @@ public class CategoryDTO {
 
   public static CategoryDTO from(String name) {
     return new CategoryDTO(name);
+  }
+
+  public static CategoryDTO from(String id, String name) {
+    return new CategoryDTO(id, name);
   }
 }

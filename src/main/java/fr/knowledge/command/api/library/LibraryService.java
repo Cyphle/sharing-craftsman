@@ -38,4 +38,8 @@ public class LibraryService {
     }
     return ResponseEntity.ok().build();
   }
+
+  public ResponseEntity updateCategory(AuthorizationInfoDTO authorizationInfoDTO, CategoryDTO categoryDTO) {
+    return null;
+  }
 }
