@@ -3,8 +3,11 @@ package fr.knowledge.command.api.library;
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.bus.CommandBus;
+import fr.knowledge.domain.library.aggregates.UpdateCategoryException;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
+import fr.knowledge.domain.library.commands.UpdateCategoryCommand;
 import fr.knowledge.domain.library.exceptions.AlreadyExistingCategoryException;
+import fr.knowledge.domain.library.exceptions.CategoryNotFoundException;
 import fr.knowledge.domain.library.exceptions.CreateCategoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +43,19 @@ public class LibraryService {
   }
 
   public ResponseEntity updateCategory(AuthorizationInfoDTO authorizationInfoDTO, CategoryDTO categoryDTO) {
-    return null;
+    if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
+      return new ResponseEntity("Unauthorized", HttpStatus.UNAUTHORIZED);
+
+    UpdateCategoryCommand command = new UpdateCategoryCommand(categoryDTO.getId(), categoryDTO.getName());
+    try {
+      commandBus.send(command);
+    } catch(CategoryNotFoundException e) {
+      return new ResponseEntity("Not found", HttpStatus.NOT_FOUND);
+    } catch (UpdateCategoryException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.ok().build();
   }
 }

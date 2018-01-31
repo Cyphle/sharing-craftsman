@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import fr.knowledge.command.api.common.*;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
+import fr.knowledge.domain.library.commands.UpdateCategoryCommand;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +45,15 @@ public class LibraryServiceTest {
     ResponseEntity response = libraryService.createCategory(authorizationInfoDTO, CategoryDTO.from("Architecture"));
 
     CreateCategoryCommand command = new CreateCategoryCommand("Architecture");
+    verify(commandBus).send(command);
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+  }
+
+  @Test
+  public void should_update_category() throws Exception {
+    ResponseEntity response = libraryService.updateCategory(authorizationInfoDTO, CategoryDTO.from("aaa", "Architecture"));
+
+    UpdateCategoryCommand command = new UpdateCategoryCommand("aaa", "Architecture");
     verify(commandBus).send(command);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
