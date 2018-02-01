@@ -7,6 +7,7 @@ import fr.knowledge.domain.comments.exceptions.UpdateCommentException;
 import fr.knowledge.domain.comments.ports.CommentRepository;
 import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.common.valueobjects.Username;
 
 class UpdateCommentCommandHandler {
   private final CommentRepository commentRepository;
@@ -16,7 +17,7 @@ class UpdateCommentCommandHandler {
   }
 
   public void handle(UpdateCommentCommand command) throws CommentNotFoundException, UpdateCommentException {
-    Comment comment = commentRepository.get(Id.of(command.getId()))
+    Comment comment = commentRepository.get(Id.of(command.getId()), Username.from(command.getCommenter()))
             .orElseThrow(CommentNotFoundException::new);
     comment.update(Content.of(command.getContent()));
     commentRepository.save(comment);

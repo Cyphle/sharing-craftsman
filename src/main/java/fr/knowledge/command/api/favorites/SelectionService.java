@@ -24,8 +24,8 @@ public class SelectionService {
     this.commandBus = commandBus;
   }
 
-  public ResponseEntity addSelection(AuthorizationInfoDTO authorizationInfoDTO, SelectionDTO selectionDTO) {
-    if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
+  public ResponseEntity addSelection(AuthorizationInfoDTO authorizationInfoDTO, SelectionDTO selectionDTO, String username) {
+    if (!authorizationService.isUserAuthorized(authorizationInfoDTO) || !authorizationService.areUsernameEquals(username, selectionDTO.getUsername()))
       return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
 
     AddToMySelectionCommand command = new AddToMySelectionCommand(selectionDTO.getUsername(), ContentType.valueOf(selectionDTO.getContentType().toUpperCase()), selectionDTO.getContentId());
@@ -39,8 +39,8 @@ public class SelectionService {
     return ResponseEntity.ok().build();
   }
 
-  public ResponseEntity removeSelection(AuthorizationInfoDTO authorizationInfoDTO, SelectionDTO selectionDTO) {
-    if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
+  public ResponseEntity removeSelection(AuthorizationInfoDTO authorizationInfoDTO, SelectionDTO selectionDTO, String username) {
+    if (!authorizationService.isUserAuthorized(authorizationInfoDTO) || !authorizationService.areUsernameEquals(username, selectionDTO.getUsername()))
       return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
 
     RemoveFromMySelectionCommand command = new RemoveFromMySelectionCommand(selectionDTO.getId(), selectionDTO.getUsername());

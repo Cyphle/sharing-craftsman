@@ -23,6 +23,11 @@ public class CommentDTO {
     this.content = content;
   }
 
+  public CommentDTO(String id, String commenter) {
+    this.id = id;
+    this.commenter = commenter;
+  }
+
   public String getId() {
     return id;
   }
@@ -69,5 +74,9 @@ public class CommentDTO {
 
   public static CommentDTO from(String id, String commenter, String content) {
     return new CommentDTO(id, commenter, content);
+  }
+
+  public static CommentDTO from(String id, String commenter) {
+    return new CommentDTO(id, commenter);
   }
 }

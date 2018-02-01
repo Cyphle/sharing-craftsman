@@ -32,7 +32,7 @@ public class SelectionController {
                                        @RequestHeader("access-token") String accessToken,
                                        @RequestBody SelectionDTO selectionDTO) {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
-    return selectionService.addSelection(authorizationInfoDTO, selectionDTO);
+    return selectionService.addSelection(authorizationInfoDTO, selectionDTO, username);
   }
 
   @ApiOperation(value = "Endpoint to remove a selection", response = ResponseEntity.class)
@@ -47,6 +47,6 @@ public class SelectionController {
                                        @RequestHeader("access-token") String accessToken,
                                        @RequestBody SelectionDTO selectionDTO) {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
-    return selectionService.removeSelection(authorizationInfoDTO, selectionDTO);
+    return selectionService.removeSelection(authorizationInfoDTO, selectionDTO, username);
   }
 }

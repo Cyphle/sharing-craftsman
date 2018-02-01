@@ -22,10 +22,11 @@ public class AuthorizationService {
 
     ResponseEntity responseEntity = userService.getAuthorizationsOfUser(authorizationInfoDTO.getClient(), authorizationInfoDTO.getClientSecret(), authorizationInfoDTO.getUsername(), authorizationInfoDTO.getAccessToken());
     AuthorizationsDTO authorizationsDTO = (AuthorizationsDTO) responseEntity.getBody();
-    if (authorizationsDTO != null && !authorizationsDTO.hasUserRole()) {
-      return false;
-    }
+    return authorizationsDTO == null || authorizationsDTO.hasUserRole();
+  }
 
-    return true;
+
+  public boolean areUsernameEquals(String first, String second) {
+    return first.equals(second);
   }
 }

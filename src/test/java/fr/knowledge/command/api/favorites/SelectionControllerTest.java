@@ -49,7 +49,8 @@ public class SelectionControllerTest {
   public void should_add_knowledge_to_my_selection() throws Exception {
     given(selectionService.addSelection(
             new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
-            SelectionDTO.from("john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa"))
+            SelectionDTO.from("john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa"),
+            "john@doe.fr")
     ).willReturn(ResponseEntity.ok().build());
 
     this.mvc.perform(post("/selections")
@@ -66,7 +67,8 @@ public class SelectionControllerTest {
   public void should_remove_category_from_my_selection() throws Exception {
     given(selectionService.removeSelection(
             new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
-            SelectionDTO.from("aaa", "john@doe.fr"))
+            SelectionDTO.from("aaa", "john@doe.fr"),
+            "john@doe.fr")
     ).willReturn(ResponseEntity.ok().build());
 
     this.mvc.perform(delete("/selections")

@@ -13,4 +13,8 @@ public class CommentService {
   public ResponseEntity updateComment(AuthorizationInfoDTO authorizationInfoDTO, CommentDTO commentDTO) {
     return null;
   }
+
+  public ResponseEntity deleteComment(AuthorizationInfoDTO authorizationInfoDTO, CommentDTO commentDTO, String username) {
+    return null;
+  }
 }

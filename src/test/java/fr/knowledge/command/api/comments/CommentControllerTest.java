@@ -2,7 +2,6 @@ package fr.knowledge.command.api.comments;
 
 import fr.knowledge.KnowledgeLibraryApplication;
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
-import fr.knowledge.command.api.favorites.SelectionDTO;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.utils.Mapper;
 import org.junit.Before;
@@ -21,6 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -77,6 +77,24 @@ public class CommentControllerTest {
             .header("access-token", "aaa")
             .contentType(MediaType.APPLICATION_JSON)
             .content(Mapper.fromObjectToJsonString(CommentDTO.from("aaa", "commenter",  "content"))))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  public void should_delete_comment() throws Exception {
+    given(commentService.deleteComment(
+            new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
+            CommentDTO.from("aaa", "john@doe.fr"),
+            "john@doe.fr")
+    ).willReturn(ResponseEntity.ok().build());
+
+    this.mvc.perform(delete("/comments")
+            .header("client", "client")
+            .header("secret", "clientsecret")
+            .header("username", "john@doe.fr")
+            .header("access-token", "aaa")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(Mapper.fromObjectToJsonString(CommentDTO.from("aaa", "john@doe.fr"))))
             .andExpect(status().isOk());
   }
 }

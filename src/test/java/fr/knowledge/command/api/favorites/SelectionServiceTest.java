@@ -31,6 +31,7 @@ public class SelectionServiceTest {
   @Before
   public void setUp() throws Exception {
     given(authorizationService.isUserAuthorized(any(AuthorizationInfoDTO.class))).willReturn(true);
+    given(authorizationService.areUsernameEquals("john@doe.fr", "john@doe.fr")).willReturn(true);
 
     authorizationInfoDTO = new AuthorizationInfoDTO(
             "client",
@@ -43,7 +44,7 @@ public class SelectionServiceTest {
 
   @Test
   public void should_add_to_my_selection() throws Exception {
-    ResponseEntity response = selectionService.addSelection(authorizationInfoDTO, SelectionDTO.from("john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa"));
+    ResponseEntity response = selectionService.addSelection(authorizationInfoDTO, SelectionDTO.from("john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa"), "john@doe.fr");
 
     AddToMySelectionCommand command = new AddToMySelectionCommand("john@doe.fr", ContentType.KNOWLEDGE, "aaa");
     verify(commandBus).send(command);
@@ -52,7 +53,7 @@ public class SelectionServiceTest {
 
   @Test
   public void should_remove_from_my_selection() throws Exception {
-    ResponseEntity response = selectionService.removeSelection(authorizationInfoDTO, SelectionDTO.from("aaa", "john@doe.fr"));
+    ResponseEntity response = selectionService.removeSelection(authorizationInfoDTO, SelectionDTO.from("aaa", "john@doe.fr"), "john@doe.fr");
 
     RemoveFromMySelectionCommand command = new RemoveFromMySelectionCommand("aaa", "john@doe.fr");
     verify(commandBus).send(command);

@@ -1,4 +1,4 @@
-package fr.knowledge.command;
+package fr.knowledge.command.common;
 
 import com.google.common.collect.Sets;
 import fr.knowledge.command.api.common.*;
@@ -61,5 +61,10 @@ public class AuthorizationServiceTest {
 
 
     assertThat(authorizationService.isUserAuthorized(authorizationInfoDTO)).isFalse();
+  }
+
+  @Test
+  public void should_return_true_if_both_username_are_the_same() throws Exception {
+    assertThat(authorizationService.areUsernameEquals("john@doe.fr", "john@doe.fr")).isTrue();
   }
 }

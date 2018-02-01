@@ -49,4 +49,19 @@ public class CommentController {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
     return commentService.updateComment(authorizationInfoDTO, commentDTO);
   }
+
+  @ApiOperation(value = "Endpoint to delete a comment from content", response = ResponseEntity.class)
+  @ApiResponses(value = {
+          @ApiResponse(code = 200, message = ""),
+          @ApiResponse(code = 401, message = "Unauthorized")
+  })
+  @RequestMapping(method = RequestMethod.DELETE)
+  public ResponseEntity deleteComment(@RequestHeader("client") String client,
+                                         @RequestHeader("secret") String secret,
+                                         @RequestHeader("username") String username,
+                                         @RequestHeader("access-token") String accessToken,
+                                         @RequestBody CommentDTO commentDTO) {
+    AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
+    return commentService.deleteComment(authorizationInfoDTO, commentDTO, username);
+  }
 }

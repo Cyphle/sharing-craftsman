@@ -5,6 +5,7 @@ import fr.knowledge.domain.comments.commands.DeleteCommentCommand;
 import fr.knowledge.domain.comments.exceptions.CommentNotFoundException;
 import fr.knowledge.domain.comments.ports.CommentRepository;
 import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.common.valueobjects.Username;
 
 class DeleteCommentCommandHandler {
   private final CommentRepository commentRepository;
@@ -14,7 +15,7 @@ class DeleteCommentCommandHandler {
   }
 
   public void handle(DeleteCommentCommand command) throws CommentNotFoundException {
-    Comment comment = commentRepository.get(Id.of(command.getId()))
+    Comment comment = commentRepository.get(Id.of(command.getId()), Username.from(command.getCommenter()))
             .orElseThrow(CommentNotFoundException::new);
     comment.delete();
     commentRepository.save(comment);

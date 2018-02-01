@@ -6,6 +6,7 @@ import fr.knowledge.domain.comments.events.CommentDeletedEvent;
 import fr.knowledge.domain.comments.ports.CommentRepository;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.common.valueobjects.Username;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,13 +26,13 @@ public class DeleteCommentCommandHandlerTest {
 
   @Before
   public void setUp() throws Exception {
-    given(commentRepository.get(Id.of("aaa"))).willReturn(Optional.of(Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my content")));
+    given(commentRepository.get(Id.of("aaa"), Username.from("john@doe.fr"))).willReturn(Optional.of(Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my content")));
     deleteCommentCommandHandler = new DeleteCommentCommandHandler(commentRepository);
   }
 
   @Test
   public void should_delete_comment() throws Exception {
-    DeleteCommentCommand command = new DeleteCommentCommand("aaa");
+    DeleteCommentCommand command = new DeleteCommentCommand("aaa", "john@doe.fr");
 
     deleteCommentCommandHandler.handle(command);
 
