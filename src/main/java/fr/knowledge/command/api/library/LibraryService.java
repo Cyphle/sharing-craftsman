@@ -58,4 +58,8 @@ public class LibraryService {
     }
     return ResponseEntity.ok().build();
   }
+
+  public ResponseEntity deleteCategory(AuthorizationInfoDTO authorizationInfoDTO, CategoryDTO categoryDTO) {
+    return null;
+  }
 }

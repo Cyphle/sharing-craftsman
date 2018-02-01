@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,6 +70,20 @@ public class CategoryControllerTest {
             .header("access-token", "aaa")
             .contentType(MediaType.APPLICATION_JSON)
             .content(Mapper.fromObjectToJsonString(CategoryDTO.from("aaa", "Architecture"))))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  public void should_delete_category() throws Exception {
+    given(libraryService.deleteCategory(new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"), CategoryDTO.from("aaa"))).willReturn(ResponseEntity.ok().build());
+
+    this.mvc.perform(delete("/library/category")
+            .header("client", "client")
+            .header("secret", "clientsecret")
+            .header("username", "john@doe.fr")
+            .header("access-token", "aaa")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(Mapper.fromObjectToJsonString(CategoryDTO.fromId("aaa"))))
             .andExpect(status().isOk());
   }
 }

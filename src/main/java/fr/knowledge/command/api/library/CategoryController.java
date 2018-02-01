@@ -49,4 +49,21 @@ public class CategoryController {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
     return libraryService.updateCategory(authorizationInfoDTO, categoryDTO);
   }
+
+
+
+  @ApiOperation(value = "Endpoint to delete a category", response = ResponseEntity.class)
+  @ApiResponses(value = {
+          @ApiResponse(code = 200, message = ""),
+          @ApiResponse(code = 401, message = "Unauthorized")
+  })
+  @RequestMapping(method = RequestMethod.DELETE, value = "/category")
+  public ResponseEntity deleteCategory(@RequestHeader("client") String client,
+                                       @RequestHeader("secret") String secret,
+                                       @RequestHeader("username") String username,
+                                       @RequestHeader("access-token") String accessToken,
+                                       @RequestBody CategoryDTO categoryDTO) {
+    AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
+    return libraryService.deleteCategory(authorizationInfoDTO, categoryDTO);
+  }
 }

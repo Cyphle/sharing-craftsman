@@ -40,4 +40,8 @@ public class CategoryDTO {
   public static CategoryDTO from(String id, String name) {
     return new CategoryDTO(id, name);
   }
+
+  public static CategoryDTO fromId(String id) {
+    return new CategoryDTO(id, "");
+  }
 }
