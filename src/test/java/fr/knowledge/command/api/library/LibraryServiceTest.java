@@ -1,9 +1,8 @@
 package fr.knowledge.command.api.library;
 
-import com.google.common.collect.Sets;
-import fr.knowledge.command.api.common.*;
+import fr.knowledge.command.api.common.AuthorizationInfoDTO;
+import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.bus.CommandBus;
-import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.library.commands.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import sun.security.timestamp.TSResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -26,11 +24,11 @@ public class LibraryServiceTest {
   private LibraryService libraryService;
   private AuthorizationInfoDTO authorizationInfoDTO;
   @Mock
-  private AuthorizationService authorizationServie;
+  private AuthorizationService authorizationService;
 
   @Before
   public void setUp() throws Exception {
-    given(authorizationServie.isUserAuthorized(any(AuthorizationInfoDTO.class))).willReturn(true);
+    given(authorizationService.isUserAuthorized(any(AuthorizationInfoDTO.class))).willReturn(true);
 
     authorizationInfoDTO = new AuthorizationInfoDTO(
             "client",
@@ -38,7 +36,7 @@ public class LibraryServiceTest {
             "john@doe.fr",
             "token"
     );
-    libraryService = new LibraryService(authorizationServie, commandBus);
+    libraryService = new LibraryService(authorizationService, commandBus);
   }
 
   @Test
