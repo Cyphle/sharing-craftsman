@@ -20,7 +20,7 @@ public class KnowledgeController {
     this.libraryService = libraryService;
   }
 
-  @ApiOperation(value = "Endpoint to create a new category", response = ResponseEntity.class)
+  @ApiOperation(value = "Endpoint to add a new knowledge to a category", response = ResponseEntity.class)
   @ApiResponses(value = {
           @ApiResponse(code = 200, message = ""),
           @ApiResponse(code = 401, message = "Unauthorized")
@@ -33,5 +33,20 @@ public class KnowledgeController {
                                        @RequestBody KnowledgeDTO knowledgeDTO) {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
     return libraryService.addKnowledge(authorizationInfoDTO, knowledgeDTO);
+  }
+
+  @ApiOperation(value = "Endpoint to update a knowledge", response = ResponseEntity.class)
+  @ApiResponses(value = {
+          @ApiResponse(code = 200, message = ""),
+          @ApiResponse(code = 401, message = "Unauthorized")
+  })
+  @RequestMapping(method = RequestMethod.PUT, value = "/knowledge")
+  public ResponseEntity updateKnowledge(@RequestHeader("client") String client,
+                                       @RequestHeader("secret") String secret,
+                                       @RequestHeader("username") String username,
+                                       @RequestHeader("access-token") String accessToken,
+                                       @RequestBody KnowledgeDTO knowledgeDTO) {
+    AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
+    return libraryService.updateKnowledge(authorizationInfoDTO, knowledgeDTO);
   }
 }

@@ -93,4 +93,8 @@ public class LibraryService {
     }
     return ResponseEntity.ok().build();
   }
+
+  public ResponseEntity updateKnowledge(AuthorizationInfoDTO authorizationInfoDTO, KnowledgeDTO knowledgeDTO) {
+    return null;
+  }
 }

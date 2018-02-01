@@ -20,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -57,6 +58,23 @@ public class KnowledgeControllerTest {
             .header("access-token", "aaa")
             .contentType(MediaType.APPLICATION_JSON)
             .content(Mapper.fromObjectToJsonString(KnowledgeDTO.from("aaa", "john@doe.fr", "title", "content"))))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  public void should_update_knowledge() throws Exception {
+    given(libraryService.updateKnowledge(
+            new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
+            KnowledgeDTO.from("aaa", "aaa", "john@doe.fr", "title", "content"))
+    ).willReturn(ResponseEntity.ok().build());
+
+    this.mvc.perform(put("/library/knowledge")
+            .header("client", "client")
+            .header("secret", "clientsecret")
+            .header("username", "john@doe.fr")
+            .header("access-token", "aaa")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(Mapper.fromObjectToJsonString(KnowledgeDTO.from("aaa", "aaa",  "john@doe.fr", "title", "content"))))
             .andExpect(status().isOk());
   }
 }
