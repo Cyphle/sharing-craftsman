@@ -106,6 +106,17 @@ public class LibraryService {
   }
 
   public ResponseEntity deleteKnowledge(AuthorizationInfoDTO authorizationInfoDTO, KnowledgeDTO knowledgeDTO) {
-    return null;
+    if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
+      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+
+    DeleteKnowledgeCommand command = new DeleteKnowledgeCommand(knowledgeDTO.getCategoryId(), knowledgeDTO.getId());
+    try {
+      commandBus.send(command);
+    } catch (CategoryNotFoundException | KnowledgeNotFoundException e) {
+      return new ResponseEntity<>("Not found", HttpStatus.NOT_FOUND);
+    } catch(Exception e){
+      return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.ok().build();
   }
 }

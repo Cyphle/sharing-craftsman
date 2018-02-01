@@ -85,4 +85,13 @@ public class LibraryServiceTest {
     verify(commandBus).send(command);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
+
+  @Test
+  public void should_delete_knowledge() throws Exception {
+    ResponseEntity response = libraryService.deleteKnowledge(authorizationInfoDTO, KnowledgeDTO.from("aaa", "aaa"));
+
+    DeleteKnowledgeCommand command = new DeleteKnowledgeCommand("aaa", "aaa");
+    verify(commandBus).send(command);
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+  }
 }
