@@ -4,10 +4,7 @@ import com.google.common.collect.Sets;
 import fr.knowledge.command.api.common.*;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.common.DomainCommand;
-import fr.knowledge.domain.library.commands.AddKnowledgeCommand;
-import fr.knowledge.domain.library.commands.CreateCategoryCommand;
-import fr.knowledge.domain.library.commands.DeleteCategoryCommand;
-import fr.knowledge.domain.library.commands.UpdateCategoryCommand;
+import fr.knowledge.domain.library.commands.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,6 +73,15 @@ public class LibraryServiceTest {
     ResponseEntity response = libraryService.addKnowledge(authorizationInfoDTO, KnowledgeDTO.from("aaa", "john@doe.fr", "title", "content"));
 
     AddKnowledgeCommand command = new AddKnowledgeCommand("aaa", "john@doe.fr", "title", "content");
+    verify(commandBus).send(command);
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+  }
+
+  @Test
+  public void should_update_knowledge_to_category() throws Exception {
+    ResponseEntity response = libraryService.updateKnowledge(authorizationInfoDTO, KnowledgeDTO.from("aaa", "aaa", "john@doe.fr", "title", "content"));
+
+    UpdateKnowledgeCommand command = new UpdateKnowledgeCommand("aaa", "aaa", "john@doe.fr", "title", "content");
     verify(commandBus).send(command);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
