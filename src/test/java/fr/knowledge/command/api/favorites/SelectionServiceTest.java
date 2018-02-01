@@ -2,12 +2,10 @@ package fr.knowledge.command.api.favorites;
 
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.command.api.common.AuthorizationService;
-import fr.knowledge.command.api.library.CategoryDTO;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.favorites.commands.AddToMySelectionCommand;
 import fr.knowledge.domain.favorites.commands.RemoveFromMySelectionCommand;
-import fr.knowledge.domain.library.commands.CreateCategoryCommand;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
