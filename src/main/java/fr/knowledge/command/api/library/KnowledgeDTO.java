@@ -22,6 +22,11 @@ public class KnowledgeDTO {
     this.id = id;
   }
 
+  public KnowledgeDTO(String categoryId, String id) {
+    this.categoryId = categoryId;
+    this.id = id;
+  }
+
   public String getId() {
     return id;
   }
@@ -68,5 +73,9 @@ public class KnowledgeDTO {
 
   public static KnowledgeDTO from(String categoryId, String id, String creator, String title, String content) {
     return new KnowledgeDTO(categoryId, id, creator, title, content);
+  }
+
+  public static KnowledgeDTO from(String categoryId, String id) {
+    return new KnowledgeDTO(categoryId, id);
   }
 }

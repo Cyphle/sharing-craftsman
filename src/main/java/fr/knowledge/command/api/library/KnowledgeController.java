@@ -49,4 +49,19 @@ public class KnowledgeController {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
     return libraryService.updateKnowledge(authorizationInfoDTO, knowledgeDTO);
   }
+
+  @ApiOperation(value = "Endpoint to delete a knowledge", response = ResponseEntity.class)
+  @ApiResponses(value = {
+          @ApiResponse(code = 200, message = ""),
+          @ApiResponse(code = 401, message = "Unauthorized")
+  })
+  @RequestMapping(method = RequestMethod.DELETE, value = "/knowledge")
+  public ResponseEntity deleteKnowledge(@RequestHeader("client") String client,
+                                       @RequestHeader("secret") String secret,
+                                       @RequestHeader("username") String username,
+                                       @RequestHeader("access-token") String accessToken,
+                                       @RequestBody KnowledgeDTO knowledgeDTO) {
+    AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
+    return libraryService.deleteKnowledge(authorizationInfoDTO, knowledgeDTO);
+  }
 }
