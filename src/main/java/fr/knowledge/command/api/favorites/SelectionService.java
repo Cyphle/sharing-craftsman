@@ -5,7 +5,9 @@ import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.favorites.commands.AddToMySelectionCommand;
+import fr.knowledge.domain.favorites.commands.RemoveFromMySelectionCommand;
 import fr.knowledge.domain.favorites.exceptions.AlreadyExistingSelectionException;
+import fr.knowledge.domain.favorites.exceptions.SelectionNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +40,17 @@ public class SelectionService {
   }
 
   public ResponseEntity removeSelection(AuthorizationInfoDTO authorizationInfoDTO, SelectionDTO selectionDTO) {
-    return null;
+    if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
+      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+
+    RemoveFromMySelectionCommand command = new RemoveFromMySelectionCommand(selectionDTO.getId(), selectionDTO.getUsername());
+    try {
+      commandBus.send(command);
+    } catch (SelectionNotFoundException e) {
+      return new ResponseEntity<>("Not found", HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.ok().build();
   }
 }

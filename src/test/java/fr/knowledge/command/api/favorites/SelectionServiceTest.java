@@ -6,6 +6,7 @@ import fr.knowledge.command.api.library.CategoryDTO;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.favorites.commands.AddToMySelectionCommand;
+import fr.knowledge.domain.favorites.commands.RemoveFromMySelectionCommand;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,15 @@ public class SelectionServiceTest {
     ResponseEntity response = selectionService.addSelection(authorizationInfoDTO, SelectionDTO.from("john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa"));
 
     AddToMySelectionCommand command = new AddToMySelectionCommand("john@doe.fr", ContentType.KNOWLEDGE, "aaa");
+    verify(commandBus).send(command);
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+  }
+
+  @Test
+  public void should_remove_from_my_selection() throws Exception {
+    ResponseEntity response = selectionService.removeSelection(authorizationInfoDTO, SelectionDTO.from("aaa", "john@doe.fr"));
+
+    RemoveFromMySelectionCommand command = new RemoveFromMySelectionCommand("aaa", "john@doe.fr");
     verify(commandBus).send(command);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
