@@ -5,6 +5,7 @@ import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.library.aggregates.UpdateCategoryException;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
+import fr.knowledge.domain.library.commands.DeleteCategoryCommand;
 import fr.knowledge.domain.library.commands.UpdateCategoryCommand;
 import fr.knowledge.domain.library.exceptions.AlreadyExistingCategoryException;
 import fr.knowledge.domain.library.exceptions.CategoryNotFoundException;
@@ -27,7 +28,7 @@ public class LibraryService {
 
   public ResponseEntity createCategory(AuthorizationInfoDTO authorizationInfoDTO, CategoryDTO categoryDTO) {
     if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
-      return new ResponseEntity("Unauthorized", HttpStatus.UNAUTHORIZED);
+      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
 
     CreateCategoryCommand command = new CreateCategoryCommand(categoryDTO.getName());
     try {
@@ -44,13 +45,13 @@ public class LibraryService {
 
   public ResponseEntity updateCategory(AuthorizationInfoDTO authorizationInfoDTO, CategoryDTO categoryDTO) {
     if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
-      return new ResponseEntity("Unauthorized", HttpStatus.UNAUTHORIZED);
+      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
 
     UpdateCategoryCommand command = new UpdateCategoryCommand(categoryDTO.getId(), categoryDTO.getName());
     try {
       commandBus.send(command);
     } catch(CategoryNotFoundException e) {
-      return new ResponseEntity("Not found", HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>("Not found", HttpStatus.NOT_FOUND);
     } catch (UpdateCategoryException e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     } catch (Exception e) {
@@ -60,6 +61,17 @@ public class LibraryService {
   }
 
   public ResponseEntity deleteCategory(AuthorizationInfoDTO authorizationInfoDTO, CategoryDTO categoryDTO) {
-    return null;
+    if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
+      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+
+    DeleteCategoryCommand command = new DeleteCategoryCommand(categoryDTO.getId());
+    try {
+      commandBus.send(command);
+    } catch (CategoryNotFoundException e) {
+      return new ResponseEntity<>("Not found", HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.ok().build();
   }
 }

@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import fr.knowledge.command.api.common.*;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
+import fr.knowledge.domain.library.commands.DeleteCategoryCommand;
 import fr.knowledge.domain.library.commands.UpdateCategoryCommand;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +55,15 @@ public class LibraryServiceTest {
     ResponseEntity response = libraryService.updateCategory(authorizationInfoDTO, CategoryDTO.from("aaa", "Architecture"));
 
     UpdateCategoryCommand command = new UpdateCategoryCommand("aaa", "Architecture");
+    verify(commandBus).send(command);
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+  }
+
+  @Test
+  public void should_delete_category() throws Exception {
+    ResponseEntity response = libraryService.deleteCategory(authorizationInfoDTO, CategoryDTO.fromId("aaa"));
+
+    DeleteCategoryCommand command = new DeleteCategoryCommand("aaa");
     verify(commandBus).send(command);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
