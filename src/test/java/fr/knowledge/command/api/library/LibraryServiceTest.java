@@ -3,6 +3,8 @@ package fr.knowledge.command.api.library;
 import com.google.common.collect.Sets;
 import fr.knowledge.command.api.common.*;
 import fr.knowledge.command.bus.CommandBus;
+import fr.knowledge.domain.common.DomainCommand;
+import fr.knowledge.domain.library.commands.AddKnowledgeCommand;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
 import fr.knowledge.domain.library.commands.DeleteCategoryCommand;
 import fr.knowledge.domain.library.commands.UpdateCategoryCommand;
@@ -13,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import sun.security.timestamp.TSResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -64,6 +67,15 @@ public class LibraryServiceTest {
     ResponseEntity response = libraryService.deleteCategory(authorizationInfoDTO, CategoryDTO.fromId("aaa"));
 
     DeleteCategoryCommand command = new DeleteCategoryCommand("aaa");
+    verify(commandBus).send(command);
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+  }
+
+  @Test
+  public void should_add_knowledge_to_category() throws Exception {
+    ResponseEntity response = libraryService.addKnowledge(authorizationInfoDTO, KnowledgeDTO.from("aaa", "john@doe.fr", "title", "content"));
+
+    AddKnowledgeCommand command = new AddKnowledgeCommand("aaa", "john@doe.fr", "title", "content");
     verify(commandBus).send(command);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
