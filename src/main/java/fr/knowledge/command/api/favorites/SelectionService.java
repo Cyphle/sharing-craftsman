@@ -9,4 +9,8 @@ public class SelectionService {
   public ResponseEntity addSelection(AuthorizationInfoDTO authorizationInfoDTO, SelectionDTO selectionDTO) {
     return null;
   }
+
+  public ResponseEntity removeSelection(AuthorizationInfoDTO authorizationInfoDTO, SelectionDTO selectionDTO) {
+    return null;
+  }
 }

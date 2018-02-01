@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +46,7 @@ public class SelectionControllerTest {
   }
 
   @Test
-  public void should_add_knowledge_to_selection() throws Exception {
+  public void should_add_knowledge_to_my_selection() throws Exception {
     given(selectionService.addSelection(
             new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
             SelectionDTO.from("john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa"))
@@ -58,6 +59,23 @@ public class SelectionControllerTest {
             .header("access-token", "aaa")
             .contentType(MediaType.APPLICATION_JSON)
             .content(Mapper.fromObjectToJsonString(SelectionDTO.from("john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa"))))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  public void should_remove_category_from_my_selection() throws Exception {
+    given(selectionService.removeSelection(
+            new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
+            SelectionDTO.from("aaa", "john@doe.fr"))
+    ).willReturn(ResponseEntity.ok().build());
+
+    this.mvc.perform(delete("/selections")
+            .header("client", "client")
+            .header("secret", "clientsecret")
+            .header("username", "john@doe.fr")
+            .header("access-token", "aaa")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(Mapper.fromObjectToJsonString(SelectionDTO.from("aaa", "john@doe.fr"))))
             .andExpect(status().isOk());
   }
 }

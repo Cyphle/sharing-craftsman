@@ -1,16 +1,30 @@
 package fr.knowledge.command.api.favorites;
 
 public class SelectionDTO {
+  private String id;
   private String username;
   private String contentType;
-  private String id;
+  private String contentId;
 
   public SelectionDTO() {
   }
 
-  public SelectionDTO(String username, String contentType, String id) {
+  public SelectionDTO(String username, String contentType, String contentId) {
     this.username = username;
     this.contentType = contentType;
+    this.contentId = contentId;
+  }
+
+  public SelectionDTO(String id, String username) {
+    this.id = id;
+    this.username = username;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -30,15 +44,19 @@ public class SelectionDTO {
     this.contentType = contentType;
   }
 
-  public String getId() {
-    return id;
+  public String getContentId() {
+    return contentId;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setContentId(String contentId) {
+    this.contentId = contentId;
   }
 
-  public static SelectionDTO from(String username, String contentType, String id) {
-    return new SelectionDTO(username, contentType, id);
+  public static SelectionDTO from(String username, String contentType, String contentId) {
+    return new SelectionDTO(username, contentType, contentId);
+  }
+
+  public static SelectionDTO from(String id, String username) {
+    return new SelectionDTO(id, username);
   }
 }

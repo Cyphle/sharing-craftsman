@@ -34,4 +34,19 @@ public class SelectionController {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
     return selectionService.addSelection(authorizationInfoDTO, selectionDTO);
   }
+
+  @ApiOperation(value = "Endpoint to remove a selection", response = ResponseEntity.class)
+  @ApiResponses(value = {
+          @ApiResponse(code = 200, message = ""),
+          @ApiResponse(code = 401, message = "Unauthorized")
+  })
+  @RequestMapping(method = RequestMethod.DELETE)
+  public ResponseEntity removeFromMySelection(@RequestHeader("client") String client,
+                                       @RequestHeader("secret") String secret,
+                                       @RequestHeader("username") String username,
+                                       @RequestHeader("access-token") String accessToken,
+                                       @RequestBody SelectionDTO selectionDTO) {
+    AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
+    return selectionService.removeSelection(authorizationInfoDTO, selectionDTO);
+  }
 }
