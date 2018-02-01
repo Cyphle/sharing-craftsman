@@ -25,7 +25,7 @@ public class CategoryController {
           @ApiResponse(code = 200, message = ""),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @RequestMapping(method = RequestMethod.POST, value = "/category")
+  @RequestMapping(method = RequestMethod.POST, value = "/categories")
   public ResponseEntity createCategory(@RequestHeader("client") String client,
                                      @RequestHeader("secret") String secret,
                                      @RequestHeader("username") String username,
@@ -40,7 +40,7 @@ public class CategoryController {
           @ApiResponse(code = 200, message = ""),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @RequestMapping(method = RequestMethod.PUT, value = "/category")
+  @RequestMapping(method = RequestMethod.PUT, value = "/categories")
   public ResponseEntity updateCategory(@RequestHeader("client") String client,
                                        @RequestHeader("secret") String secret,
                                        @RequestHeader("username") String username,
@@ -57,7 +57,7 @@ public class CategoryController {
           @ApiResponse(code = 200, message = ""),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @RequestMapping(method = RequestMethod.DELETE, value = "/category")
+  @RequestMapping(method = RequestMethod.DELETE, value = "/categories")
   public ResponseEntity deleteCategory(@RequestHeader("client") String client,
                                        @RequestHeader("secret") String secret,
                                        @RequestHeader("username") String username,

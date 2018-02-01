@@ -49,7 +49,7 @@ public class CategoryControllerTest {
   public void should_create_new_category() throws Exception {
     given(libraryService.createCategory(new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"), CategoryDTO.from("Architecture"))).willReturn(ResponseEntity.ok().build());
 
-    this.mvc.perform(post("/library/category")
+    this.mvc.perform(post("/library/categories")
             .header("client", "client")
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")
@@ -63,7 +63,7 @@ public class CategoryControllerTest {
   public void should_update_category() throws Exception {
     given(libraryService.updateCategory(new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"), CategoryDTO.from("aaa", "Architecture"))).willReturn(ResponseEntity.ok().build());
 
-    this.mvc.perform(put("/library/category")
+    this.mvc.perform(put("/library/categories")
             .header("client", "client")
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")
@@ -77,7 +77,7 @@ public class CategoryControllerTest {
   public void should_delete_category() throws Exception {
     given(libraryService.deleteCategory(new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"), CategoryDTO.from("aaa"))).willReturn(ResponseEntity.ok().build());
 
-    this.mvc.perform(delete("/library/category")
+    this.mvc.perform(delete("/library/categories")
             .header("client", "client")
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")

@@ -25,7 +25,7 @@ public class KnowledgeController {
           @ApiResponse(code = 200, message = ""),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @RequestMapping(method = RequestMethod.POST, value = "/knowledge")
+  @RequestMapping(method = RequestMethod.POST, value = "/knowledges")
   public ResponseEntity addKnowledge(@RequestHeader("client") String client,
                                        @RequestHeader("secret") String secret,
                                        @RequestHeader("username") String username,
@@ -40,7 +40,7 @@ public class KnowledgeController {
           @ApiResponse(code = 200, message = ""),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @RequestMapping(method = RequestMethod.PUT, value = "/knowledge")
+  @RequestMapping(method = RequestMethod.PUT, value = "/knowledges")
   public ResponseEntity updateKnowledge(@RequestHeader("client") String client,
                                        @RequestHeader("secret") String secret,
                                        @RequestHeader("username") String username,
@@ -55,7 +55,7 @@ public class KnowledgeController {
           @ApiResponse(code = 200, message = ""),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @RequestMapping(method = RequestMethod.DELETE, value = "/knowledge")
+  @RequestMapping(method = RequestMethod.DELETE, value = "/knowledges")
   public ResponseEntity deleteKnowledge(@RequestHeader("client") String client,
                                        @RequestHeader("secret") String secret,
                                        @RequestHeader("username") String username,

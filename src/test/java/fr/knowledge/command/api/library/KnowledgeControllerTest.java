@@ -52,7 +52,7 @@ public class KnowledgeControllerTest {
             KnowledgeDTO.from("aaa", "john@doe.fr", "title", "content"))
     ).willReturn(ResponseEntity.ok().build());
 
-    this.mvc.perform(post("/library/knowledge")
+    this.mvc.perform(post("/library/knowledges")
             .header("client", "client")
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")
@@ -69,7 +69,7 @@ public class KnowledgeControllerTest {
             KnowledgeDTO.from("aaa", "aaa", "john@doe.fr", "title", "content"))
     ).willReturn(ResponseEntity.ok().build());
 
-    this.mvc.perform(put("/library/knowledge")
+    this.mvc.perform(put("/library/knowledges")
             .header("client", "client")
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")
@@ -86,7 +86,7 @@ public class KnowledgeControllerTest {
             KnowledgeDTO.from("aaa", "aaa"))
     ).willReturn(ResponseEntity.ok().build());
 
-    this.mvc.perform(delete("/library/knowledge")
+    this.mvc.perform(delete("/library/knowledges")
             .header("client", "client")
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")
