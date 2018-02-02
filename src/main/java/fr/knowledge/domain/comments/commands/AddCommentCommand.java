@@ -1,8 +1,11 @@
 package fr.knowledge.domain.comments.commands;
 
+import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 
-public class AddCommentCommand {
+import java.util.Objects;
+
+public class AddCommentCommand implements DomainCommand {
   private final String commenter;
   private final ContentType contentType;
   private final String contentId;
@@ -29,5 +32,31 @@ public class AddCommentCommand {
 
   public String getContent() {
     return content;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    AddCommentCommand that = (AddCommentCommand) o;
+    return Objects.equals(commenter, that.commenter) &&
+            contentType == that.contentType &&
+            Objects.equals(contentId, that.contentId) &&
+            Objects.equals(content, that.content);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(commenter, contentType, contentId, content);
+  }
+
+  @Override
+  public String toString() {
+    return "AddCommentCommand{" +
+            "commenter='" + commenter + '\'' +
+            ", contentType=" + contentType +
+            ", contentId='" + contentId + '\'' +
+            ", content='" + content + '\'' +
+            '}';
   }
 }

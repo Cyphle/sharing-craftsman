@@ -50,7 +50,7 @@ public class CommentControllerTest {
   public void should_add_comment_to_category() throws Exception {
     given(commentService.addComment(
             new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
-            CommentDTO.from("commenter", ContentType.CATEGORY.name(), "aaa", "content"))
+            CommentDTO.from("commenter", ContentType.CATEGORY.name(), "aaa", "content"), "john@doe.fr")
     ).willReturn(ResponseEntity.ok().build());
 
     this.mvc.perform(post("/comments")
@@ -67,7 +67,7 @@ public class CommentControllerTest {
   public void should_update_comment() throws Exception {
     given(commentService.addComment(
             new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
-            CommentDTO.from("commenter", ContentType.CATEGORY.name(), "aaa", "content"))
+            CommentDTO.from("commenter", ContentType.CATEGORY.name(), "aaa", "content"), "john@doe.fr")
     ).willReturn(ResponseEntity.ok().build());
 
     this.mvc.perform(put("/comments")

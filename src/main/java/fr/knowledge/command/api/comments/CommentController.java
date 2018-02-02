@@ -32,7 +32,7 @@ public class CommentController {
                                          @RequestHeader("access-token") String accessToken,
                                          @RequestBody CommentDTO commentDTO) {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
-    return commentService.addComment(authorizationInfoDTO, commentDTO);
+    return commentService.addComment(authorizationInfoDTO, commentDTO, "john@doe.fr");
   }
 
   @ApiOperation(value = "Endpoint to update a comment to content", response = ResponseEntity.class)
