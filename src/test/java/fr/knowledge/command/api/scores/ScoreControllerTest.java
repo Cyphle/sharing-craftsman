@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -77,6 +78,23 @@ public class ScoreControllerTest {
             .header("access-token", "aaa")
             .contentType(MediaType.APPLICATION_JSON)
             .content(Mapper.fromObjectToJsonString(ScoreDTO.from("aaa", "john@doe.fr", Mark.TWO.value))))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  public void should_delete_score() throws Exception {
+    given(scoreService.addScore(
+            new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
+            ScoreDTO.from("aaa", "john@doe.fr"), "john@doe.fr")
+    ).willReturn(ResponseEntity.ok().build());
+
+    this.mvc.perform(delete("/scores")
+            .header("client", "client")
+            .header("secret", "clientsecret")
+            .header("username", "john@doe.fr")
+            .header("access-token", "aaa")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(Mapper.fromObjectToJsonString(ScoreDTO.from("aaa", "john@doe.fr"))))
             .andExpect(status().isOk());
   }
 }

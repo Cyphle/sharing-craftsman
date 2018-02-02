@@ -23,6 +23,11 @@ public class ScoreDTO {
     this.mark = mark;
   }
 
+  public ScoreDTO(String id, String giver) {
+    this.id = id;
+    this.giver = giver;
+  }
+
   public String getGiver() {
     return giver;
   }
@@ -45,5 +50,9 @@ public class ScoreDTO {
 
   public static ScoreDTO from(String id, String giver, int mark) {
     return new ScoreDTO(id, giver, mark);
+  }
+
+  public static ScoreDTO from(String id, String giver) {
+    return new ScoreDTO(id, giver);
   }
 }

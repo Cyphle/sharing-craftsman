@@ -13,4 +13,8 @@ public class ScoreService {
   public ResponseEntity updateScore(AuthorizationInfoDTO authorizationInfoDTO, ScoreDTO scoreDTO, String username) {
     return null;
   }
+
+  public ResponseEntity deleteScore(AuthorizationInfoDTO authorizationInfoDTO, ScoreDTO scoreDTO, String username) {
+    return null;
+  }
 }
