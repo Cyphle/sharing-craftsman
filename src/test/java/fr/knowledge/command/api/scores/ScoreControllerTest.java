@@ -1,8 +1,6 @@
 package fr.knowledge.command.api.scores;
 
 import fr.knowledge.KnowledgeLibraryApplication;
-import fr.knowledge.command.api.comments.CommentController;
-import fr.knowledge.command.api.comments.CommentDTO;
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.scores.valueobjects.Mark;
@@ -24,6 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -48,7 +47,7 @@ public class ScoreControllerTest {
   }
 
   @Test
-  public void should_add_comment_to_category() throws Exception {
+  public void should_add_score_to_category() throws Exception {
     given(scoreService.addScore(
             new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
             ScoreDTO.from("john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa", Mark.FOUR.value), "john@doe.fr")
@@ -61,6 +60,23 @@ public class ScoreControllerTest {
             .header("access-token", "aaa")
             .contentType(MediaType.APPLICATION_JSON)
             .content(Mapper.fromObjectToJsonString(ScoreDTO.from("john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa", Mark.FOUR.value))))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  public void should_update_score() throws Exception {
+    given(scoreService.addScore(
+            new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
+            ScoreDTO.from("aaa", "john@doe.fr", Mark.TWO.value), "john@doe.fr")
+    ).willReturn(ResponseEntity.ok().build());
+
+    this.mvc.perform(put("/scores")
+            .header("client", "client")
+            .header("secret", "clientsecret")
+            .header("username", "john@doe.fr")
+            .header("access-token", "aaa")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(Mapper.fromObjectToJsonString(ScoreDTO.from("aaa", "john@doe.fr", Mark.TWO.value))))
             .andExpect(status().isOk());
   }
 }

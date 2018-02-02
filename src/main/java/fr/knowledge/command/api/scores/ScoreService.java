@@ -9,4 +9,8 @@ public class ScoreService {
   public ResponseEntity addScore(AuthorizationInfoDTO authorizationInfoDTO, ScoreDTO scoreDTO, String username) {
     return null;
   }
+
+  public ResponseEntity updateScore(AuthorizationInfoDTO authorizationInfoDTO, ScoreDTO scoreDTO, String username) {
+    return null;
+  }
 }

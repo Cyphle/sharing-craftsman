@@ -34,4 +34,19 @@ public class ScoreController {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
     return scoreService.addScore(authorizationInfoDTO, scoreDTO, "john@doe.fr");
   }
+
+  @ApiOperation(value = "Endpoint to update a score", response = ResponseEntity.class)
+  @ApiResponses(value = {
+          @ApiResponse(code = 200, message = ""),
+          @ApiResponse(code = 401, message = "Unauthorized")
+  })
+  @RequestMapping(method = RequestMethod.PUT)
+  public ResponseEntity updateScore(@RequestHeader("client") String client,
+                                   @RequestHeader("secret") String secret,
+                                   @RequestHeader("username") String username,
+                                   @RequestHeader("access-token") String accessToken,
+                                   @RequestBody ScoreDTO scoreDTO) {
+    AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
+    return scoreService.updateScore(authorizationInfoDTO, scoreDTO, "john@doe.fr");
+  }
 }
