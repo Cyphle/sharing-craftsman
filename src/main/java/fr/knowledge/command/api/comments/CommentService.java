@@ -4,6 +4,7 @@ import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.comments.commands.AddCommentCommand;
+import fr.knowledge.domain.comments.commands.DeleteCommentCommand;
 import fr.knowledge.domain.comments.commands.UpdateCommentCommand;
 import fr.knowledge.domain.comments.exceptions.CommentNotFoundException;
 import fr.knowledge.domain.comments.exceptions.UpdateCommentException;
@@ -55,6 +56,17 @@ public class CommentService {
   }
 
   public ResponseEntity deleteComment(AuthorizationInfoDTO authorizationInfoDTO, CommentDTO commentDTO, String username) {
-    return null;
+    if (!authorizationService.isUserAuthorized(authorizationInfoDTO) || !authorizationService.areUsernameEquals(username, commentDTO.getCommenter()))
+      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+
+    DeleteCommentCommand command = new DeleteCommentCommand(commentDTO.getId(), commentDTO.getCommenter());
+    try {
+      commandBus.send(command);
+    } catch (CommentNotFoundException e) {
+      return new ResponseEntity<>("Not found", HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.ok().build();
   }
 }
