@@ -4,6 +4,9 @@ import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.comments.commands.AddCommentCommand;
+import fr.knowledge.domain.comments.commands.UpdateCommentCommand;
+import fr.knowledge.domain.comments.exceptions.CommentNotFoundException;
+import fr.knowledge.domain.comments.exceptions.UpdateCommentException;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,8 +37,21 @@ public class CommentService {
     return ResponseEntity.ok().build();
   }
 
-  public ResponseEntity updateComment(AuthorizationInfoDTO authorizationInfoDTO, CommentDTO commentDTO) {
-    return null;
+  public ResponseEntity updateComment(AuthorizationInfoDTO authorizationInfoDTO, CommentDTO commentDTO, String username) {
+    if (!authorizationService.isUserAuthorized(authorizationInfoDTO) || !authorizationService.areUsernameEquals(username, commentDTO.getCommenter()))
+      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+
+    UpdateCommentCommand command = new UpdateCommentCommand(commentDTO.getId(), commentDTO.getCommenter(), commentDTO.getContent());
+    try {
+      commandBus.send(command);
+    } catch (CommentNotFoundException e) {
+      return new ResponseEntity<>("Not found", HttpStatus.NOT_FOUND);
+    } catch (UpdateCommentException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.ok().build();
   }
 
   public ResponseEntity deleteComment(AuthorizationInfoDTO authorizationInfoDTO, CommentDTO commentDTO, String username) {

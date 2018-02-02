@@ -47,7 +47,7 @@ public class CommentController {
                                          @RequestHeader("access-token") String accessToken,
                                          @RequestBody CommentDTO commentDTO) {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
-    return commentService.updateComment(authorizationInfoDTO, commentDTO);
+    return commentService.updateComment(authorizationInfoDTO, commentDTO, "john@doe.fr");
   }
 
   @ApiOperation(value = "Endpoint to delete a comment from content", response = ResponseEntity.class)

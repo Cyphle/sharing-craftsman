@@ -5,6 +5,7 @@ import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.api.favorites.SelectionService;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.comments.commands.AddCommentCommand;
+import fr.knowledge.domain.comments.commands.UpdateCommentCommand;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,15 @@ public class CommentServiceTest {
     ResponseEntity response = commentService.addComment(authorizationInfoDTO, CommentDTO.from("john@doe.fr", ContentType.CATEGORY.name(), "aaa", "My comment"), "john@doe.fr");
 
     AddCommentCommand command = new AddCommentCommand("john@doe.fr", ContentType.CATEGORY, "aaa", "My comment");
+    verify(commandBus).send(command);
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+  }
+
+  @Test
+  public void should_update_comment() throws Exception {
+    ResponseEntity response = commentService.updateComment(authorizationInfoDTO, CommentDTO.from("aaa", "john@doe.fr", "My comment"), "john@doe.fr");
+
+    UpdateCommentCommand command = new UpdateCommentCommand("aaa", "john@doe.fr", "My comment");
     verify(commandBus).send(command);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
