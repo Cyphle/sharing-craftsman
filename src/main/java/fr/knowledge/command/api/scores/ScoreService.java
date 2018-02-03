@@ -5,7 +5,9 @@ import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.scores.commands.AddScoreCommand;
+import fr.knowledge.domain.scores.commands.UpdateScoreCommand;
 import fr.knowledge.domain.scores.exceptions.AlreadyGivenScoreException;
+import fr.knowledge.domain.scores.exceptions.ScoreNotFoundException;
 import fr.knowledge.domain.scores.valueobjects.Mark;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,7 @@ public class ScoreService {
     try {
       commandBus.send(command);
     } catch (AlreadyGivenScoreException e) {
-      return new ResponseEntity("Already given score.", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("Already given score.", HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
       return ResponseEntity.badRequest().build();
     }
@@ -37,7 +39,18 @@ public class ScoreService {
   }
 
   public ResponseEntity updateScore(AuthorizationInfoDTO authorizationInfoDTO, ScoreDTO scoreDTO, String username) {
-    return null;
+    if (!authorizationService.isUserAuthorized(authorizationInfoDTO) || !authorizationService.areUsernameEquals(username, scoreDTO.getGiver()))
+      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+
+    UpdateScoreCommand command = new UpdateScoreCommand(scoreDTO.getId(), scoreDTO.getGiver(), Mark.findByValue(scoreDTO.getMark()));
+    try {
+      commandBus.send(command);
+    } catch (ScoreNotFoundException e) {
+      return new ResponseEntity<>("Not found", HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.ok().build();
   }
 
   public ResponseEntity deleteScore(AuthorizationInfoDTO authorizationInfoDTO, ScoreDTO scoreDTO, String username) {

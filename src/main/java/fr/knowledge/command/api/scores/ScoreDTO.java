@@ -28,20 +28,44 @@ public class ScoreDTO {
     this.giver = giver;
   }
 
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
   public String getGiver() {
     return giver;
+  }
+
+  public void setGiver(String giver) {
+    this.giver = giver;
   }
 
   public String getContentType() {
     return contentType;
   }
 
+  public void setContentType(String contentType) {
+    this.contentType = contentType;
+  }
+
   public String getContentId() {
     return contentId;
   }
 
+  public void setContentId(String contentId) {
+    this.contentId = contentId;
+  }
+
   public int getMark() {
     return mark;
+  }
+
+  public void setMark(int mark) {
+    this.mark = mark;
   }
 
   public static ScoreDTO from(String giver, String contentType, String contentId, int mark) {

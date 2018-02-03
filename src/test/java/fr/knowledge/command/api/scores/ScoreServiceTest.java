@@ -5,6 +5,7 @@ import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.scores.commands.AddScoreCommand;
+import fr.knowledge.domain.scores.commands.UpdateScoreCommand;
 import fr.knowledge.domain.scores.valueobjects.Mark;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class ScoreServiceTest {
   private AuthorizationService authorizationService;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(authorizationService.isUserAuthorized(any(AuthorizationInfoDTO.class))).willReturn(true);
     given(authorizationService.areUsernameEquals("john@doe.fr", "john@doe.fr")).willReturn(true);
 
@@ -47,6 +48,15 @@ public class ScoreServiceTest {
     ResponseEntity response = scoreService.addScore(authorizationInfoDTO, ScoreDTO.from("john@doe.fr", ContentType.CATEGORY.name(), "aaa", Mark.FIVE.value), "john@doe.fr");
 
     AddScoreCommand command = new AddScoreCommand("john@doe.fr", ContentType.CATEGORY, "aaa", Mark.FIVE);
+    verify(commandBus).send(command);
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+  }
+
+  @Test
+  public void should_update_score() throws Exception {
+    ResponseEntity response = scoreService.updateScore(authorizationInfoDTO, ScoreDTO.from("aaa", "john@doe.fr", Mark.TWO.value), "john@doe.fr");
+
+    UpdateScoreCommand command = new UpdateScoreCommand("aaa", "john@doe.fr", Mark.TWO);
     verify(commandBus).send(command);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
