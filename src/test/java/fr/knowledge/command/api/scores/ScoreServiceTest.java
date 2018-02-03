@@ -5,6 +5,7 @@ import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.scores.commands.AddScoreCommand;
+import fr.knowledge.domain.scores.commands.DeleteScoreCommand;
 import fr.knowledge.domain.scores.commands.UpdateScoreCommand;
 import fr.knowledge.domain.scores.valueobjects.Mark;
 import org.junit.Before;
@@ -57,6 +58,15 @@ public class ScoreServiceTest {
     ResponseEntity response = scoreService.updateScore(authorizationInfoDTO, ScoreDTO.from("aaa", "john@doe.fr", Mark.TWO.value), "john@doe.fr");
 
     UpdateScoreCommand command = new UpdateScoreCommand("aaa", "john@doe.fr", Mark.TWO);
+    verify(commandBus).send(command);
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+  }
+
+  @Test
+  public void should_delete_score() throws Exception {
+    ResponseEntity response = scoreService.deleteScore(authorizationInfoDTO, ScoreDTO.from("aaa", "john@doe.fr"), "john@doe.fr");
+
+    DeleteScoreCommand command = new DeleteScoreCommand("aaa", "john@doe.fr");
     verify(commandBus).send(command);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
   }

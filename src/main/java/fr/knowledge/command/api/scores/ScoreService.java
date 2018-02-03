@@ -5,6 +5,7 @@ import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.scores.commands.AddScoreCommand;
+import fr.knowledge.domain.scores.commands.DeleteScoreCommand;
 import fr.knowledge.domain.scores.commands.UpdateScoreCommand;
 import fr.knowledge.domain.scores.exceptions.AlreadyGivenScoreException;
 import fr.knowledge.domain.scores.exceptions.ScoreNotFoundException;
@@ -54,6 +55,17 @@ public class ScoreService {
   }
 
   public ResponseEntity deleteScore(AuthorizationInfoDTO authorizationInfoDTO, ScoreDTO scoreDTO, String username) {
-    return null;
+    if (!authorizationService.isUserAuthorized(authorizationInfoDTO) || !authorizationService.areUsernameEquals(username, scoreDTO.getGiver()))
+      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+
+    DeleteScoreCommand command = new DeleteScoreCommand(scoreDTO.getId(), scoreDTO.getGiver());
+    try {
+      commandBus.send(command);
+    } catch (ScoreNotFoundException e) {
+      return new ResponseEntity<>("Not found", HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.ok().build();
   }
 }
