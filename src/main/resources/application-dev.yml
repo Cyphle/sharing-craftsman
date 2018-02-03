@@ -12,11 +12,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL82Dialect
-# Upload
-  http:
-    multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
 
 # Eureka
 server:
@@ -50,3 +45,6 @@ bonecp:
   partitionCount: 2
   acquireIncrement: 5
   statementsCacheSize: 100
+
+cqrs:
+  version: 1

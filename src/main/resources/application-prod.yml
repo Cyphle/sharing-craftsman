@@ -46,3 +46,6 @@ bonecp:
   partitionCount: 2
   acquireIncrement: 5
   statementsCacheSize: 100
+
+cqrs:
+  version: 1
