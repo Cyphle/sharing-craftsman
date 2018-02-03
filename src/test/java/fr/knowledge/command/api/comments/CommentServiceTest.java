@@ -2,7 +2,6 @@ package fr.knowledge.command.api.comments;
 
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.command.api.common.AuthorizationService;
-import fr.knowledge.command.api.favorites.SelectionService;
 import fr.knowledge.command.bus.CommandBus;
 import fr.knowledge.domain.comments.commands.AddCommentCommand;
 import fr.knowledge.domain.comments.commands.DeleteCommentCommand;
