@@ -11,7 +11,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.PostgreSQL82Dialect
 # Upload
   http:
     multipart:
@@ -39,10 +39,10 @@ logging:
   file: /logs/app.log
 
 bonecp:
-  driverClass: com.mysql.jdbc.Driver
-  url: jdbc:mysql://192.168.1.12:3380/sharingcraftsmanknowledgelibrary?useUnicode=yes&characterEncoding=UTF-8
-  username: root
-  password: root
+  driverClass: org.postgresql.Driver
+  url: jdbc:postgresql://192.168.1.12:5432/sharincraftsmanlibrary
+  username: docker
+  password: docker
   idleMaxAgeInMinutes: 240
   idleConnectionTestPeriodInMinutes: 60
   maxConnectionsPerPartition: 10

@@ -1,0 +1,34 @@
+package fr.knowledge.infra.repositories;
+
+import fr.knowledge.KnowledgeLibraryApplication;
+import fr.knowledge.infra.models.EventEntity;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {KnowledgeLibraryApplication.class})
+@DataJpaTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+public class EventStoreTest {
+  @Autowired
+  private TestEntityManager entityManager;
+
+  @Autowired
+  private EventStore eventStore;
+
+  @Test
+  public void should_save_something() throws Exception {
+    EventEntity entity = new EventEntity("test", "hello");
+    eventStore.save(entity);
+
+    assertThat(eventStore.findAll()).containsExactly(entity);
+  }
+}
