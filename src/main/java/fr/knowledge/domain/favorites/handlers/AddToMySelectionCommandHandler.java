@@ -1,5 +1,7 @@
 package fr.knowledge.domain.favorites.handlers;
 
+import fr.knowledge.domain.common.CommandHandler;
+import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.utils.IdGenerator;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
@@ -10,7 +12,7 @@ import fr.knowledge.domain.favorites.ports.SelectionRepository;
 
 import java.util.Optional;
 
-class AddToMySelectionCommandHandler {
+class AddToMySelectionCommandHandler implements CommandHandler {
   private final SelectionRepository selectionRepository;
   private final IdGenerator idGenerator;
 
@@ -19,13 +21,23 @@ class AddToMySelectionCommandHandler {
     this.selectionRepository = selectionRepository;
   }
 
-  public void handle(AddToMySelectionCommand command) throws AlreadyExistingSelectionException {
-    Optional<Selection> selection = selectionRepository.get(Username.from(command.getUsername()), command.getContentType(), Id.of(command.getContentId()));
+  @Override
+  public void handle(DomainCommand command) throws AlreadyExistingSelectionException {
+    Optional<Selection> selection = selectionRepository.get(
+            Username.from(((AddToMySelectionCommand) command).getUsername()),
+            ((AddToMySelectionCommand) command).getContentType(),
+            Id.of(((AddToMySelectionCommand) command).getContentId())
+    );
 
     if (selection.isPresent())
       throw new AlreadyExistingSelectionException();
 
-    Selection newSelection = Selection.newSelection(idGenerator.generate(), command.getUsername(), command.getContentType(), command.getContentId());
+    Selection newSelection = Selection.newSelection(
+            idGenerator.generate(),
+            ((AddToMySelectionCommand) command).getUsername(),
+            ((AddToMySelectionCommand) command).getContentType(),
+            ((AddToMySelectionCommand) command).getContentId()
+    );
     selectionRepository.save(newSelection);
   }
 }

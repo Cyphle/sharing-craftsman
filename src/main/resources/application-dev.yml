@@ -1,0 +1,52 @@
+spring:
+  datasource:
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  cache:
+    type: NONE
+# JPA
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+# Upload
+  http:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+# Eureka
+server:
+  port: 8080
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://127.0.0.1:8099/eureka}
+    fetch-registry: true
+  instance:
+    preferIpAddress: true
+    hostname: 127.0.0.1
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+      hibernate: ERROR
+  file: /logs/app.log
+
+bonecp:
+  driverClass: com.mysql.jdbc.Driver
+  url: jdbc:mysql://192.168.1.12:3380/sharingcraftsmanknowledgelibrary?useUnicode=yes&characterEncoding=UTF-8
+  username: root
+  password: root
+  idleMaxAgeInMinutes: 240
+  idleConnectionTestPeriodInMinutes: 60
+  maxConnectionsPerPartition: 10
+  minConnectionsPerPartition: 1
+  partitionCount: 2
+  acquireIncrement: 5
+  statementsCacheSize: 100

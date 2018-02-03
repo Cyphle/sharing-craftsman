@@ -61,7 +61,7 @@ public class Category {
     apply(event);
   }
 
-  public void deleteKnowledge(Id knowledgeId) {
+  public void deleteKnowledge(Id knowledgeId) throws KnowledgeNotFoundException {
     KnowledgeDeletedEvent event = new KnowledgeDeletedEvent(id, knowledgeId);
     apply(event);
   }
@@ -90,7 +90,12 @@ public class Category {
     saveChanges(event);
   }
 
-  private void apply(KnowledgeDeletedEvent event) {
+  private void apply(KnowledgeDeletedEvent event) throws KnowledgeNotFoundException {
+    Knowledge knowledgeToUpdate = knowledges.get(event.getKnowledgeId());
+
+    if (knowledgeToUpdate == null)
+      throw new KnowledgeNotFoundException();
+
     knowledges.remove(event.getKnowledgeId());
     saveChanges(event);
   }

@@ -1,5 +1,7 @@
 package fr.knowledge.domain.scores.handlers;
 
+import fr.knowledge.domain.common.CommandHandler;
+import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.utils.IdGenerator;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
@@ -10,7 +12,7 @@ import fr.knowledge.domain.scores.ports.ScoreRepository;
 
 import java.util.Optional;
 
-class AddScoreCommandHandler {
+class AddScoreCommandHandler implements CommandHandler {
   private final ScoreRepository scoreRepository;
   private final IdGenerator idGenerator;
 
@@ -19,13 +21,20 @@ class AddScoreCommandHandler {
     this.scoreRepository = scoreRepository;
   }
 
-  public void handle(AddScoreCommand command) throws AlreadyGivenScoreException {
-    Optional<Score> score = scoreRepository.get(Username.from(command.getGiver()), Id.of(command.getContentId()));
+  @Override
+  public void handle(DomainCommand command) throws AlreadyGivenScoreException {
+    Optional<Score> score = scoreRepository.get(Username.from(((AddScoreCommand) command).getGiver()), Id.of(((AddScoreCommand) command).getContentId()));
 
     if (score.isPresent())
       throw new AlreadyGivenScoreException();
 
-    Score newScore = Score.newScore(idGenerator.generate(), command.getGiver(), command.getContentType(), command.getContentId(), command.getMark());
+    Score newScore = Score.newScore(
+            idGenerator.generate(),
+            ((AddScoreCommand) command).getGiver(),
+            ((AddScoreCommand) command).getContentType(),
+            ((AddScoreCommand) command).getContentId(),
+            ((AddScoreCommand) command).getMark()
+    );
     scoreRepository.save(newScore);
   }
 }

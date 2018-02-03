@@ -1,9 +1,12 @@
 package fr.knowledge.domain.scores.commands;
 
+import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.scores.valueobjects.Mark;
 
-public class AddScoreCommand {
+import java.util.Objects;
+
+public class AddScoreCommand implements DomainCommand {
   private final String giver;
   private final ContentType contentType;
   private final String contentId;
@@ -30,5 +33,22 @@ public class AddScoreCommand {
 
   public Mark getMark() {
     return mark;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    AddScoreCommand that = (AddScoreCommand) o;
+    return Objects.equals(giver, that.giver) &&
+            contentType == that.contentType &&
+            Objects.equals(contentId, that.contentId) &&
+            mark == that.mark;
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(giver, contentType, contentId, mark);
   }
 }

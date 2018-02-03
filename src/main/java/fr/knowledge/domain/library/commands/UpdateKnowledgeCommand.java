@@ -1,8 +1,11 @@
 package fr.knowledge.domain.library.commands;
 
+import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.valueobjects.Id;
 
-public class UpdateKnowledgeCommand {
+import java.util.Objects;
+
+public class UpdateKnowledgeCommand implements DomainCommand {
   private final String categoryId;
   private final String knowledgeId;
   private final String creator;
@@ -35,5 +38,23 @@ public class UpdateKnowledgeCommand {
 
   public String getContent() {
     return content;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    UpdateKnowledgeCommand command = (UpdateKnowledgeCommand) o;
+    return Objects.equals(categoryId, command.categoryId) &&
+            Objects.equals(knowledgeId, command.knowledgeId) &&
+            Objects.equals(creator, command.creator) &&
+            Objects.equals(title, command.title) &&
+            Objects.equals(content, command.content);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(categoryId, knowledgeId, creator, title, content);
   }
 }

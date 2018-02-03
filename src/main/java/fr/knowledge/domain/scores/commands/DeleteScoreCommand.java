@@ -1,6 +1,10 @@
 package fr.knowledge.domain.scores.commands;
 
-public class DeleteScoreCommand {
+import fr.knowledge.domain.common.DomainCommand;
+
+import java.util.Objects;
+
+public class DeleteScoreCommand implements DomainCommand {
   private final String id;
   private final String giver;
 
@@ -15,5 +19,20 @@ public class DeleteScoreCommand {
 
   public String getGiver() {
     return giver;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    DeleteScoreCommand that = (DeleteScoreCommand) o;
+    return Objects.equals(id, that.id) &&
+            Objects.equals(giver, that.giver);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(id, giver);
   }
 }

@@ -51,15 +51,10 @@ public class UpdateKnowledgeCommandHandlerTest {
     verify(categoryRepository).save(updatedCategory);
   }
 
-  @Test
+  @Test(expected = KnowledgeNotFoundException.class)
   public void should_throw_exception_if_knowledge_does_not_exists() throws Exception {
     UpdateKnowledgeCommand command = new UpdateKnowledgeCommand("aaa", "bbb", "john@doe.fr", "Architecture hexagonale", "This is not my content.");
 
-    try {
-      updateKnowledgeCommandHandler.handle(command);
-      fail("Should have throw KnowledgeNotFoundException.");
-    } catch (KnowledgeNotFoundException e) {
-      assertThat(e).isNotNull();
-    }
+    updateKnowledgeCommandHandler.handle(command);
   }
 }

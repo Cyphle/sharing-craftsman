@@ -1,5 +1,7 @@
 package fr.knowledge.domain.library.handlers;
 
+import fr.knowledge.domain.common.CommandHandler;
+import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.utils.IdGenerator;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
@@ -10,7 +12,7 @@ import fr.knowledge.domain.library.valueobjects.Name;
 
 import java.util.List;
 
-class CreateCategoryCommandHandler {
+public class CreateCategoryCommandHandler implements CommandHandler {
   private final IdGenerator idGenerator;
   private final CategoryRepository categoryRepository;
 
@@ -19,9 +21,10 @@ class CreateCategoryCommandHandler {
     this.categoryRepository = categoryRepository;
   }
 
-  public void handle(CreateCategoryCommand command) throws AlreadyExistingCategoryException, CreateCategoryException {
-    verifyCategoryDoesNotExists(command);
-    Category newCategory = Category.newCategory(idGenerator.generate(), command.getCategoryName());
+  @Override
+  public void handle(DomainCommand command) throws AlreadyExistingCategoryException, CreateCategoryException {
+    verifyCategoryDoesNotExists((CreateCategoryCommand) command);
+    Category newCategory = Category.newCategory(idGenerator.generate(), ((CreateCategoryCommand) command).getCategoryName());
     categoryRepository.save(newCategory);
   }
 

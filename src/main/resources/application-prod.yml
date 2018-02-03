@@ -1,0 +1,53 @@
+# Spring
+spring:
+  datasource:
+    testWhileIdle: true
+    validationQuery: SELECT 1
+    initialize: false
+  cache:
+    type: NONE
+# JPA
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+# Upload
+  http:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+# Eureka
+server:
+  port: 8080
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:<EUREKA_PATH>}
+  instance:
+    preferIpAddress: true
+
+# Logging
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+      hibernate: ERROR
+  file: ${LOGS_PATH}/user.log
+
+bonecp:
+  driverClass: com.mysql.jdbc.Driver
+  url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?useUnicode=yes&characterEncoding=UTF-8
+  username: ${DATABASE_USER}
+  password: ${DATABASE_PASSWORD}
+  idleMaxAgeInMinutes: 240
+  idleConnectionTestPeriodInMinutes: 60
+  maxConnectionsPerPartition: 10
+  minConnectionsPerPartition: 1
+  partitionCount: 2
+  acquireIncrement: 5
+  statementsCacheSize: 100
