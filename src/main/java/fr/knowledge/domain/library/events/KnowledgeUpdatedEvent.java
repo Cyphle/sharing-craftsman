@@ -6,19 +6,19 @@ import fr.knowledge.domain.library.valueobjects.Knowledge;
 
 public class KnowledgeUpdatedEvent implements DomainEvent {
   private final Id categoryId;
-  private final Knowledge updatedKnowledge;
+  private final Knowledge knowledge;
 
-  public KnowledgeUpdatedEvent(Id categoryId, Knowledge updatedKnowledge) {
+  public KnowledgeUpdatedEvent(Id categoryId, Knowledge knowledge) {
     this.categoryId = categoryId;
-    this.updatedKnowledge = updatedKnowledge;
+    this.knowledge = knowledge;
   }
 
   public Id getKnowledgeId() {
-    return updatedKnowledge.getId();
+    return knowledge.getId();
   }
 
   public Knowledge getKnowledge() {
-    return updatedKnowledge;
+    return knowledge;
   }
 
   @Override
@@ -29,13 +29,13 @@ public class KnowledgeUpdatedEvent implements DomainEvent {
     KnowledgeUpdatedEvent that = (KnowledgeUpdatedEvent) o;
 
     if (categoryId != null ? !categoryId.equals(that.categoryId) : that.categoryId != null) return false;
-    return updatedKnowledge != null ? updatedKnowledge.equals(that.updatedKnowledge) : that.updatedKnowledge == null;
+    return knowledge != null ? knowledge.equals(that.knowledge) : that.knowledge == null;
   }
 
   @Override
   public int hashCode() {
     int result = categoryId != null ? categoryId.hashCode() : 0;
-    result = 31 * result + (updatedKnowledge != null ? updatedKnowledge.hashCode() : 0);
+    result = 31 * result + (knowledge != null ? knowledge.hashCode() : 0);
     return result;
   }
 
@@ -43,7 +43,7 @@ public class KnowledgeUpdatedEvent implements DomainEvent {
   public String toString() {
     return "KnowledgeUpdatedEvent{" +
             "categoryId=" + categoryId +
-            ", updatedKnowledge=" + updatedKnowledge +
+            ", knowledge=" + knowledge +
             '}';
   }
 }
