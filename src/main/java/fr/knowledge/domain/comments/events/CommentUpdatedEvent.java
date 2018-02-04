@@ -13,6 +13,11 @@ public class CommentUpdatedEvent implements DomainEvent {
     this.newContent = newContent;
   }
 
+  @Override
+  public String getAggregateId() {
+    return id.getId();
+  }
+
   public Content getContent() {
     return newContent;
   }

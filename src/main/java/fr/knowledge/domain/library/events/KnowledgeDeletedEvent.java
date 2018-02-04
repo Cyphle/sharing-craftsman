@@ -12,8 +12,17 @@ public class KnowledgeDeletedEvent implements DomainEvent {
     this.knowledgeId = knowledgeId;
   }
 
+  @Override
+  public String getAggregateId() {
+    return categoryId.getId();
+  }
+
   public Id getKnowledgeId() {
     return knowledgeId;
+  }
+
+  public String getKnowledgeIdContent() {
+    return knowledgeId.getId();
   }
 
   @Override

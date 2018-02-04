@@ -1,5 +1,6 @@
 package fr.knowledge.infra.events.library;
 
+import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.events.KnowledgeUpdatedEvent;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
@@ -44,5 +45,15 @@ public class KnowledgeUpdatedInfraEvent {
 
   public KnowledgeUpdatedEvent fromInfraToDomain() {
     return new KnowledgeUpdatedEvent(Id.of(categoryId), Knowledge.of(knowledgeId, creator, title, content));
+  }
+
+  public static KnowledgeUpdatedInfraEvent fromDomainToInfra(DomainEvent domainEvent) {
+    return new KnowledgeUpdatedInfraEvent(
+            domainEvent.getAggregateId(),
+            ((KnowledgeUpdatedEvent) domainEvent).getKnowledgeIdContent(),
+            ((KnowledgeUpdatedEvent) domainEvent).getCreatorContent(),
+            ((KnowledgeUpdatedEvent) domainEvent).getTitleContent(),
+            ((KnowledgeUpdatedEvent) domainEvent).getContentContent()
+    );
   }
 }

@@ -1,13 +1,21 @@
 package fr.knowledge.infra.denormalizers.library;
 
 import fr.knowledge.common.DateConverter;
+import fr.knowledge.common.DateService;
+import fr.knowledge.common.IdGenerator;
+import fr.knowledge.config.EventSourcingConfig;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
+import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
 import fr.knowledge.domain.library.events.KnowledgeAddedEvent;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
+import fr.knowledge.domain.library.valueobjects.Name;
 import fr.knowledge.infra.models.EventEntity;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -15,13 +23,25 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CategoryDenormalizerTest {
   private CategoryDenormalizer categoryDenormalizer;
+  @Mock
+  private IdGenerator idGenerator;
+  @Mock
+  private EventSourcingConfig eventSourcingConfig;
+  @Mock
+  private DateService dateTimeService;
 
   @Before
   public void setUp() throws Exception {
-    categoryDenormalizer = new CategoryDenormalizer();
+    given(idGenerator.generate()).willReturn("eaa");
+    given(eventSourcingConfig.getVersion()).willReturn(1);
+    given(dateTimeService.nowInDate()).willReturn(DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 15, 50, 12)));
+
+    categoryDenormalizer = new CategoryDenormalizer(idGenerator, eventSourcingConfig, dateTimeService);
   }
 
   @Test
@@ -130,5 +150,21 @@ public class CategoryDenormalizerTest {
     category.apply(new KnowledgeAddedEvent(Id.of("aaa"), Knowledge.of("kaa", "john@doe.fr", "My knowledge title", "My super knowledge content updated")));
     category.resetChanges();
     assertThat(denormalizedCategory.get()).isEqualTo(category);
+  }
+
+  @Test
+  public void should_normalize_a_domain_event_to_infra_event() throws Exception {
+    CategoryUpdatedEvent categoryUpdatedEvent = new CategoryUpdatedEvent(Id.of("aaa"), Name.of("SOLID"));
+
+    EventEntity event = categoryDenormalizer.normalize(categoryUpdatedEvent);
+
+    assertThat(event).isEqualTo(new EventEntity(
+            "eaa",
+            1,
+            DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 15, 50, 12)),
+            "aaa",
+            "fr.knowledge.infra.events.library.CategoryUpdatedInfraEvent",
+            "{\"id\":\"aaa\",\"name\":\"SOLID\"}"
+    ));
   }
 }

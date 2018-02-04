@@ -21,6 +21,18 @@ public class Knowledge {
     return id;
   }
 
+  public String getCreatorContent() {
+    return creator.getUsername();
+  }
+
+  public String getTitleContent() {
+    return title.getTitle();
+  }
+
+  public String getContentContent() {
+    return content.getContent();
+  }
+
   public boolean hasEmptyCreator() {
     return creator.isEmpty();
   }

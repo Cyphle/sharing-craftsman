@@ -13,8 +13,17 @@ public class CategoryUpdatedEvent implements DomainEvent {
     this.newName = newName;
   }
 
+  @Override
+  public String getAggregateId() {
+    return id.getId();
+  }
+
   public Name getNewName() {
     return newName;
+  }
+
+  public String getNewNameContent() {
+    return newName.getName();
   }
 
   @Override

@@ -1,5 +1,6 @@
 package fr.knowledge.infra.events.library;
 
+import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
 import fr.knowledge.domain.library.valueobjects.Name;
@@ -35,5 +36,9 @@ public class CategoryUpdatedInfraEvent implements InfraEvent {
 
   public CategoryUpdatedEvent fromInfraToDomain() {
     return new CategoryUpdatedEvent(Id.of(id), Name.of(name));
+  }
+
+  public static CategoryCreatedInfraEvent fromDomainToInfra(DomainEvent domainEvent) {
+    return new CategoryCreatedInfraEvent(domainEvent.getAggregateId(), ((CategoryUpdatedEvent) domainEvent).getNewNameContent());
   }
 }

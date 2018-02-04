@@ -13,6 +13,11 @@ public class ScoreUpdatedEvent implements DomainEvent {
     this.mark = mark;
   }
 
+  @Override
+  public String getAggregateId() {
+    return id.getId();
+  }
+
   public Mark getMark() {
     return mark;
   }

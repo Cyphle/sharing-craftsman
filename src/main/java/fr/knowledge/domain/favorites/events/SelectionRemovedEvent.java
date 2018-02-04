@@ -11,6 +11,11 @@ public class SelectionRemovedEvent implements DomainEvent {
   }
 
   @Override
+  public String getAggregateId() {
+    return id.getId();
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;

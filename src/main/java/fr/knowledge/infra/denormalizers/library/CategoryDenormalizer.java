@@ -1,24 +1,42 @@
 package fr.knowledge.infra.denormalizers.library;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import fr.knowledge.common.DateService;
+import fr.knowledge.common.IdGenerator;
+import fr.knowledge.common.Mapper;
+import fr.knowledge.config.EventSourcingConfig;
+import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.exceptions.CreateCategoryException;
 import fr.knowledge.domain.library.exceptions.KnowledgeNotFoundException;
 import fr.knowledge.infra.events.library.*;
 import fr.knowledge.infra.models.EventEntity;
-import fr.knowledge.common.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class CategoryDenormalizer {
   private final Logger log = LoggerFactory.getLogger(this.getClass());
+  private IdGenerator idGenerator;
+  private EventSourcingConfig eventSourcingConfig;
+  private DateService dateTimeService;
+
+  @Autowired
+  public CategoryDenormalizer(IdGenerator idGenerator, EventSourcingConfig eventSourcingConfig, DateService dateTimeService) {
+    this.idGenerator = idGenerator;
+    this.eventSourcingConfig = eventSourcingConfig;
+    this.dateTimeService = dateTimeService;
+  }
 
   public Optional<Category> denormalize(List<EventEntity> events) {
     if (isCategoryDeleted(events))
@@ -40,6 +58,45 @@ public class CategoryDenormalizer {
     } catch (CreateCategoryException e) {
       log.error("Error while initializing denormalization of category: " + e.getMessage());
       throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
+    }
+  }
+
+  public EventEntity normalize(DomainEvent change) {
+    try {
+      return new EventEntity(
+              idGenerator.generate(),
+              eventSourcingConfig.getVersion(),
+              dateTimeService.nowInDate(),
+              change.getAggregateId(),
+              getInfraEventClass(change.getClass().getName()),
+              convertDomainEventToInfraEvent(change)
+      );
+    } catch (JsonProcessingException e) {
+      log.error("Error while converting to infra event: " + e.getMessage());
+      throw new RuntimeException("Error while converting to infra event: " + e.getMessage());
+    }
+  }
+
+  private String getInfraEventClass(String domainEventClassName) {
+    Pattern pattern = Pattern.compile("events.(.+)Event");
+    Matcher matcher = pattern.matcher(domainEventClassName);
+    return matcher.find() ? "fr.knowledge.infra.events.library." + matcher.group(1) + "InfraEvent" : "";
+  }
+
+  private String convertDomainEventToInfraEvent(DomainEvent domainEvent) throws JsonProcessingException {
+    switch (domainEvent.getClass().getName()) {
+      case "fr.knowledge.domain.library.events.CategoryCreatedEvent":
+        return Mapper.fromObjectToJsonString(CategoryCreatedInfraEvent.fromDomainToInfra(domainEvent));
+      case "fr.knowledge.domain.library.events.CategoryUpdatedEvent":
+        return Mapper.fromObjectToJsonString(CategoryUpdatedInfraEvent.fromDomainToInfra(domainEvent));
+      case "fr.knowledge.domain.library.events.KnowledgeAddedEvent":
+        return Mapper.fromObjectToJsonString(KnowledgeAddedInfraEvent.fromDomainToInfra(domainEvent));
+      case "fr.knowledge.domain.library.events.KnowledgeUpdatedEvent":
+        return Mapper.fromObjectToJsonString(KnowledgeUpdatedInfraEvent.fromDomainToInfra(domainEvent));
+      case "fr.knowledge.domain.library.events.KnowledgeDeletedEvent":
+        return Mapper.fromObjectToJsonString(KnowledgeDeletedInfraEvent.fromDomainToInfra(domainEvent));
+      default:
+        return "";
     }
   }
 
@@ -76,25 +133,4 @@ public class CategoryDenormalizer {
     return events.stream()
             .anyMatch(event -> event.getPayloadType().equals("fr.knowledge.infra.events.library.CategoryDeletedInfraEvent"));
   }
-  /*
-  private void applyEvent(EventEntity event, Category category) throws IOException, KnowledgeNotFoundException {
-    switch (event.getPayloadType()) {
-      case "fr.knowledge.domain.library.events.KnowledgeAddedEvent":
-        KnowledgeAddedEvent knowledgeAddedEvent = Mapper.fromJsonStringToObject(event.getPayload(), KnowledgeAddedEvent.class);
-        if (category.is(knowledgeAddedEvent.aggregateId()))
-          category.apply(knowledgeAddedEvent);
-        break;
-      case "fr.knowledge.domain.library.events.KnowledgeUpdatedEvent":
-        KnowledgeUpdatedEvent knowledgeUpdatedEvent = Mapper.fromJsonStringToObject(event.getPayload(), KnowledgeUpdatedEvent.class);
-        if (category.is(knowledgeUpdatedEvent.aggregateId()))
-          category.apply(knowledgeUpdatedEvent);
-        break;
-      case "fr.knowledge.domain.library.events.KnowledgeDeletedEvent":
-        KnowledgeDeletedEvent knowledgeDeletedEvent = Mapper.fromJsonStringToObject(event.getPayload(), KnowledgeDeletedEvent.class);
-        if (category.is(knowledgeDeletedEvent.aggregateId()))
-          category.apply(knowledgeDeletedEvent);
-        break;
-    }
-  }
-  */
 }

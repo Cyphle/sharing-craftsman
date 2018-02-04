@@ -1,14 +1,17 @@
 package fr.knowledge.infra.adapters.library;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import fr.knowledge.common.DateService;
 import fr.knowledge.common.IdGenerator;
+import fr.knowledge.common.Mapper;
 import fr.knowledge.config.EventSourcingConfig;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.infra.bus.EventBus;
 import fr.knowledge.infra.denormalizers.library.CategoryDenormalizer;
+import fr.knowledge.infra.events.InfraEvent;
 import fr.knowledge.infra.models.EventEntity;
 import fr.knowledge.infra.repositories.EventStore;
 import org.slf4j.Logger;
@@ -30,24 +33,15 @@ public class CategoryAdapter implements CategoryRepository {
   private final EventBus eventBus;
   private final EventStore eventStore;
   private CategoryDenormalizer categoryDenormalizer;
-  private IdGenerator idGenerator;
-  private EventSourcingConfig eventSourcingConfig;
-  private DateService dateTimeService;
 
   @Autowired
   public CategoryAdapter(
           EventBus eventBus,
           EventStore eventStore,
-          CategoryDenormalizer categoryDenormalizer,
-          IdGenerator idGenerator,
-          EventSourcingConfig eventSourcingConfig,
-          DateService dateTimeService) {
+          CategoryDenormalizer categoryDenormalizer) {
     this.eventBus = eventBus;
     this.eventStore = eventStore;
     this.categoryDenormalizer = categoryDenormalizer;
-    this.idGenerator = idGenerator;
-    this.eventSourcingConfig = eventSourcingConfig;
-    this.dateTimeService = dateTimeService;
   }
 
   @Override
@@ -77,26 +71,12 @@ public class CategoryAdapter implements CategoryRepository {
 
   @Override
   public void save(Category category) {
-//    category.getChanges()
-//            .forEach(change -> {
-//              try {
-//                EventEntity event = new EventEntity(
-//                        idGenerator.generate(),
-//                        eventSourcingConfig.getVersion(),
-//                        dateTimeService.nowInDate(),
-//                        change.aggregateId().getId(),
-//                        change.getClass().getName(),
-//                        Mapper.fromObjectToJsonString(change)
-//                );
-//                eventStore.save(event);
-//                // TODO
-//                // eventBus.apply(change);
-//              } catch (JsonProcessingException e) {
-//                log.error("Error while stringifying event: " + e.getMessage());
-//                throw new RuntimeException("Error while stringifying event: " + e.getMessage());
-//              }
-//            });
-    throw new UnsupportedOperationException();
+    category.getChanges()
+            .forEach(change -> {
+              EventEntity event = categoryDenormalizer.normalize(change);
+              eventStore.save(event);
+              eventBus.apply(change);
+            });
   }
 
   @Override

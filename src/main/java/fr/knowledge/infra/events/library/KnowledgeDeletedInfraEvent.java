@@ -1,5 +1,6 @@
 package fr.knowledge.infra.events.library;
 
+import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.events.KnowledgeDeletedEvent;
 
@@ -25,5 +26,9 @@ public class KnowledgeDeletedInfraEvent {
 
   public KnowledgeDeletedEvent fromInfraToDomain() {
     return new KnowledgeDeletedEvent(Id.of(categoryId), Id.of(knowledgeId));
+  }
+
+  public static KnowledgeDeletedInfraEvent fromDomainToInfra(DomainEvent domainEvent) {
+    return new KnowledgeDeletedInfraEvent(domainEvent.getAggregateId(), ((KnowledgeDeletedEvent) domainEvent).getKnowledgeIdContent());
   }
 }

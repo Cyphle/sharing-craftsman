@@ -6,6 +6,8 @@ import fr.knowledge.common.IdGenerator;
 import fr.knowledge.config.EventSourcingConfig;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
+import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
+import fr.knowledge.domain.library.valueobjects.Name;
 import fr.knowledge.infra.adapters.library.CategoryAdapter;
 import fr.knowledge.infra.bus.EventBus;
 import fr.knowledge.infra.denormalizers.library.CategoryDenormalizer;
@@ -25,6 +27,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CategoryAdapterTest {
@@ -68,8 +71,8 @@ public class CategoryAdapterTest {
             DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 16, 50, 12))
     );
 
-    categoryDenormalizer = new CategoryDenormalizer();
-    categoryAdapter = new CategoryAdapter(eventBus, eventStore, categoryDenormalizer, idGenerator, eventSourcingConfig, dateTimeService);
+    categoryDenormalizer = new CategoryDenormalizer(idGenerator, eventSourcingConfig, dateTimeService);
+    categoryAdapter = new CategoryAdapter(eventBus, eventStore, categoryDenormalizer);
   }
 
   @Test
@@ -133,118 +136,6 @@ public class CategoryAdapterTest {
     );
   }
 
-  /*
-  @Before
-  public void setUp() throws Exception {
-
-    given(eventStore.findByAggregateId("bbb")).willReturn(Collections.singletonList(
-            new EventEntity(
-                    "aac",
-                    1,
-                    DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 10, 15, 50, 12)),
-                    "bbb",
-                    "fr.knowledge.domain.library.events.CategoryCreatedEvent",
-                    "{\"id\":{\"id\":\"bbb\"},\"name\":{\"name\":\"Four rules of simple design\"}}"
-            )
-    ));
-    given(eventStore.findByAggregateId("ccc")).willReturn(Arrays.asList(
-            new EventEntity(
-                    "aad",
-                    1,
-                    DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 8, 15, 50, 12)),
-                    "ccc",
-                    "fr.knowledge.domain.library.events.CategoryCreatedEvent",
-                    "{\"id\":{\"id\":\"ccc\"},\"name\":{\"name\":\"Toto\"}}"
-            ),
-            new EventEntity(
-                    "aae",
-                    1,
-                    DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.MARCH, 9, 16, 50, 12)),
-                    "ccc",
-                    "fr.knowledge.domain.library.events.CategoryDeletedEvent",
-                    "{\"id\":{\"id\":\"ccc\"}}"
-            )
-    ));
-    given(idGenerator.generate()).willReturn("aaa", "aab");
-    given(eventSourcingConfig.getVersion()).willReturn(1);
-    given(dateTimeService.nowInDate()).willReturn(
-            DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 15, 50, 12)),
-            DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 16, 50, 12))
-    );
-
-    categoryDenormalizer = new CategoryDenormalizer();
-    categoryAdapter = new CategoryAdapter(eventBus, eventStore, categoryDenormalizer, idGenerator, eventSourcingConfig, dateTimeService);
-  }
-
-  @Test
-  public void should_get_one_category_by_id() throws Exception {
-    Optional<Category> fetchCategory = categoryAdapter.get(Id.of("aaa"));
-
-    Category category = Category.of("aaa", "SOLID");
-    assertThat(fetchCategory.get()).isEqualTo(category);
-  }
-
-  @Test
-  public void should_get_all_categories() throws Exception {
-    given(eventStore.findAll()).willReturn(Arrays.asList(
-            new EventEntity(
-                    "aaa",
-                    1,
-                    DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 15, 50, 12)),
-                    "aaa",
-                    "fr.knowledge.domain.library.events.CategoryCreatedEvent",
-                    "{\"id\":{\"id\":\"aaa\"},\"name\":{\"name\":\"Architecture\"}}"
-            ),
-            new EventEntity(
-                    "aab",
-                    1,
-                    DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 16, 50, 12)),
-                    "aaa",
-                    "fr.knowledge.domain.library.events.CategoryUpdatedEvent",
-                    "{\"id\":{\"id\":\"aaa\"},\"newName\":{\"name\":\"SOLID\"}}"
-            ),
-            new EventEntity(
-                    "aac",
-                    1,
-                    DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 10, 15, 50, 12)),
-                    "bbb",
-                    "fr.knowledge.domain.library.events.CategoryCreatedEvent",
-                    "{\"id\":{\"id\":\"aaa\"},\"name\":{\"name\":\"Four rules of simple design\"}}"
-            ),
-            new EventEntity(
-                    "aad",
-                    1,
-                    DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 8, 15, 50, 12)),
-                    "ccc",
-                    "fr.knowledge.domain.library.events.CategoryCreatedEvent",
-                    "{\"id\":{\"id\":\"aaa\"},\"name\":{\"name\":\"Toto\"}}"
-            ),
-            new EventEntity(
-                    "aae",
-                    1,
-                    DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.MARCH, 9, 16, 50, 12)),
-                    "ccc",
-                    "fr.knowledge.domain.library.events.CategoryDeletedEvent",
-                    "{\"id\":{\"id\":\"ccc\"}}"
-            ),
-            new EventEntity(
-                    "aaf",
-                    1,
-                    DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.MARCH, 9, 16, 50, 12)),
-                    "aaa",
-                    "fr.knowledge.domain.library.events.KnowledgeAddedEvent",
-                    "{\"id\":{\"id\":\"ccc\"}}"
-            )
-    ));
-
-    List<Category> fetchCategories = categoryAdapter.getAll();
-
-    assertThat(fetchCategories).containsExactly(
-            Category.of("aaa", "SOLID"),
-            Category.of("bbb", "Four rules of simple design")
-    );
-  }
-
   @Test
   public void should_save_category_changes() throws Exception {
     Category category = Category.newCategory("aaa", "Architecture");
@@ -257,17 +148,16 @@ public class CategoryAdapterTest {
             1,
             DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 15, 50, 12)),
             "aaa",
-            "fr.knowledge.domain.library.events.CategoryCreatedEvent",
-            "{\"id\":{\"id\":\"aaa\"},\"name\":{\"name\":\"Architecture\"}}"
+            "fr.knowledge.infra.events.library.CategoryCreatedInfraEvent",
+            "{\"id\":\"aaa\",\"name\":\"Architecture\"}"
     ));
     verify(eventStore).save(new EventEntity(
             "aab",
             1,
             DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 16, 50, 12)),
             "aaa",
-            "fr.knowledge.domain.library.events.CategoryUpdatedEvent",
-            "{\"id\":{\"id\":\"aaa\"},\"newName\":{\"name\":\"SOLID\"}}"
+            "fr.knowledge.infra.events.library.CategoryUpdatedInfraEvent",
+            "{\"id\":\"aaa\",\"name\":\"SOLID\"}"
     ));
   }
-  */
 }

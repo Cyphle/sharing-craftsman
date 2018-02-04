@@ -13,12 +13,33 @@ public class KnowledgeAddedEvent implements DomainEvent {
     this.knowledge = knowledge;
   }
 
+  @Override
+  public String getAggregateId() {
+    return categoryId.getId();
+  }
+
   public Knowledge getKnowledge() {
     return knowledge;
   }
 
   public Id getKnowledgeId() {
     return knowledge.getId();
+  }
+
+  public String getKnowledgeIdContent() {
+    return getKnowledgeId().getId();
+  }
+
+  public String getCreatorContent() {
+    return knowledge.getCreatorContent();
+  }
+
+  public String getTitleContent() {
+    return knowledge.getTitleContent();
+  }
+
+  public String getContentContent() {
+    return knowledge.getContentContent();
   }
 
   @Override

@@ -13,12 +13,21 @@ public class CategoryCreatedEvent implements DomainEvent {
     this.name = name;
   }
 
+  @Override
+  public String getAggregateId() {
+    return id.getId();
+  }
+
   public Id getId() {
     return id;
   }
 
   public Name getName() {
     return name;
+  }
+
+  public String getNameContent() {
+    return name.getName();
   }
 
   @Override

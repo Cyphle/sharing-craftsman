@@ -110,6 +110,10 @@ public class Category {
     saveChanges(event);
   }
 
+  public List<DomainEvent> getChanges() {
+    return changes;
+  }
+
   public void saveChanges(DomainEvent event) {
     changes.add(event);
   }

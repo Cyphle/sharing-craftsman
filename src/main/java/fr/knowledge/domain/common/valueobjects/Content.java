@@ -7,6 +7,10 @@ public class Content {
     this.content = content;
   }
 
+  public String getContent() {
+    return content;
+  }
+
   public boolean isEmpty() {
     return content.isEmpty();
   }
