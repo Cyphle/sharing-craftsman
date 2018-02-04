@@ -1,9 +1,10 @@
 package fr.knowledge.infra.denormalizers.library;
 
+import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.exceptions.CreateCategoryException;
-import fr.knowledge.infra.events.library.CategoryCreatedInfraEvent;
-import fr.knowledge.infra.events.library.CategoryUpdatedInfraEvent;
+import fr.knowledge.domain.library.exceptions.KnowledgeNotFoundException;
+import fr.knowledge.infra.events.library.*;
 import fr.knowledge.infra.models.EventEntity;
 import fr.knowledge.utils.Mapper;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class CategoryDenormalizer {
       events.forEach(event -> {
         try {
           applyEvent(event, category);
-        } catch (IOException e) {
+        } catch (IOException | KnowledgeNotFoundException e) {
           log.error("Error while parsing event payload: " + e.getClass().getName() + ", " + e.getMessage());
           throw new RuntimeException("Error while parsing event payload: " + e.getClass().getName() + ", " + e.getMessage());
         }
@@ -42,7 +43,7 @@ public class CategoryDenormalizer {
     }
   }
 
-  private void applyEvent(EventEntity event, Category category) throws IOException {
+  private void applyEvent(EventEntity event, Category category) throws IOException, KnowledgeNotFoundException {
     switch (event.getPayloadType()) {
       case "fr.knowledge.infra.events.library.CategoryCreatedInfraEvent":
         CategoryCreatedInfraEvent categoryCreatedInfraEvent = Mapper.fromJsonStringToObject(event.getPayload(), CategoryCreatedInfraEvent.class);
@@ -50,7 +51,23 @@ public class CategoryDenormalizer {
         break;
       case "fr.knowledge.infra.events.library.CategoryUpdatedInfraEvent":
         CategoryUpdatedInfraEvent categoryUpdatedInfraEvent = Mapper.fromJsonStringToObject(event.getPayload(), CategoryUpdatedInfraEvent.class);
-        category.apply(categoryUpdatedInfraEvent.fromInfraToDomain());
+        if (category.is(Id.of(categoryUpdatedInfraEvent.getId())))
+          category.apply(categoryUpdatedInfraEvent.fromInfraToDomain());
+        break;
+      case "fr.knowledge.infra.events.library.KnowledgeAddedInfraEvent":
+        KnowledgeAddedInfraEvent knowledgeAddedInfraEvent = Mapper.fromJsonStringToObject(event.getPayload(), KnowledgeAddedInfraEvent.class);
+        if (category.is(Id.of(knowledgeAddedInfraEvent.getCategoryId())))
+          category.apply(knowledgeAddedInfraEvent.fromInfraToDomain());
+        break;
+      case "fr.knowledge.infra.events.library.KnowledgeUpdatedInfraEvent":
+        KnowledgeUpdatedInfraEvent knowledgeUpdatedInfraEvent = Mapper.fromJsonStringToObject(event.getPayload(), KnowledgeUpdatedInfraEvent.class);
+        if (category.is(Id.of(knowledgeUpdatedInfraEvent.getCategoryId())))
+          category.apply(knowledgeUpdatedInfraEvent.fromInfraToDomain());
+        break;
+      case "fr.knowledge.infra.events.library.KnowledgeDeletedInfraEvent":
+        KnowledgeDeletedInfraEvent knowledgeDeletedInfraEvent = Mapper.fromJsonStringToObject(event.getPayload(), KnowledgeDeletedInfraEvent.class);
+        if (category.is(Id.of(knowledgeDeletedInfraEvent.getCategoryId())))
+          category.apply(knowledgeDeletedInfraEvent.fromInfraToDomain());
         break;
     }
   }
@@ -62,16 +79,6 @@ public class CategoryDenormalizer {
   /*
   private void applyEvent(EventEntity event, Category category) throws IOException, KnowledgeNotFoundException {
     switch (event.getPayloadType()) {
-      case "fr.knowledge.domain.library.events.CategoryCreatedEvent":
-        CategoryCreatedEvent categoryCreatedEvent = Mapper.fromJsonStringToObject(event.getPayload(), CategoryCreatedEvent.class);
-        category.setId(categoryCreatedEvent.getId());
-        category.setName(categoryCreatedEvent.getName());
-        break;
-      case "fr.knowledge.domain.library.events.CategoryUpdatedEvent":
-        CategoryUpdatedEvent categoryUpdatedEvent = Mapper.fromJsonStringToObject(event.getPayload(), CategoryUpdatedEvent.class);
-        if (category.is(categoryUpdatedEvent.getId()))
-          category.apply(categoryUpdatedEvent);
-        break;
       case "fr.knowledge.domain.library.events.KnowledgeAddedEvent":
         KnowledgeAddedEvent knowledgeAddedEvent = Mapper.fromJsonStringToObject(event.getPayload(), KnowledgeAddedEvent.class);
         if (category.is(knowledgeAddedEvent.aggregateId()))

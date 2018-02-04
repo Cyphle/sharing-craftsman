@@ -38,6 +38,10 @@ public class Category {
     return name;
   }
 
+  public boolean is(Id id) {
+    return this.id.equals(id);
+  }
+
   public void update(Name newName) throws UpdateCategoryException {
     verifyCategory(newName);
     CategoryUpdatedEvent event = new CategoryUpdatedEvent(id, newName);

@@ -1,11 +1,11 @@
 package fr.knowledge.infra.denormalizers.library;
 
 import fr.knowledge.common.DateConverter;
+import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
-import fr.knowledge.infra.events.library.CategoryDeletedInfraEvent;
-import fr.knowledge.infra.events.library.CategoryUpdatedInfraEvent;
+import fr.knowledge.domain.library.events.KnowledgeAddedEvent;
+import fr.knowledge.domain.library.valueobjects.Knowledge;
 import fr.knowledge.infra.models.EventEntity;
-import fr.knowledge.utils.Mapper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -81,9 +81,6 @@ public class CategoryDenormalizerTest {
     assertThat(denormalizedCategory.isPresent()).isFalse();
   }
 
-  /*
-
-
   @Test
   public void should_rebuild_category_with_its_knowledge() throws Exception {
     EventEntity creationEvent = new EventEntity(
@@ -91,48 +88,47 @@ public class CategoryDenormalizerTest {
             1,
             DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 15, 50, 12)),
             "aaa",
-            "fr.knowledge.domain.library.events.CategoryCreatedEvent",
-            "{\"id\":{\"id\":\"aaa\"},\"name\":{\"name\":\"Architecture\"}}"
+            "fr.knowledge.infra.events.library.CategoryCreatedInfraEvent",
+            "{\"id\":\"aaa\",\"name\":\"Architecture\"}"
     );
     EventEntity addKnowledgeEvent = new EventEntity(
             "aab",
             1,
             DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 4, 16, 50, 12)),
             "aaa",
-            "fr.knowledge.domain.library.events.KnowledgeAddedEvent",
-            "{\"categoryId\":{\"id\":\"aaa\"},\"knowledge\":{\"id\":{\"id\":\"kaa\"},\"creator\":{\"username\":\"john@doe.fr\"},\"title\":{\"title\":\"My knowledge\"},\"content\":{\"content\":\"This is my content\"}}}"
+            "fr.knowledge.infra.events.library.KnowledgeAddedInfraEvent",
+            "{\"categoryId\":\"aaa\",\"knowledgeId\":\"kaa\",\"creator\":\"john@doe.fr\",\"title\":\"My knowledge title\",\"content\":\"My super knowledge content\"}"
     );
     EventEntity updateKnowledgeEvent = new EventEntity(
             "aab",
             1,
             DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 5, 16, 50, 12)),
             "aaa",
-            "fr.knowledge.domain.library.events.KnowledgeUpdatedEvent",
-            "{\"categoryId\":{\"id\":\"aaa\"},\"knowledge\":{\"id\":{\"id\":\"kaa\"},\"creator\":{\"username\":\"john@doe.fr\"},\"title\":{\"title\":\"My knowledge\"},\"content\":{\"content\":\"This is my modified content\"}}}"
+            "fr.knowledge.infra.events.library.KnowledgeUpdatedInfraEvent",
+            "{\"categoryId\":\"aaa\",\"knowledgeId\":\"kaa\",\"creator\":\"john@doe.fr\",\"title\":\"My knowledge title\",\"content\":\"My super knowledge content updated\"}"
     );
     EventEntity secondAddKnowledgeEvent = new EventEntity(
             "aab",
             1,
             DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 17, 50, 12)),
             "aaa",
-            "fr.knowledge.domain.library.events.KnowledgeAddedEvent",
-            "{\"categoryId\":{\"id\":\"aaa\"},\"knowledge\":{\"id\":{\"id\":\"kbb\"},\"creator\":{\"username\":\"john@doe.fr\"},\"title\":{\"title\":\"My knowledge\"},\"content\":{\"content\":\"This is my second content\"}}}"
+            "fr.knowledge.infra.events.library.KnowledgeAddedInfraEvent",
+            "{\"categoryId\":\"aaa\",\"knowledgeId\":\"kbb\",\"creator\":\"john@doe.fr\",\"title\":\"My knowledge\",\"content\":\"This is my second content\"}"
     );
     EventEntity deleteSecondKnowledgeEvent = new EventEntity(
             "aab",
             1,
             DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 7, 16, 50, 12)),
             "aaa",
-            "fr.knowledge.domain.library.events.KnowledgeDeletedEvent",
-            "{\"categoryId\":{\"id\":\"aaa\"},\"knowledgeId\":{\"id\":\"kbb\"}}"
+            "fr.knowledge.infra.events.library.KnowledgeDeletedInfraEvent",
+            "{\"categoryId\":\"aaa\",\"knowledgeId\":\"kbb\"}"
     );
 
     Optional<Category> denormalizedCategory = categoryDenormalizer.denormalize(Arrays.asList(creationEvent, addKnowledgeEvent, updateKnowledgeEvent, secondAddKnowledgeEvent, deleteSecondKnowledgeEvent));
 
     Category category = Category.of("aaa", "Architecture");
-    category.apply(new KnowledgeAddedEvent(Id.of("aaa"), Knowledge.of("kaa", "john@doe.fr", "My knowledge", "This is my modified content")));
+    category.apply(new KnowledgeAddedEvent(Id.of("aaa"), Knowledge.of("kaa", "john@doe.fr", "My knowledge title", "My super knowledge content updated")));
     category.resetChanges();
     assertThat(denormalizedCategory.get()).isEqualTo(category);
   }
-  */
 }
