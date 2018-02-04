@@ -1,0 +1,16 @@
+package fr.knowledge.infra.events.library;
+
+public class CategoryDeletedInfraEvent {
+  private String id;
+
+  public CategoryDeletedInfraEvent() {
+  }
+
+  public CategoryDeletedInfraEvent(String id) {
+    this.id = id;
+  }
+
+  public String getId() {
+    return id;
+  }
+}

@@ -1,10 +1,7 @@
 package fr.knowledge.infra.denormalizers.library;
 
 import fr.knowledge.domain.library.aggregates.Category;
-import fr.knowledge.domain.library.events.CategoryCreatedEvent;
-import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
 import fr.knowledge.domain.library.exceptions.CreateCategoryException;
-import fr.knowledge.domain.library.exceptions.KnowledgeNotFoundException;
 import fr.knowledge.infra.events.library.CategoryCreatedInfraEvent;
 import fr.knowledge.infra.events.library.CategoryUpdatedInfraEvent;
 import fr.knowledge.infra.models.EventEntity;
@@ -23,8 +20,8 @@ public class CategoryDenormalizer {
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
   public Optional<Category> denormalize(List<EventEntity> events) {
-//    if (isCategoryDeleted(events))
-//      return Optional.empty();
+    if (isCategoryDeleted(events))
+      return Optional.empty();
 
     events.sort(Comparator.comparing(EventEntity::getTimestamp));
     try {
@@ -57,30 +54,12 @@ public class CategoryDenormalizer {
         break;
     }
   }
-  /*
-  public Optional<Category> denormalize(List<EventEntity> events) {
-    if (isCategoryDeleted(events))
-      return Optional.empty();
-
-    events.sort(Comparator.comparing(EventEntity::getTimestamp));
-    Category category = Category.emptyCategory();
-    events.forEach(event -> {
-      try {
-        applyEvent(event, category);
-      } catch (IOException | KnowledgeNotFoundException e) {
-        log.error("Error while parsing event payload: " + e.getClass().getName() + ", " + e.getMessage());
-        throw new RuntimeException("Error while parsing event payload: " + e.getClass().getName() + ", " + e.getMessage());
-      }
-    });
-    category.resetChanges();
-    return Optional.of(category);
-  }
 
   private boolean isCategoryDeleted(List<EventEntity> events) {
     return events.stream()
-            .anyMatch(event -> event.getPayloadType().equals("fr.knowledge.domain.library.events.CategoryDeletedEvent"));
+            .anyMatch(event -> event.getPayloadType().equals("fr.knowledge.infra.events.library.CategoryDeletedInfraEvent"));
   }
-
+  /*
   private void applyEvent(EventEntity event, Category category) throws IOException, KnowledgeNotFoundException {
     switch (event.getPayloadType()) {
       case "fr.knowledge.domain.library.events.CategoryCreatedEvent":
