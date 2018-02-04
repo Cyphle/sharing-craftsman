@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Category {
-  private final Id id;
+  private Id id;
   private Name name;
   private final Map<Id, Knowledge> knowledges;
-  private final List<DomainEvent> changes;
+  private List<DomainEvent> changes;
 
   private Category(Id id, Name name) {
     this.id = id;
@@ -66,7 +66,18 @@ public class Category {
     apply(event);
   }
 
-  private void apply(CategoryDeletedEvent event) {
+  public void apply(CategoryDeletedEvent event) {
+    saveChanges(event);
+  }
+
+  public void apply(CategoryCreatedEvent categoryCreatedEvent) {
+    id = categoryCreatedEvent.getId();
+    name = categoryCreatedEvent.getName();
+    saveChanges(categoryCreatedEvent);
+  }
+
+  public void apply(CategoryUpdatedEvent event) {
+    name = event.getNewName();
     saveChanges(event);
   }
 
@@ -75,12 +86,7 @@ public class Category {
     saveChanges(event);
   }
 
-  private void apply(CategoryUpdatedEvent event) {
-    name = event.getNewName();
-    saveChanges(event);
-  }
-
-  private void apply(KnowledgeUpdatedEvent event) throws KnowledgeNotFoundException {
+  public void apply(KnowledgeUpdatedEvent event) throws KnowledgeNotFoundException {
     Knowledge knowledgeToUpdate = knowledges.get(event.getKnowledgeId());
 
     if (knowledgeToUpdate == null)
@@ -90,7 +96,7 @@ public class Category {
     saveChanges(event);
   }
 
-  private void apply(KnowledgeDeletedEvent event) throws KnowledgeNotFoundException {
+  public void apply(KnowledgeDeletedEvent event) throws KnowledgeNotFoundException {
     Knowledge knowledgeToUpdate = knowledges.get(event.getKnowledgeId());
 
     if (knowledgeToUpdate == null)
@@ -102,6 +108,10 @@ public class Category {
 
   public void saveChanges(DomainEvent event) {
     changes.add(event);
+  }
+
+  public void resetChanges() {
+    changes = new ArrayList<>();
   }
 
   private void verifyKnowledge(Knowledge knowledge) throws AddKnowledgeException {
