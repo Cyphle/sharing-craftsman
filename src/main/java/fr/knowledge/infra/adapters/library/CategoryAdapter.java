@@ -1,5 +1,6 @@
 package fr.knowledge.infra.adapters.library;
 
+import com.google.common.collect.Lists;
 import fr.knowledge.common.DateService;
 import fr.knowledge.common.IdGenerator;
 import fr.knowledge.config.EventSourcingConfig;
@@ -15,10 +16,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryAdapter implements CategoryRepository {
@@ -48,22 +52,27 @@ public class CategoryAdapter implements CategoryRepository {
 
   @Override
   public List<Category> getAll() {
-//    List<EventEntity> events = Lists.newArrayList(eventStore.findAll())
-//            .stream()
-//            .filter(this::isACategoryEvent)
-//            .collect(Collectors.toList());
-//
-//    // Extract list of ids
-//    Set<Id> ids = events.stream()
-//            .map(event -> Id.of(event.getAggregateId()))
-//            .collect(Collectors.toSet());
-//
-//    // For each id, get list of events and rebuild category
-//    List<Category> categories = new ArrayList<>();
-//    ids.forEach(id -> get(id).ifPresent(categories::add));
-//
-//    return categories;
-    throw new UnsupportedOperationException();
+    List<EventEntity> events = Lists.newArrayList(eventStore.findAll())
+            .stream()
+            .filter(this::isACategoryEvent)
+            .collect(Collectors.toList());
+
+    // Extract list of ids
+    Set<Id> ids = events.stream()
+            .map(event -> Id.of(event.getAggregateId()))
+            .collect(Collectors.toSet());
+
+    // For each id, get list of events and rebuild category
+    List<Category> categories = new ArrayList<>();
+    ids.forEach(id -> {
+      List<EventEntity> eventsOfCurrentAggregate = events
+              .stream()
+              .filter(event -> id.equals(Id.of(event.getAggregateId())))
+              .collect(Collectors.toList());
+      categoryDenormalizer.denormalize(eventsOfCurrentAggregate).ifPresent(categories::add);
+    });
+
+    return categories;
   }
 
   @Override
@@ -97,7 +106,7 @@ public class CategoryAdapter implements CategoryRepository {
   }
 
   private boolean isACategoryEvent(EventEntity event) {
-    Pattern pattern = Pattern.compile("events\\.+?(Category|Knowledge).+Event");
+    Pattern pattern = Pattern.compile("events.library.(Category|Knowledge).+Event");
     Matcher matcher = pattern.matcher(event.getPayloadType());
     return matcher.find();
   }

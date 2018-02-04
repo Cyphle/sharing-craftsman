@@ -20,6 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,27 +80,63 @@ public class CategoryAdapterTest {
     assertThat(fetchCategory.get()).isEqualTo(category);
   }
 
-  /*
-  @Before
-  public void setUp() throws Exception {
-    given(eventStore.findByAggregateId("aaa")).willReturn(Arrays.asList(
+  @Test
+  public void should_get_all_categories() {
+    given(eventStore.findAll()).willReturn(Arrays.asList(
             new EventEntity(
                     "aaa",
                     1,
                     DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 15, 50, 12)),
                     "aaa",
-                    "fr.knowledge.domain.library.events.CategoryCreatedEvent",
-                    "{\"id\":{\"id\":\"aaa\"},\"name\":{\"name\":\"Architecture\"}}"
+                    "fr.knowledge.infra.events.library.CategoryCreatedInfraEvent",
+                    "{\"id\":\"aaa\",\"name\":\"Architecture\"}"
             ),
             new EventEntity(
                     "aab",
                     1,
                     DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 16, 50, 12)),
                     "aaa",
-                    "fr.knowledge.domain.library.events.CategoryUpdatedEvent",
-                    "{\"id\":{\"id\":\"aaa\"},\"newName\":{\"name\":\"SOLID\"}}"
+                    "fr.knowledge.infra.events.library.CategoryUpdatedInfraEvent",
+                    "{\"id\":\"aaa\",\"name\":\"SOLID\"}"
+            ),
+            new EventEntity(
+                    "aac",
+                    1,
+                    DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 10, 15, 50, 12)),
+                    "bbb",
+                    "fr.knowledge.infra.events.library.CategoryCreatedInfraEvent",
+                    "{\"id\":\"bbb\",\"name\":\"Four rules of simple design\"}"
+            ),
+            new EventEntity(
+                    "aad",
+                    1,
+                    DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 8, 15, 50, 12)),
+                    "ccc",
+                    "fr.knowledge.infra.events.library.CategoryCreatedInfraEvent",
+                    "{\"id\":\"ccc\",\"name\":\"Toto\"}"
+            ),
+            new EventEntity(
+                    "aae",
+                    1,
+                    DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.MARCH, 9, 16, 50, 12)),
+                    "ccc",
+                    "fr.knowledge.infra.events.library.CategoryDeletedInfraEvent",
+                    "{\"id\":\"ccc\"}"
             )
     ));
+
+    List<Category> fetchCategories = categoryAdapter.getAll();
+
+    assertThat(fetchCategories).containsExactly(
+            Category.of("aaa", "SOLID"),
+            Category.of("bbb", "Four rules of simple design")
+    );
+  }
+
+  /*
+  @Before
+  public void setUp() throws Exception {
+
     given(eventStore.findByAggregateId("bbb")).willReturn(Collections.singletonList(
             new EventEntity(
                     "aac",

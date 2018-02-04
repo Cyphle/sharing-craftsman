@@ -21,7 +21,7 @@ public class EventEntity {
   @Column(name = "timestamp")
   private Date timestamp;
   @Column(name = "aggreggate_id")
-  private String aggreggateId;
+  private String aggregateId;
   @Column(name = "payload_type")
   private String payloadType;
   @Column(name = "payload")
@@ -30,11 +30,11 @@ public class EventEntity {
   public EventEntity() {
   }
 
-  public EventEntity(String eventId, int eventVersion, Date timestamp, String aggreggateId, String payloadType, String payload) {
+  public EventEntity(String eventId, int eventVersion, Date timestamp, String aggregateId, String payloadType, String payload) {
     this.eventId = eventId;
     this.eventVersion = eventVersion;
     this.timestamp = timestamp;
-    this.aggreggateId = aggreggateId;
+    this.aggregateId = aggregateId;
     this.payloadType = payloadType;
     this.payload = payload;
   }
@@ -71,12 +71,12 @@ public class EventEntity {
     this.timestamp = timestamp;
   }
 
-  public String getAggreggateId() {
-    return aggreggateId;
+  public String getAggregateId() {
+    return aggregateId;
   }
 
-  public void setAggreggateId(String aggreggateId) {
-    this.aggreggateId = aggreggateId;
+  public void setAggregateId(String aggregateId) {
+    this.aggregateId = aggregateId;
   }
 
   public String getPayloadType() {
