@@ -2,7 +2,7 @@ package fr.knowledge.domain.scores.handlers;
 
 import fr.knowledge.domain.common.CommandHandler;
 import fr.knowledge.domain.common.DomainCommand;
-import fr.knowledge.domain.common.utils.IdGenerator;
+import fr.knowledge.common.IdGenerator;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.domain.scores.aggregates.Score;

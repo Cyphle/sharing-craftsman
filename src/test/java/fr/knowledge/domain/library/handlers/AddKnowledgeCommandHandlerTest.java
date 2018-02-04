@@ -1,6 +1,6 @@
 package fr.knowledge.domain.library.handlers;
 
-import fr.knowledge.domain.common.utils.IdGenerator;
+import fr.knowledge.common.IdGenerator;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.AddKnowledgeCommand;

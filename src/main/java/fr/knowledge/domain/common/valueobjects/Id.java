@@ -7,6 +7,10 @@ public class Id {
     this.id = id;
   }
 
+  public String getId() {
+    return id;
+  }
+
   public static Id of(String id) {
     return new Id(id);
   }

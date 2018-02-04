@@ -1,4 +1,4 @@
-package fr.knowledge.domain.common.utils;
+package fr.knowledge.common;
 
 public interface IdGenerator {
   String generate();

@@ -1,7 +1,7 @@
 package fr.knowledge.command.bus;
 
 import fr.knowledge.domain.common.CommandHandler;
-import fr.knowledge.domain.common.utils.IdGenerator;
+import fr.knowledge.common.IdGenerator;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
 import fr.knowledge.domain.library.commands.DeleteCategoryCommand;
 import fr.knowledge.domain.library.commands.UpdateCategoryCommand;

@@ -6,7 +6,7 @@ import fr.knowledge.domain.library.exceptions.CreateCategoryException;
 import fr.knowledge.domain.library.exceptions.KnowledgeNotFoundException;
 import fr.knowledge.infra.events.library.*;
 import fr.knowledge.infra.models.EventEntity;
-import fr.knowledge.utils.Mapper;
+import fr.knowledge.common.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

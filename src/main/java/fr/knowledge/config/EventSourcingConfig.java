@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class EventSourcingConfig {
   @Value("${cqrs.version}")
-  private String version;
+  private int version;
 
-  public String getVersion() {
+  public int getVersion() {
     return version;
   }
 }

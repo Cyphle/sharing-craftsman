@@ -4,7 +4,7 @@ import fr.knowledge.domain.comments.aggregates.Comment;
 import fr.knowledge.domain.comments.commands.AddCommentCommand;
 import fr.knowledge.domain.comments.events.CommentAddedEvent;
 import fr.knowledge.domain.comments.ports.CommentRepository;
-import fr.knowledge.domain.common.utils.IdGenerator;
+import fr.knowledge.common.IdGenerator;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
