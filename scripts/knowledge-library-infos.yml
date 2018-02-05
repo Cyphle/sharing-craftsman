@@ -19,3 +19,7 @@ library:
     network: scnetwork
   eureka:
     path: http://172.18.0.2:8099/eureka
+  elastic:
+    host: 192.168.1.12
+    port: 9200
+    index: library

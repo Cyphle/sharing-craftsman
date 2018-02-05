@@ -34,6 +34,7 @@ logging:
       hibernate: ERROR
   file: ${LOGS_PATH}/knowledge-library.log
 
+# DB Pool
 bonecp:
   driverClass: org.postgresql.Driver
   url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
@@ -47,5 +48,13 @@ bonecp:
   acquireIncrement: 5
   statementsCacheSize: 100
 
+# CQRS Event sourcing
 cqrs:
   version: 1
+
+# ElasticSearch
+jest:
+  elasticsearch:
+    host: ${ELASTIC_HOST}
+    port: ${ELASTIC_PORT}
+    index: ${ELASTIC_INDEX}

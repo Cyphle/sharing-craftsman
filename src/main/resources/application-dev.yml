@@ -25,6 +25,7 @@ eureka:
     preferIpAddress: true
     hostname: 127.0.0.1
 
+# Logging
 logging:
   level:
     org:
@@ -33,6 +34,7 @@ logging:
       hibernate: ERROR
   file: /logs/app.log
 
+# DB Pool
 bonecp:
   driverClass: org.postgresql.Driver
   url: jdbc:postgresql://192.168.1.12:5432/sharincraftsmanlibrary
@@ -46,5 +48,13 @@ bonecp:
   acquireIncrement: 5
   statementsCacheSize: 100
 
+# CQRS Event sourcing
 cqrs:
   version: 1
+
+# ElasticSearch
+jest:
+  elasticsearch:
+    host: 192.168.1.12
+    port: 9200
+    index: library
