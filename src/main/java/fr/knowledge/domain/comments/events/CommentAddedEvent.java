@@ -6,7 +6,11 @@ import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 public class CommentAddedEvent implements DomainEvent<Comment> {
   private final Id id;
   private final Username commenter;
@@ -27,43 +31,28 @@ public class CommentAddedEvent implements DomainEvent<Comment> {
     return id.getId();
   }
 
+  public Id getId() {
+    return id;
+  }
+
+  public Username getCommenter() {
+    return commenter;
+  }
+
+  public ContentType getContentType() {
+    return contentType;
+  }
+
+  public Id getContentId() {
+    return contentId;
+  }
+
+  public Content getContent() {
+    return content;
+  }
+
   @Override
   public Comment apply(Comment aggregate) {
-    return null;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    CommentAddedEvent that = (CommentAddedEvent) o;
-
-    if (id != null ? !id.equals(that.id) : that.id != null) return false;
-    if (commenter != null ? !commenter.equals(that.commenter) : that.commenter != null) return false;
-    if (contentType != that.contentType) return false;
-    if (contentId != null ? !contentId.equals(that.contentId) : that.contentId != null) return false;
-    return content != null ? content.equals(that.content) : that.content == null;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = id != null ? id.hashCode() : 0;
-    result = 31 * result + (commenter != null ? commenter.hashCode() : 0);
-    result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
-    result = 31 * result + (contentId != null ? contentId.hashCode() : 0);
-    result = 31 * result + (content != null ? content.hashCode() : 0);
-    return result;
-  }
-
-  @Override
-  public String toString() {
-    return "CommentAddedEvent{" +
-            "id=" + id +
-            ", commenter=" + commenter +
-            ", contentType=" + contentType +
-            ", contentId=" + contentId +
-            ", content=" + content +
-            '}';
+    return aggregate.apply(this);
   }
 }

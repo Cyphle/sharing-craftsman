@@ -26,11 +26,6 @@ public class Category {
 
   private Category(Id id, Name name) throws CategoryException {
     verifyCategory(name);
-    this.id = id;
-    this.name = name;
-    this.deleted = false;
-    knowledges = new HashMap<>();
-    changes = new ArrayList<>();
     CategoryCreatedEvent categoryCreatedEvent = new CategoryCreatedEvent(id, name);
     apply(categoryCreatedEvent);
     saveChanges(categoryCreatedEvent);

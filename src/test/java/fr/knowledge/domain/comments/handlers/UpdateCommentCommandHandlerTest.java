@@ -41,7 +41,7 @@ public class UpdateCommentCommandHandlerTest {
     updateCommentCommandHandler.handle(command);
 
     Comment comment = Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my updated comment");
-    comment.saveChanges(new CommentUpdatedEvent(Id.of("aaa"), Content.of("This is my updated comment")));
+    comment.update(Content.of("This is my updated comment"));
     verify(commentRepository).save(comment);
   }
 

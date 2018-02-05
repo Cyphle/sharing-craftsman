@@ -25,7 +25,7 @@ public class DeleteCommentCommandHandlerTest {
   private DeleteCommentCommandHandler deleteCommentCommandHandler;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(commentRepository.get(Id.of("aaa"), Username.from("john@doe.fr"))).willReturn(Optional.of(Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my content")));
     deleteCommentCommandHandler = new DeleteCommentCommandHandler(commentRepository);
   }
@@ -37,7 +37,7 @@ public class DeleteCommentCommandHandlerTest {
     deleteCommentCommandHandler.handle(command);
 
     Comment comment = Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my content");
-    comment.saveChanges(new CommentDeletedEvent(Id.of("aaa")));
+    comment.delete();
     verify(commentRepository).save(comment);
   }
 }

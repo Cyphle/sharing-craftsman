@@ -3,7 +3,11 @@ package fr.knowledge.domain.comments.events;
 import fr.knowledge.domain.comments.aggregates.Comment;
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 public class CommentDeletedEvent implements DomainEvent<Comment> {
   private final Id id;
 
@@ -18,28 +22,6 @@ public class CommentDeletedEvent implements DomainEvent<Comment> {
 
   @Override
   public Comment apply(Comment aggregate) {
-    return null;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    CommentDeletedEvent that = (CommentDeletedEvent) o;
-
-    return id != null ? id.equals(that.id) : that.id == null;
-  }
-
-  @Override
-  public int hashCode() {
-    return id != null ? id.hashCode() : 0;
-  }
-
-  @Override
-  public String toString() {
-    return "CommentDeletedEvent{" +
-            "id=" + id +
-            '}';
+    return aggregate.apply(this);
   }
 }
