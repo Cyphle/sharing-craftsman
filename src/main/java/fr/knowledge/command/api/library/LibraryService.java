@@ -31,8 +31,6 @@ public class LibraryService {
       commandBus.send(command);
     } catch (AlreadyExistingCategoryException e) {
       return ResponseEntity.badRequest().body("Category already exists.");
-    } catch (CreateCategoryException e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
     } catch (Exception e) {
       return ResponseEntity.badRequest().build();
     }

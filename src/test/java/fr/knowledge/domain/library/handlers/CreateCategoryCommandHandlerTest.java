@@ -54,7 +54,7 @@ public class CreateCategoryCommandHandlerTest {
 
     try {
       createCategoryCommandHandler.handle(command);
-      fail("Should have thrown CreateCategoryException");
+      fail("Should have thrown CategoryException");
     } catch (CategoryException e) {
       assertThat(e.getMessage()).isEqualTo("Name cannot be empty.");
     }

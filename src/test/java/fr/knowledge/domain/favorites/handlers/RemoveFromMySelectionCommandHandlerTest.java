@@ -25,7 +25,7 @@ public class RemoveFromMySelectionCommandHandlerTest {
   private RemoveFromMySelectionCommandHandler removeFromMySelectionCommandHandler;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(selectionRepository.get(Id.of("aaa"), Username.from("john@doe.fr"))).willReturn(Optional.of(Selection.of("aaa", "john@doe.fr", ContentType.KNOWLEDGE, "aaa")));
     removeFromMySelectionCommandHandler = new RemoveFromMySelectionCommandHandler(selectionRepository);
   }
@@ -37,7 +37,7 @@ public class RemoveFromMySelectionCommandHandlerTest {
     removeFromMySelectionCommandHandler.handle(command);
 
     Selection deletedSelection = Selection.of("aaa", "john@doe.fr", ContentType.KNOWLEDGE, "aaa");
-    deletedSelection.saveChanges(new SelectionRemovedEvent(Id.of("aaa")));
+    deletedSelection.delete();
     verify(selectionRepository).save(deletedSelection);
   }
 }

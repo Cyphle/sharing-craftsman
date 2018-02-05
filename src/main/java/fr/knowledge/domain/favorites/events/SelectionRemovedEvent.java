@@ -3,7 +3,11 @@ package fr.knowledge.domain.favorites.events;
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.favorites.aggregates.Selection;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 public class SelectionRemovedEvent implements DomainEvent<Selection> {
   private final Id id;
 
@@ -18,28 +22,6 @@ public class SelectionRemovedEvent implements DomainEvent<Selection> {
 
   @Override
   public Selection apply(Selection aggregate) {
-    return null;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    SelectionRemovedEvent that = (SelectionRemovedEvent) o;
-
-    return id != null ? id.equals(that.id) : that.id == null;
-  }
-
-  @Override
-  public int hashCode() {
-    return id != null ? id.hashCode() : 0;
-  }
-
-  @Override
-  public String toString() {
-    return "SelectionRemovedEvent{" +
-            "id=" + id +
-            '}';
+    return aggregate.apply(this);
   }
 }
