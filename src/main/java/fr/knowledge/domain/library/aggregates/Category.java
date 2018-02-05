@@ -44,10 +44,6 @@ public class Category {
     return deleted;
   }
 
-  public boolean is(Id id) {
-    return this.id.equals(id);
-  }
-
   public void update(Name newName) throws CategoryException {
     verifyCategory(newName);
     CategoryUpdatedEvent event = new CategoryUpdatedEvent(id, newName);
@@ -102,7 +98,6 @@ public class Category {
 
   public Category apply(CategoryDeletedEvent event) {
     deleted = true;
-    saveChanges(event);
     return this;
   }
 
