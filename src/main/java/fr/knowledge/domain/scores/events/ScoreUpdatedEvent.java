@@ -2,9 +2,10 @@ package fr.knowledge.domain.scores.events;
 
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.scores.aggregates.Score;
 import fr.knowledge.domain.scores.valueobjects.Mark;
 
-public class ScoreUpdatedEvent implements DomainEvent {
+public class ScoreUpdatedEvent implements DomainEvent<Score> {
   private final Id id;
   private final Mark mark;
 
@@ -16,6 +17,11 @@ public class ScoreUpdatedEvent implements DomainEvent {
   @Override
   public String getAggregateId() {
     return id.getId();
+  }
+
+  @Override
+  public Score apply(Score aggregate) {
+    return aggregate.apply(this);
   }
 
   public Mark getMark() {

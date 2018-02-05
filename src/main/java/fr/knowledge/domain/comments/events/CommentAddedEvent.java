@@ -1,12 +1,13 @@
 package fr.knowledge.domain.comments.events;
 
+import fr.knowledge.domain.comments.aggregates.Comment;
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 
-public class CommentAddedEvent implements DomainEvent {
+public class CommentAddedEvent implements DomainEvent<Comment> {
   private final Id id;
   private final Username commenter;
   private final ContentType contentType;
@@ -24,6 +25,11 @@ public class CommentAddedEvent implements DomainEvent {
   @Override
   public String getAggregateId() {
     return id.getId();
+  }
+
+  @Override
+  public Comment apply(Comment aggregate) {
+    return null;
   }
 
   @Override

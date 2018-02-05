@@ -98,11 +98,11 @@ public class CategoryDenormalizerTest {
 
     Optional<Category> denormalizedCategory = categoryDenormalizer.denormalize(Arrays.asList(updatedEvent, creationEvent, deletedEvent));
 
-    assertThat(denormalizedCategory.isPresent()).isFalse();
+    assertThat(denormalizedCategory.get().isDeleted()).isTrue();
   }
 
   @Test
-  public void should_rebuild_category_with_its_knowledge() throws Exception {
+  public void should_rebuild_category_with_its_knowledge() {
     EventEntity creationEvent = new EventEntity(
             "aaa",
             1,

@@ -1,5 +1,6 @@
 package fr.knowledge.infra.events.library;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
@@ -7,7 +8,9 @@ import fr.knowledge.domain.library.valueobjects.Name;
 import fr.knowledge.infra.events.InfraEvent;
 
 public class CategoryUpdatedInfraEvent implements InfraEvent {
+  @JsonProperty(value = "id")
   private String id;
+  @JsonProperty(value = "name")
   private String name;
 
   public CategoryUpdatedInfraEvent() {

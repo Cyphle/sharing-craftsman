@@ -2,8 +2,9 @@ package fr.knowledge.domain.favorites.events;
 
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.favorites.aggregates.Selection;
 
-public class SelectionRemovedEvent implements DomainEvent {
+public class SelectionRemovedEvent implements DomainEvent<Selection> {
   private final Id id;
 
   public SelectionRemovedEvent(Id id) {
@@ -13,6 +14,11 @@ public class SelectionRemovedEvent implements DomainEvent {
   @Override
   public String getAggregateId() {
     return id.getId();
+  }
+
+  @Override
+  public Selection apply(Selection aggregate) {
+    return null;
   }
 
   @Override

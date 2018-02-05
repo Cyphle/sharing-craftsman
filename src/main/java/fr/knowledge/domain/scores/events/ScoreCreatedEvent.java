@@ -4,9 +4,10 @@ import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
+import fr.knowledge.domain.scores.aggregates.Score;
 import fr.knowledge.domain.scores.valueobjects.Mark;
 
-public class ScoreCreatedEvent implements DomainEvent {
+public class ScoreCreatedEvent implements DomainEvent<Score> {
   private final Id id;
   private final Username giver;
   private final ContentType contentType;
@@ -24,6 +25,12 @@ public class ScoreCreatedEvent implements DomainEvent {
   @Override
   public String getAggregateId() {
     return id.getId();
+  }
+
+  @Override
+  public Score apply(Score aggregate) {
+//    return aggregate.apply(this);
+    return null;
   }
 
   @Override

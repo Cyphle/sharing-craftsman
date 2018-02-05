@@ -6,6 +6,7 @@ import fr.knowledge.common.IdGenerator;
 import fr.knowledge.config.EventSourcingConfig;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
+import fr.knowledge.domain.library.events.CategoryDeletedEvent;
 import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
 import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.valueobjects.Name;
@@ -85,7 +86,7 @@ public class CategoryAdapterTest {
   }
 
   @Test
-  public void should_get_all_categories() throws Exception {
+  public void should_get_all_categories() {
     given(eventStore.findAll()).willReturn(Arrays.asList(
             new EventEntity(
                     "aaa",
@@ -131,8 +132,11 @@ public class CategoryAdapterTest {
 
     List<Category> fetchCategories = categoryAdapter.getAll();
 
+    Category toto = Category.of("ccc", "Toto");
+    toto.apply(new CategoryDeletedEvent(Id.of("ccc")));
     assertThat(fetchCategories).containsExactly(
             Category.of("aaa", "SOLID"),
+            toto,
             Category.of("bbb", "Four rules of simple design")
     );
   }

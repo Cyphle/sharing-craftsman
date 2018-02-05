@@ -39,13 +39,15 @@ public class Score {
     apply(event);
   }
 
-  private void apply(ScoreUpdatedEvent event) {
+  public Score apply(ScoreUpdatedEvent event) {
     mark = event.getMark();
     saveChanges(event);
+    return this;
   }
 
-  private void apply(ScoreDeletedEvent event) {
+  public Score apply(ScoreDeletedEvent event) {
     saveChanges(event);
+    return this;
   }
 
   public void saveChanges(DomainEvent event) {

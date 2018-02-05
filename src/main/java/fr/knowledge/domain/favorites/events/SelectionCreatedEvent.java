@@ -4,8 +4,9 @@ import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
+import fr.knowledge.domain.favorites.aggregates.Selection;
 
-public class SelectionCreatedEvent implements DomainEvent {
+public class SelectionCreatedEvent implements DomainEvent<Selection> {
   private final Id id;
   private final Username username;
   private final ContentType contentType;
@@ -21,6 +22,11 @@ public class SelectionCreatedEvent implements DomainEvent {
   @Override
   public String getAggregateId() {
     return id.getId();
+  }
+
+  @Override
+  public Selection apply(Selection aggregate) {
+    return null;
   }
 
   @Override

@@ -2,11 +2,12 @@ package fr.knowledge.domain.library.events;
 
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.valueobjects.Name;
 
-public class CategoryCreatedEvent implements DomainEvent {
-  private final Id id;
-  private final Name name;
+public class CategoryCreatedEvent implements DomainEvent<Category> {
+  private Id id;
+  private Name name;
 
   public CategoryCreatedEvent(Id id, Name name) {
     this.id = id;
@@ -16,6 +17,11 @@ public class CategoryCreatedEvent implements DomainEvent {
   @Override
   public String getAggregateId() {
     return id.getId();
+  }
+
+  @Override
+  public Category apply(Category aggregate) {
+    return aggregate.apply(this);
   }
 
   public Id getId() {

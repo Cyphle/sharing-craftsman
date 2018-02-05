@@ -11,10 +11,7 @@ import fr.knowledge.domain.library.valueobjects.Name;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @EqualsAndHashCode
 @ToString
@@ -23,7 +20,7 @@ public class Category {
   private Name name;
   private Map<Id, Knowledge> knowledges;
   private List<DomainEvent> changes;
-  private boolean isDeleted;
+  private boolean deleted;
 
   public Category() { }
 
@@ -31,7 +28,7 @@ public class Category {
     verifyCategory(name);
     this.id = id;
     this.name = name;
-    this.isDeleted = false;
+    this.deleted = false;
     knowledges = new HashMap<>();
     changes = new ArrayList<>();
     CategoryCreatedEvent categoryCreatedEvent = new CategoryCreatedEvent(id, name);
@@ -41,6 +38,10 @@ public class Category {
 
   public Name getName() {
     return name;
+  }
+
+  public boolean isDeleted() {
+    return deleted;
   }
 
   public boolean is(Id id) {
@@ -90,33 +91,39 @@ public class Category {
     saveChanges(event);
   }
 
-  public void apply(CategoryCreatedEvent categoryCreatedEvent) {
+  public Category apply(CategoryCreatedEvent categoryCreatedEvent) {
     id = categoryCreatedEvent.getId();
     name = categoryCreatedEvent.getName();
-    isDeleted = false;
+    deleted = false;
     knowledges = new HashMap<>();
     changes = new ArrayList<>();
+    return this;
   }
 
-  public void apply(CategoryDeletedEvent event) {
-    isDeleted = true;
+  public Category apply(CategoryDeletedEvent event) {
+    deleted = true;
     saveChanges(event);
+    return this;
   }
 
-  public void apply(CategoryUpdatedEvent event) {
+  public Category apply(CategoryUpdatedEvent event) {
     name = event.getNewName();
+    return this;
   }
 
-  public void apply(KnowledgeAddedEvent event) {
+  public Category apply(KnowledgeAddedEvent event) {
     knowledges.put(event.getKnowledgeId(), event.getKnowledge());
+    return this;
   }
 
-  public void apply(KnowledgeUpdatedEvent event) {
+  public Category apply(KnowledgeUpdatedEvent event) {
     knowledges.get(event.getKnowledgeId()).update(event.getKnowledge());
+    return this;
   }
 
-  public void apply(KnowledgeDeletedEvent event) {
+  public Category apply(KnowledgeDeletedEvent event) {
     knowledges.remove(event.getKnowledgeId());
+    return this;
   }
 
   public List<DomainEvent> getChanges() {
@@ -155,5 +162,12 @@ public class Category {
 
   public static Category newCategory(String id, String name) throws CategoryException {
     return new Category(Id.of(id), Name.of(name));
+  }
+
+  public static Category rebuild(List<DomainEvent> events) {
+    return events.stream()
+            .reduce(new Category(),
+                    (category, event) -> (Category) event.apply(category),
+                    (category1, category2) -> category2);
   }
 }

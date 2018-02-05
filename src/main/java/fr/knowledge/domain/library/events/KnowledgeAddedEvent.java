@@ -2,9 +2,10 @@ package fr.knowledge.domain.library.events;
 
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
 
-public class KnowledgeAddedEvent implements DomainEvent {
+public class KnowledgeAddedEvent implements DomainEvent<Category> {
   private final Id categoryId;
   private final Knowledge knowledge;
 
@@ -16,6 +17,11 @@ public class KnowledgeAddedEvent implements DomainEvent {
   @Override
   public String getAggregateId() {
     return categoryId.getId();
+  }
+
+  @Override
+  public Category apply(Category aggregate) {
+    return aggregate.apply(this);
   }
 
   public Knowledge getKnowledge() {

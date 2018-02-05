@@ -2,8 +2,9 @@ package fr.knowledge.domain.library.events;
 
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.library.aggregates.Category;
 
-public class CategoryDeletedEvent implements DomainEvent {
+public class CategoryDeletedEvent implements DomainEvent<Category> {
   private final Id id;
 
   public CategoryDeletedEvent(Id id) {
@@ -13,6 +14,11 @@ public class CategoryDeletedEvent implements DomainEvent {
   @Override
   public String getAggregateId() {
     return id.getId();
+  }
+
+  @Override
+  public Category apply(Category aggregate) {
+    return aggregate.apply(this);
   }
 
   @Override
