@@ -6,7 +6,11 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.domain.scores.aggregates.Score;
 import fr.knowledge.domain.scores.valueobjects.Mark;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 public class ScoreCreatedEvent implements DomainEvent<Score> {
   private final Id id;
   private final Username giver;
@@ -29,42 +33,26 @@ public class ScoreCreatedEvent implements DomainEvent<Score> {
 
   @Override
   public Score apply(Score aggregate) {
-//    return aggregate.apply(this);
-    return null;
+    return aggregate.apply(this);
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    ScoreCreatedEvent that = (ScoreCreatedEvent) o;
-
-    if (id != null ? !id.equals(that.id) : that.id != null) return false;
-    if (giver != null ? !giver.equals(that.giver) : that.giver != null) return false;
-    if (contentType != that.contentType) return false;
-    if (contentId != null ? !contentId.equals(that.contentId) : that.contentId != null) return false;
-    return mark == that.mark;
+  public Id getId() {
+    return id;
   }
 
-  @Override
-  public int hashCode() {
-    int result = id != null ? id.hashCode() : 0;
-    result = 31 * result + (giver != null ? giver.hashCode() : 0);
-    result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
-    result = 31 * result + (contentId != null ? contentId.hashCode() : 0);
-    result = 31 * result + (mark != null ? mark.hashCode() : 0);
-    return result;
+  public Username getGiver() {
+    return giver;
   }
 
-  @Override
-  public String toString() {
-    return "ScoreCreatedEvent{" +
-            "id=" + id +
-            ", giver=" + giver +
-            ", contentType=" + contentType +
-            ", contentId=" + contentId +
-            ", mark=" + mark +
-            '}';
+  public ContentType getContentType() {
+    return contentType;
+  }
+
+  public Id getContentId() {
+    return contentId;
+  }
+
+  public Mark getMark() {
+    return mark;
   }
 }

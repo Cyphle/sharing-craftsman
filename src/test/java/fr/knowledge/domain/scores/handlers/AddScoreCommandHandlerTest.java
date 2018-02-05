@@ -30,7 +30,7 @@ public class AddScoreCommandHandlerTest {
   private AddScoreCommandHandler addScoreCommandHandler;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(idGenerator.generate()).willReturn("aaa");
     given(scoreRepository.get(Username.from("john@doe.fr"), Id.of("aaa"))).willReturn(Optional.empty());
     addScoreCommandHandler = new AddScoreCommandHandler(idGenerator, scoreRepository);
@@ -42,8 +42,7 @@ public class AddScoreCommandHandlerTest {
 
     addScoreCommandHandler.handle(command);
 
-    Score score = Score.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", Mark.FIVE);
-    score.saveChanges(new ScoreCreatedEvent(Id.of("aaa"), Username.from("john@doe.fr"), ContentType.CATEGORY, Id.of("aaa"), Mark.FIVE));
+    Score score = Score.newScore("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", Mark.FIVE);
     verify(scoreRepository).save(score);
   }
 

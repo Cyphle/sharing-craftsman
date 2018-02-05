@@ -26,7 +26,7 @@ public class DeleteScoreCommandHandlerTest {
   private DeleteScoreCommandHandler deleteScoreCommandHandler;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(scoreRepository.get(Id.of("aaa"), Username.from("john@doe.fr"))).willReturn(Optional.of(Score.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", Mark.FIVE)));
     deleteScoreCommandHandler = new DeleteScoreCommandHandler(scoreRepository);
   }
@@ -38,7 +38,7 @@ public class DeleteScoreCommandHandlerTest {
     deleteScoreCommandHandler.handle(command);
 
     Score score = Score.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", Mark.FIVE);
-    score.saveChanges(new ScoreDeletedEvent(Id.of("aaa")));
+    score.delete();
     verify(scoreRepository).save(score);
   }
 }

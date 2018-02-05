@@ -26,7 +26,7 @@ public class DeleteKnowledgeCommandHandlerTest {
   private DeleteKnowledgeCommandHandler deleteKnowledgeCommandHandler;
 
   @Before
-  public void setUp() throws CategoryException {
+  public void setUp() {
     Category category = Category.of("aaa", "Architecture");
     category.apply(new KnowledgeAddedEvent(Id.of("aaa"), Knowledge.of("aaa", "john@doe.fr", "Architecture hexagonale", "This is my content.")));
     given(categoryRepository.get(Id.of("aaa"))).willReturn(Optional.of(category));

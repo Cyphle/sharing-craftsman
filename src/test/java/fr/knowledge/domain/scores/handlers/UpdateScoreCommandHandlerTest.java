@@ -27,7 +27,7 @@ public class UpdateScoreCommandHandlerTest {
   private UpdateScoreCommandHandler updateScoreCommandHandler;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(scoreRepository.get(Id.of("aaa"), Username.from("john@doe.fr"))).willReturn(Optional.of(Score.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", Mark.THREE)));
     updateScoreCommandHandler = new UpdateScoreCommandHandler(scoreRepository);
   }
@@ -39,7 +39,7 @@ public class UpdateScoreCommandHandlerTest {
     updateScoreCommandHandler.handle(command);
 
     Score updatedScore = Score.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", Mark.THREE);
-    updatedScore.saveChanges(new ScoreUpdatedEvent(Id.of("aaa"), Mark.THREE));
+    updatedScore.update(Mark.THREE);
     verify(scoreRepository).save(updatedScore);
   }
 
