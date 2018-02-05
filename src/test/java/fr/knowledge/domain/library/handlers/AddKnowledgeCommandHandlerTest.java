@@ -45,7 +45,7 @@ public class AddKnowledgeCommandHandlerTest {
 
     Knowledge knowledge = Knowledge.of("aaa", "john@doe.fr", "Architecture hexagonale", "This is my content");
     Category updatedCategory = Category.of("aaa", "Architecture");
-    updatedCategory.apply(new KnowledgeAddedEvent(Id.of("aaa"), knowledge));
+    updatedCategory.addKnowledge(knowledge);
     verify(categoryRepository).save(updatedCategory);
   }
 

@@ -31,7 +31,7 @@ public class CreateCategoryCommandHandlerTest {
   private CategoryRepository categoryRepository;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(idGenerator.generate()).willReturn("aaa");
 
     createCategoryCommandHandler = new CreateCategoryCommandHandler(idGenerator, categoryRepository);

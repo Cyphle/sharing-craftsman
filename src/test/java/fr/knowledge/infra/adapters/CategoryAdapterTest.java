@@ -139,7 +139,7 @@ public class CategoryAdapterTest {
   @Test
   public void should_save_category_changes() throws Exception {
     Category category = Category.newCategory("aaa", "Architecture");
-    category.apply(new CategoryUpdatedEvent(Id.of("aaa"), Name.of("SOLID")));
+    category.update(Name.of("SOLID"));
 
     categoryAdapter.save(category);
 

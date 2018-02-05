@@ -23,7 +23,7 @@ public class DeleteCategoryCommandHandlerTest {
   private DeleteCategoryCommandHandler deleteCategoryCommandHandler;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(categoryRepository.get(Id.of("aaa"))).willReturn(Optional.of(Category.of("aaa", "Architecture")));
     deleteCategoryCommandHandler = new DeleteCategoryCommandHandler(categoryRepository);
   }
@@ -35,7 +35,7 @@ public class DeleteCategoryCommandHandlerTest {
     deleteCategoryCommandHandler.handle(command);
 
     Category category = Category.of("aaa", "Architecture");
-    category.saveChanges(new CategoryDeletedEvent(Id.of("aaa")));
+    category.delete();
     verify(categoryRepository).save(category);
   }
 }
