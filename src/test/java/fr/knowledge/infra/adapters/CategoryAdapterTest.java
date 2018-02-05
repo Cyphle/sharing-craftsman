@@ -7,6 +7,7 @@ import fr.knowledge.config.EventSourcingConfig;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
+import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.valueobjects.Name;
 import fr.knowledge.infra.adapters.library.CategoryAdapter;
 import fr.knowledge.infra.bus.EventBus;
@@ -84,7 +85,7 @@ public class CategoryAdapterTest {
   }
 
   @Test
-  public void should_get_all_categories() {
+  public void should_get_all_categories() throws Exception {
     given(eventStore.findAll()).willReturn(Arrays.asList(
             new EventEntity(
                     "aaa",

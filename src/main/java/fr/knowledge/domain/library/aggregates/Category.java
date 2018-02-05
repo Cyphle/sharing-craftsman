@@ -4,7 +4,7 @@ import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.events.*;
 import fr.knowledge.domain.library.exceptions.AddKnowledgeException;
-import fr.knowledge.domain.library.exceptions.CreateCategoryException;
+import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.exceptions.KnowledgeNotFoundException;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
 import fr.knowledge.domain.library.valueobjects.Name;
@@ -27,12 +27,16 @@ public class Category {
 
   public Category() { }
 
-  private Category(Id id, Name name) {
+  private Category(Id id, Name name) throws CategoryException {
+    verifyCategory(name);
     this.id = id;
     this.name = name;
     this.isDeleted = false;
     knowledges = new HashMap<>();
     changes = new ArrayList<>();
+    CategoryCreatedEvent categoryCreatedEvent = new CategoryCreatedEvent(id, name);
+    apply(categoryCreatedEvent);
+    saveChanges(categoryCreatedEvent);
   }
 
   public Name getName() {
@@ -43,7 +47,7 @@ public class Category {
     return this.id.equals(id);
   }
 
-  public void update(Name newName) throws UpdateCategoryException {
+  public void update(Name newName) throws CategoryException {
     verifyCategory(newName);
     CategoryUpdatedEvent event = new CategoryUpdatedEvent(id, newName);
     apply(event);
@@ -89,6 +93,7 @@ public class Category {
   public void apply(CategoryCreatedEvent categoryCreatedEvent) {
     id = categoryCreatedEvent.getId();
     name = categoryCreatedEvent.getName();
+    isDeleted = false;
     knowledges = new HashMap<>();
     changes = new ArrayList<>();
   }
@@ -137,24 +142,18 @@ public class Category {
       throw new AddKnowledgeException("Content cannot be empty.");
   }
 
-  private void verifyCategory(Name name) throws UpdateCategoryException {
+  private void verifyCategory(Name name) throws CategoryException {
     if (name.isEmpty())
-      throw new UpdateCategoryException("Name cannot be empty.");
+      throw new CategoryException("Name cannot be empty.");
   }
 
   public static Category of(String id, String name) {
-    return new Category(Id.of(id), Name.of(name));
-  }
-
-  public static Category newCategory(String id, String name) throws CreateCategoryException {
-    verifyCategory(name);
-    Category category = Category.of(id, name);
-    category.saveChanges(new CategoryCreatedEvent(Id.of(id), Name.of(name)));
+    Category category = new Category();
+    category.apply(new CategoryCreatedEvent(Id.of(id), Name.of(name)));
     return category;
   }
 
-  private static void verifyCategory(String name) throws CreateCategoryException {
-    if (name.isEmpty())
-      throw new CreateCategoryException("Name cannot be empty.");
+  public static Category newCategory(String id, String name) throws CategoryException {
+    return new Category(Id.of(id), Name.of(name));
   }
 }

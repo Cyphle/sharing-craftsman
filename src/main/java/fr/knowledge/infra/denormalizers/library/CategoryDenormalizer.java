@@ -8,6 +8,7 @@ import fr.knowledge.config.EventSourcingConfig;
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
+import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.exceptions.CreateCategoryException;
 import fr.knowledge.domain.library.exceptions.KnowledgeNotFoundException;
 import fr.knowledge.infra.events.library.*;
@@ -55,7 +56,7 @@ public class CategoryDenormalizer {
       });
       category.resetChanges();
       return Optional.of(category);
-    } catch (CreateCategoryException e) {
+    } catch (CategoryException e) {
       log.error("Error while initializing denormalization of category: " + e.getMessage());
       throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
     }

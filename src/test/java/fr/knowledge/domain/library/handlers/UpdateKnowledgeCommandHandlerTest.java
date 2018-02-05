@@ -5,6 +5,7 @@ import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.UpdateKnowledgeCommand;
 import fr.knowledge.domain.library.events.KnowledgeAddedEvent;
 import fr.knowledge.domain.library.events.KnowledgeUpdatedEvent;
+import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.exceptions.KnowledgeNotFoundException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
@@ -30,7 +31,7 @@ public class UpdateKnowledgeCommandHandlerTest {
   private UpdateKnowledgeCommandHandler updateKnowledgeCommandHandler;
 
   @Before
-  public void setUp() {
+  public void setUp() throws CategoryException {
     Category category = Category.of("aaa", "Architecture");
     category.apply(new KnowledgeAddedEvent(Id.of("aaa"), Knowledge.of("aaa", "john@doe.fr", "Architecture hexagonale", "This is my content.")));
     given(categoryRepository.get(Id.of("aaa"))).willReturn(Optional.of(category));

@@ -6,7 +6,7 @@ import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
 import fr.knowledge.domain.library.events.CategoryCreatedEvent;
 import fr.knowledge.domain.library.exceptions.AlreadyExistingCategoryException;
-import fr.knowledge.domain.library.exceptions.CreateCategoryException;
+import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.domain.library.valueobjects.Name;
 import org.junit.Before;
@@ -44,8 +44,7 @@ public class CreateCategoryCommandHandlerTest {
     createCategoryCommandHandler.handle(command);
 
     verify(categoryRepository).getAll();
-    Category category = Category.of("aaa", "Architecture");
-    category.saveChanges(new CategoryCreatedEvent(Id.of("aaa"), Name.of("Architecture")));
+    Category category = Category.newCategory("aaa", "Architecture");
     verify(categoryRepository).save(category);
   }
 
@@ -56,7 +55,7 @@ public class CreateCategoryCommandHandlerTest {
     try {
       createCategoryCommandHandler.handle(command);
       fail("Should have thrown CreateCategoryException");
-    } catch (CreateCategoryException e) {
+    } catch (CategoryException e) {
       assertThat(e.getMessage()).isEqualTo("Name cannot be empty.");
     }
   }

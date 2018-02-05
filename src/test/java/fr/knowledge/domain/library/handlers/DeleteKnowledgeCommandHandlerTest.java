@@ -5,6 +5,7 @@ import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.DeleteKnowledgeCommand;
 import fr.knowledge.domain.library.events.KnowledgeAddedEvent;
 import fr.knowledge.domain.library.events.KnowledgeDeletedEvent;
+import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
 import org.junit.Before;
@@ -25,7 +26,7 @@ public class DeleteKnowledgeCommandHandlerTest {
   private DeleteKnowledgeCommandHandler deleteKnowledgeCommandHandler;
 
   @Before
-  public void setUp() {
+  public void setUp() throws CategoryException {
     Category category = Category.of("aaa", "Architecture");
     category.apply(new KnowledgeAddedEvent(Id.of("aaa"), Knowledge.of("aaa", "john@doe.fr", "Architecture hexagonale", "This is my content.")));
     given(categoryRepository.get(Id.of("aaa"))).willReturn(Optional.of(category));
