@@ -36,7 +36,7 @@ public class CategoryDenormalizerTest {
   private DateService dateTimeService;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(idGenerator.generate()).willReturn("eaa");
     given(eventSourcingConfig.getVersion()).willReturn(1);
     given(dateTimeService.nowInDate()).willReturn(DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 15, 50, 12)));
@@ -45,7 +45,7 @@ public class CategoryDenormalizerTest {
   }
 
   @Test
-  public void should_rebuild_category_state_without_any_knowledge() throws Exception {
+  public void should_rebuild_category_state_without_any_knowledge() {
     EventEntity creationEvent = new EventEntity(
             "aaa",
             1,
@@ -70,7 +70,7 @@ public class CategoryDenormalizerTest {
   }
 
   @Test
-  public void should_return_optional_empty_if_category_has_been_deleted() throws Exception {
+  public void should_return_category_deleted_if_category_has_been_deleted() {
     EventEntity creationEvent = new EventEntity(
             "aaa",
             1,
@@ -153,7 +153,7 @@ public class CategoryDenormalizerTest {
   }
 
   @Test
-  public void should_normalize_a_domain_event_to_infra_event() throws Exception {
+  public void should_normalize_a_domain_event_to_infra_event() {
     CategoryUpdatedEvent categoryUpdatedEvent = new CategoryUpdatedEvent(Id.of("aaa"), Name.of("SOLID"));
 
     EventEntity event = categoryDenormalizer.normalize(categoryUpdatedEvent);

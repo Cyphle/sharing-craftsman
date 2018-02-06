@@ -24,21 +24,19 @@ public class CategoryDenormalizer {
   private IdGenerator idGenerator;
   private EventSourcingConfig eventSourcingConfig;
   private DateService dateTimeService;
-  private EventMapper eventMapper;
 
   @Autowired
   public CategoryDenormalizer(IdGenerator idGenerator, EventSourcingConfig eventSourcingConfig, DateService dateTimeService) {
     this.idGenerator = idGenerator;
     this.eventSourcingConfig = eventSourcingConfig;
     this.dateTimeService = dateTimeService;
-    this.eventMapper = new EventMapper();
   }
 
   public Optional<Category> denormalize(List<EventEntity> events) {
     events.sort(Comparator.comparing(EventEntity::getTimestamp));
 
     return Optional.of(Category.rebuild(events.stream()
-            .map(this::convertToDomainEvent)
+            .map(DeserializerMapper::deserialize)
             .collect(Collectors.toList())));
   }
 
@@ -49,12 +47,8 @@ public class CategoryDenormalizer {
             dateTimeService.nowInDate(),
             change.getAggregateId(),
             getInfraEventClass(change.getClass().getName()),
-            this.eventMapper.serialize(change)
+            SerializerMapper.serialize(change)
     );
-  }
-
-  private DomainEvent convertToDomainEvent(EventEntity event) {
-    return this.eventMapper.convertToDomain(event);
   }
 
   private String getInfraEventClass(String domainEventClassName) {
