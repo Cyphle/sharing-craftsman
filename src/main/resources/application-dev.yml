@@ -58,3 +58,4 @@ jest:
     host: 192.168.1.12
     port: 9200
     index: library
+    mapping: mapping/CategoryMapping.json

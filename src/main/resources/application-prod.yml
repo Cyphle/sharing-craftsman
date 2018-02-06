@@ -58,3 +58,4 @@ jest:
     host: ${ELASTIC_HOST}
     port: ${ELASTIC_PORT}
     index: ${ELASTIC_INDEX}
+    mapping: mapping/CategoryMapping.json
