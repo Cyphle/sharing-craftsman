@@ -1,10 +1,7 @@
 package fr.knowledge.infra.repositories;
 
 import fr.knowledge.config.JestConfig;
-import io.searchbox.core.Delete;
-import io.searchbox.core.Index;
-import io.searchbox.core.Search;
-import io.searchbox.core.SearchResult;
+import io.searchbox.core.*;
 import io.searchbox.indices.CreateIndex;
 import io.searchbox.indices.DeleteIndex;
 import io.searchbox.indices.mapping.PutMapping;
@@ -19,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import java.util.StringJoiner;
 
 @Service
 public class ElasticSearchService {
@@ -45,6 +44,14 @@ public class ElasticSearchService {
     }
   }
 
+  public void deleteIndex() {
+    try {
+      jestConfig.getClient().execute(new DeleteIndex.Builder(jestConfig.getIndexName()).build());
+    } catch (IOException e) {
+      log.error("[ElasticSearchService::deleteIndex] Cannot delete index: " + e.getMessage());
+    }
+  }
+
   public void createElement(String element) {
     try {
       Index doc = new Index.Builder(element).index("library").type("CATEGORY").build();
@@ -65,11 +72,20 @@ public class ElasticSearchService {
     }
   }
 
-  public void deleteIndex() {
+  public void updateElement(String type, String id, Map<String, String> updates) {
     try {
-      jestConfig.getClient().execute(new DeleteIndex.Builder(jestConfig.getIndexName()).build());
+      StringJoiner keyValues = new StringJoiner(", ");
+      updates.forEach((key, value) -> keyValues.add("\"" + key + "\": \"" + value + "\""));
+
+      String script = "{" +
+                "\"doc\" : {\n" +
+                  keyValues.toString() +
+                "}" +
+              "}";
+
+      jestConfig.getClient().execute(new Update.Builder(script).index(jestConfig.getIndexName()).type(type).id(id).build());
     } catch (IOException e) {
-      log.error("[ElasticSearchService::deleteIndex] Cannot delete index: " + e.getMessage());
+      log.error("[ElasticSearchService::updateElement] Cannot find element: " + e.getMessage());
     }
   }
 

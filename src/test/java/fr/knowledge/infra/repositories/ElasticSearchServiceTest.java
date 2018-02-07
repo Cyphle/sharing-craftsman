@@ -19,7 +19,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {KnowledgeLibraryApplication.class})
 @TestPropertySource(locations = "classpath:application-test.properties")
-@Ignore
 public class ElasticSearchServiceTest {
   @Autowired
   private ElasticSearchService elasticSearchService;
@@ -67,5 +68,12 @@ public class ElasticSearchServiceTest {
             .collect(Collectors.toList());
 
     assertThat(categories).containsExactly(new MockCategory("aaa", "SOLID"));
+  }
+
+  @Test
+  public void should_update_element() throws Exception {
+    Map<String, String> updates = new HashMap<>();
+    updates.put("name", "SOLID");
+    elasticSearchService.updateElement("CATEGORY", "aaa", updates);
   }
 }
