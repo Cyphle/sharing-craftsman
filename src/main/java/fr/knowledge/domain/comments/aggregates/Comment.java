@@ -23,7 +23,7 @@ public class Comment {
   private ContentType contentType;
   private Id contentId;
   private Content content;
-  private List<DomainEvent> events;
+  private List<DomainEvent<Comment>> events;
   private boolean deleted;
 
   private Comment() { }
@@ -47,7 +47,7 @@ public class Comment {
     saveChanges(event);
   }
 
-  public void saveChanges(DomainEvent event) {
+  public void saveChanges(DomainEvent<Comment> event) {
     events.add(event);
   }
 
@@ -58,7 +58,7 @@ public class Comment {
     this.contentId = event.getContentId();
     this.content = event.getContent();
     this.deleted = false;
-    events = new ArrayList<>();
+    events = new ArrayList<DomainEvent<Comment>>();
     return this;
   }
 
@@ -85,5 +85,12 @@ public class Comment {
 
   public static Comment newComment(String id, String commenter, ContentType contentType, String contentId, String content) {
     return new Comment(Id.of(id), Username.from(commenter), contentType, Id.of(contentId), Content.of(content));
+  }
+
+  public static Comment rebuild(List<DomainEvent> events) {
+    return events.stream()
+            .reduce(new Comment(),
+                    (item, event) -> (Comment) event.apply(item),
+                    (item1, item2) -> item2);
   }
 }

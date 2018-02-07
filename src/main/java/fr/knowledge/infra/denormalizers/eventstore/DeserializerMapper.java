@@ -1,7 +1,10 @@
-package fr.knowledge.infra.denormalizers.library;
+package fr.knowledge.infra.denormalizers.eventstore;
 
 import fr.knowledge.common.Mapper;
 import fr.knowledge.domain.common.DomainEvent;
+import fr.knowledge.infra.events.comments.CommentAddedInfraEvent;
+import fr.knowledge.infra.events.comments.CommentDeletedInfraEvent;
+import fr.knowledge.infra.events.comments.CommentUpdatedInfraEvent;
 import fr.knowledge.infra.events.library.*;
 import fr.knowledge.infra.models.EventEntity;
 
@@ -50,6 +53,27 @@ public enum DeserializerMapper {
   KnowledgeDeletedEvent("KnowledgeDeletedInfraEvent", payload -> {
     try {
       return Mapper.fromJsonStringToObject(payload, KnowledgeDeletedInfraEvent.class).fromInfraToDomain();
+    } catch (IOException e) {
+      throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
+    }
+  }),
+  CommentAddedEvent("CommentAddedInfraEvent", payload -> {
+    try {
+      return Mapper.fromJsonStringToObject(payload, CommentAddedInfraEvent.class).fromInfraToDomain();
+    } catch (IOException e) {
+      throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
+    }
+  }),
+  CommentUpdatedEvent("CommentUpdatedInfraEvent", payload -> {
+    try {
+      return Mapper.fromJsonStringToObject(payload, CommentUpdatedInfraEvent.class).fromInfraToDomain();
+    } catch (IOException e) {
+      throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
+    }
+  }),
+  CommentDeletedEvent("CommentDeletedInfraEvent", payload -> {
+    try {
+      return Mapper.fromJsonStringToObject(payload, CommentDeletedInfraEvent.class).fromInfraToDomain();
     } catch (IOException e) {
       throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
     }

@@ -39,6 +39,10 @@ public class CommentAddedEvent implements DomainEvent<Comment> {
     return commenter;
   }
 
+  public String getCommenterContent() {
+    return commenter.getUsername();
+  }
+
   public ContentType getContentType() {
     return contentType;
   }
@@ -47,8 +51,16 @@ public class CommentAddedEvent implements DomainEvent<Comment> {
     return contentId;
   }
 
+  public String getContentIdContent() {
+    return contentId.getId();
+  }
+
   public Content getContent() {
     return content;
+  }
+
+  public String getContentContent() {
+    return content.getContent();
   }
 
   @Override

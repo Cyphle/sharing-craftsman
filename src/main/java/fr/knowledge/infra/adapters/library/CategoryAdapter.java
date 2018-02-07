@@ -1,17 +1,12 @@
 package fr.knowledge.infra.adapters.library;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
-import fr.knowledge.common.DateService;
-import fr.knowledge.common.IdGenerator;
-import fr.knowledge.common.Mapper;
-import fr.knowledge.config.EventSourcingConfig;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.infra.bus.EventBus;
-import fr.knowledge.infra.denormalizers.library.CategoryDenormalizer;
-import fr.knowledge.infra.events.InfraEvent;
+import fr.knowledge.infra.denormalizers.eventstore.Normalizer;
+import fr.knowledge.infra.denormalizers.eventstore.library.CategoryDenormalizer;
 import fr.knowledge.infra.models.EventEntity;
 import fr.knowledge.infra.repositories.EventStore;
 import org.slf4j.Logger;
@@ -29,19 +24,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class CategoryAdapter implements CategoryRepository {
-  private final Logger log = LoggerFactory.getLogger(this.getClass());
   private final EventBus eventBus;
   private final EventStore eventStore;
-  private CategoryDenormalizer categoryDenormalizer;
+  private Normalizer normalizer;
 
   @Autowired
   public CategoryAdapter(
           EventBus eventBus,
           EventStore eventStore,
-          CategoryDenormalizer categoryDenormalizer) {
+          Normalizer normalizer) {
     this.eventBus = eventBus;
     this.eventStore = eventStore;
-    this.categoryDenormalizer = categoryDenormalizer;
+    this.normalizer = normalizer;
   }
 
   @Override
@@ -63,7 +57,7 @@ public class CategoryAdapter implements CategoryRepository {
               .stream()
               .filter(event -> id.equals(Id.of(event.getAggregateId())))
               .collect(Collectors.toList());
-      categoryDenormalizer.denormalize(eventsOfCurrentAggregate).ifPresent(categories::add);
+      CategoryDenormalizer.denormalize(eventsOfCurrentAggregate).ifPresent(categories::add);
     });
 
     return categories;
@@ -73,7 +67,7 @@ public class CategoryAdapter implements CategoryRepository {
   public void save(Category category) {
     category.getChanges()
             .forEach(change -> {
-              EventEntity event = categoryDenormalizer.normalize(change);
+              EventEntity event = normalizer.normalize(change);
               eventStore.save(event);
               eventBus.apply(change);
             });
@@ -82,7 +76,7 @@ public class CategoryAdapter implements CategoryRepository {
   @Override
   public Optional<Category> get(Id aggregateId) {
     List<EventEntity> events = eventStore.findByAggregateId(aggregateId.getId());
-    return categoryDenormalizer.denormalize(events);
+    return CategoryDenormalizer.denormalize(events);
   }
 
   private boolean isACategoryEvent(EventEntity event) {

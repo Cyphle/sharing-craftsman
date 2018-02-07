@@ -31,4 +31,8 @@ public class CommentUpdatedEvent implements DomainEvent<Comment> {
   public Content getContent() {
     return newContent;
   }
+
+  public String getContentContent() {
+    return newContent.getContent();
+  }
 }

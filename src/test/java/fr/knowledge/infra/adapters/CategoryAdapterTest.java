@@ -7,12 +7,11 @@ import fr.knowledge.config.EventSourcingConfig;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.events.CategoryDeletedEvent;
-import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
-import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.valueobjects.Name;
 import fr.knowledge.infra.adapters.library.CategoryAdapter;
 import fr.knowledge.infra.bus.EventBus;
-import fr.knowledge.infra.denormalizers.library.CategoryDenormalizer;
+import fr.knowledge.infra.denormalizers.eventstore.Normalizer;
+import fr.knowledge.infra.denormalizers.eventstore.library.CategoryDenormalizer;
 import fr.knowledge.infra.models.EventEntity;
 import fr.knowledge.infra.repositories.EventStore;
 import org.junit.Before;
@@ -38,13 +37,13 @@ public class CategoryAdapterTest {
   private EventBus eventBus;
   @Mock
   private EventStore eventStore;
-  private CategoryDenormalizer categoryDenormalizer;
   @Mock
   private IdGenerator idGenerator;
   @Mock
   private EventSourcingConfig eventSourcingConfig;
   @Mock
   private DateService dateTimeService;
+  private Normalizer normalizer;
 
   @Before
   public void setUp() throws Exception {
@@ -73,8 +72,8 @@ public class CategoryAdapterTest {
             DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 16, 50, 12))
     );
 
-    categoryDenormalizer = new CategoryDenormalizer(idGenerator, eventSourcingConfig, dateTimeService);
-    categoryAdapter = new CategoryAdapter(eventBus, eventStore, categoryDenormalizer);
+    normalizer = new Normalizer(idGenerator, eventSourcingConfig, dateTimeService);
+    categoryAdapter = new CategoryAdapter(eventBus, eventStore, normalizer);
   }
 
   @Test
