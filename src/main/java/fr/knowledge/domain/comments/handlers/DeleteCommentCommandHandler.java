@@ -7,7 +7,6 @@ import fr.knowledge.domain.comments.ports.CommentRepository;
 import fr.knowledge.domain.common.CommandHandler;
 import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.valueobjects.Id;
-import fr.knowledge.domain.common.valueobjects.Username;
 
 class DeleteCommentCommandHandler implements CommandHandler {
   private final CommentRepository commentRepository;
@@ -18,7 +17,7 @@ class DeleteCommentCommandHandler implements CommandHandler {
 
   @Override
   public void handle(DomainCommand command) throws CommentNotFoundException {
-    Comment comment = commentRepository.get(Id.of(((DeleteCommentCommand) command).getId()), Username.from(((DeleteCommentCommand) command).getCommenter()))
+    Comment comment = commentRepository.get(Id.of(((DeleteCommentCommand) command).getId()))
             .orElseThrow(CommentNotFoundException::new);
     comment.delete();
     commentRepository.save(comment);

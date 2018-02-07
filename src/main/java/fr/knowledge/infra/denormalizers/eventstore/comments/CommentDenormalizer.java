@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CommentDenormalizer {
-  public Optional<Comment> denormalize(List<EventEntity> events) {
+  public static Optional<Comment> denormalize(List<EventEntity> events) {
     events.sort(Comparator.comparing(EventEntity::getTimestamp));
 
     return Optional.of(Comment.rebuild(events.stream()

@@ -2,11 +2,9 @@ package fr.knowledge.domain.comments.handlers;
 
 import fr.knowledge.domain.comments.aggregates.Comment;
 import fr.knowledge.domain.comments.commands.DeleteCommentCommand;
-import fr.knowledge.domain.comments.events.CommentDeletedEvent;
 import fr.knowledge.domain.comments.ports.CommentRepository;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
-import fr.knowledge.domain.common.valueobjects.Username;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +24,7 @@ public class DeleteCommentCommandHandlerTest {
 
   @Before
   public void setUp() {
-    given(commentRepository.get(Id.of("aaa"), Username.from("john@doe.fr"))).willReturn(Optional.of(Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my content")));
+    given(commentRepository.get(Id.of("aaa"))).willReturn(Optional.of(Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my content")));
     deleteCommentCommandHandler = new DeleteCommentCommandHandler(commentRepository);
   }
 

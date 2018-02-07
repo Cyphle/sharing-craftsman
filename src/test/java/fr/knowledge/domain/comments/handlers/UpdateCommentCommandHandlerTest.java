@@ -2,14 +2,12 @@ package fr.knowledge.domain.comments.handlers;
 
 import fr.knowledge.domain.comments.aggregates.Comment;
 import fr.knowledge.domain.comments.commands.UpdateCommentCommand;
-import fr.knowledge.domain.comments.events.CommentUpdatedEvent;
 import fr.knowledge.domain.comments.exceptions.CommentNotFoundException;
 import fr.knowledge.domain.comments.exceptions.UpdateCommentException;
 import fr.knowledge.domain.comments.ports.CommentRepository;
 import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
-import fr.knowledge.domain.common.valueobjects.Username;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +28,7 @@ public class UpdateCommentCommandHandlerTest {
 
   @Before
   public void setUp() throws Exception {
-    given(commentRepository.get(Id.of("aaa"), Username.from("john@doe.fr"))).willReturn(Optional.of(Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my content")));
+    given(commentRepository.get(Id.of("aaa"))).willReturn(Optional.of(Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my content")));
     updateCommentCommandHandler = new UpdateCommentCommandHandler(commentRepository);
   }
 
@@ -47,7 +45,7 @@ public class UpdateCommentCommandHandlerTest {
 
   @Test(expected = CommentNotFoundException.class)
   public void should_throw_exception_if_comment_is_not_found() throws Exception {
-    given(commentRepository.get(Id.of("bbb"), Username.from("john@doe.fr"))).willReturn(Optional.empty());
+    given(commentRepository.get(Id.of("bbb"))).willReturn(Optional.empty());
     UpdateCommentCommand command = new UpdateCommentCommand("bbb", "john@doe.fr", "This is my updated comment");
 
     updateCommentCommandHandler.handle(command);

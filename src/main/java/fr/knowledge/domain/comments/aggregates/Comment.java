@@ -23,8 +23,8 @@ public class Comment {
   private ContentType contentType;
   private Id contentId;
   private Content content;
-  private List<DomainEvent<Comment>> events;
   private boolean deleted;
+  private List<DomainEvent> changes;
 
   private Comment() { }
 
@@ -48,7 +48,7 @@ public class Comment {
   }
 
   public void saveChanges(DomainEvent<Comment> event) {
-    events.add(event);
+    changes.add(event);
   }
 
   public Comment apply(CommentAddedEvent event) {
@@ -58,7 +58,7 @@ public class Comment {
     this.contentId = event.getContentId();
     this.content = event.getContent();
     this.deleted = false;
-    events = new ArrayList<DomainEvent<Comment>>();
+    changes = new ArrayList<>();
     return this;
   }
 
@@ -70,6 +70,10 @@ public class Comment {
   public Comment apply(CommentDeletedEvent event) {
     deleted = true;
     return this;
+  }
+
+  public List<DomainEvent> getChanges() {
+    return changes;
   }
 
   private void verifyContent(Content newContent) throws UpdateCommentException {

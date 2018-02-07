@@ -1,4 +1,4 @@
-package fr.knowledge.infra.adapters;
+package fr.knowledge.infra.adapters.library;
 
 import fr.knowledge.common.DateConverter;
 import fr.knowledge.common.DateService;

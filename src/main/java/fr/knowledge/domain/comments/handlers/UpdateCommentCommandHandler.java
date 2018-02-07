@@ -9,7 +9,6 @@ import fr.knowledge.domain.common.CommandHandler;
 import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.Id;
-import fr.knowledge.domain.common.valueobjects.Username;
 
 class UpdateCommentCommandHandler implements CommandHandler {
   private final CommentRepository commentRepository;
@@ -20,7 +19,7 @@ class UpdateCommentCommandHandler implements CommandHandler {
 
   @Override
   public void handle(DomainCommand command) throws CommentNotFoundException, UpdateCommentException {
-    Comment comment = commentRepository.get(Id.of(((UpdateCommentCommand) command).getId()), Username.from(((UpdateCommentCommand) command).getCommenter()))
+    Comment comment = commentRepository.get(Id.of(((UpdateCommentCommand) command).getId()))
             .orElseThrow(CommentNotFoundException::new);
     comment.update(Content.of(((UpdateCommentCommand) command).getContent()));
     commentRepository.save(comment);
