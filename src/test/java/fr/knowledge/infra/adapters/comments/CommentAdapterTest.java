@@ -8,6 +8,7 @@ import fr.knowledge.domain.comments.aggregates.Comment;
 import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.infra.bus.EventBus;
 import fr.knowledge.infra.denormalizers.eventstore.Normalizer;
 import fr.knowledge.infra.models.EventEntity;
@@ -86,7 +87,7 @@ public class CommentAdapterTest {
   @Test
   public void should_save_category_changes() throws Exception {
     Comment comment = Comment.newComment("aaa", "john@doe.fr", ContentType.CATEGORY, "caa", "This is my content");
-    comment.update(Content.of("Revised comment"));
+    comment.update(Username.from("john@doe.fr"), Content.of("Revised comment"));
 
     commentAdapter.save(comment);
 

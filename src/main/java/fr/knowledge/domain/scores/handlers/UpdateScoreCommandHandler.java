@@ -6,6 +6,7 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.domain.scores.aggregates.Score;
 import fr.knowledge.domain.scores.commands.UpdateScoreCommand;
+import fr.knowledge.domain.scores.exceptions.ScoreException;
 import fr.knowledge.domain.scores.exceptions.ScoreNotFoundException;
 import fr.knowledge.domain.scores.ports.ScoreRepository;
 
@@ -17,10 +18,10 @@ class UpdateScoreCommandHandler implements CommandHandler {
   }
 
   @Override
-  public void handle(DomainCommand command) throws ScoreNotFoundException {
-    Score score = scoreRepository.get(Id.of(((UpdateScoreCommand) command).getId()), Username.from(((UpdateScoreCommand) command).getGiver()))
+  public void handle(DomainCommand command) throws ScoreNotFoundException, ScoreException {
+    Score score = scoreRepository.get(Id.of(((UpdateScoreCommand) command).getId()))
             .orElseThrow(ScoreNotFoundException::new);
-    score.update(((UpdateScoreCommand) command).getMark());
+    score.update(Username.from(((UpdateScoreCommand) command).getGiver()), ((UpdateScoreCommand) command).getMark());
     scoreRepository.save(score);
   }
 }

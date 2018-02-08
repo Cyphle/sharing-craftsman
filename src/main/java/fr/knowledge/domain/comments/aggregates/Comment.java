@@ -3,7 +3,7 @@ package fr.knowledge.domain.comments.aggregates;
 import fr.knowledge.domain.comments.events.CommentAddedEvent;
 import fr.knowledge.domain.comments.events.CommentDeletedEvent;
 import fr.knowledge.domain.comments.events.CommentUpdatedEvent;
-import fr.knowledge.domain.comments.exceptions.UpdateCommentException;
+import fr.knowledge.domain.comments.exceptions.CommentException;
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.ContentType;
@@ -34,14 +34,16 @@ public class Comment {
     saveChanges(event);
   }
 
-  public void update(Content newContent) throws UpdateCommentException {
+  public void update(Username commenter, Content newContent) throws CommentException {
+    verifyCommenter(commenter);
     verifyContent(newContent);
     CommentUpdatedEvent event = new CommentUpdatedEvent(id, newContent);
     apply(event);
     saveChanges(event);
   }
 
-  public void delete() {
+  public void delete(Username commenter) throws CommentException {
+    verifyCommenter(commenter);
     CommentDeletedEvent event = new CommentDeletedEvent(id);
     apply(event);
     saveChanges(event);
@@ -76,9 +78,14 @@ public class Comment {
     return changes;
   }
 
-  private void verifyContent(Content newContent) throws UpdateCommentException {
+  private void verifyCommenter(Username commenter) throws CommentException {
+    if (!this.commenter.equals(commenter))
+      throw new CommentException("Wrong commenter.");
+  }
+
+  private void verifyContent(Content newContent) throws CommentException {
     if (newContent.isEmpty())
-      throw new UpdateCommentException("Content cannot be empty.");
+      throw new CommentException("Content cannot be empty.");
   }
 
   public static Comment of(String id, String commenter, ContentType contentType, String contentId, String content) {

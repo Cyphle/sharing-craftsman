@@ -4,6 +4,7 @@ import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
+import fr.knowledge.domain.scores.exceptions.ScoreException;
 import fr.knowledge.domain.scores.valueobjects.Mark;
 import fr.knowledge.domain.scores.events.ScoreCreatedEvent;
 import fr.knowledge.domain.scores.events.ScoreDeletedEvent;
@@ -33,13 +34,15 @@ public class Score {
     saveChanges(event);
   }
 
-  public void update(Mark mark) {
+  public void update(Username giver, Mark mark) throws ScoreException {
+    verifyUser(giver);
     ScoreUpdatedEvent event = new ScoreUpdatedEvent(id, mark);
     apply(event);
     saveChanges(event);
   }
 
-  public void delete() {
+  public void delete(Username giver) throws ScoreException {
+    verifyUser(giver);
     ScoreDeletedEvent event = new ScoreDeletedEvent(id);
     apply(event);
     saveChanges(event);
@@ -68,6 +71,11 @@ public class Score {
 
   public void saveChanges(DomainEvent event) {
     events.add(event);
+  }
+
+  private void verifyUser(Username giver) throws ScoreException {
+    if (!this.giver.equals(giver))
+      throw new ScoreException("Wrong user.");
   }
 
   public static Score of(String id, String giver, ContentType contentType, String contentId, Mark mark) {
