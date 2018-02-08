@@ -4,7 +4,7 @@ import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
-import fr.knowledge.domain.favorites.events.SelectionCreatedEvent;
+import fr.knowledge.domain.favorites.events.SelectionAddedEvent;
 import fr.knowledge.domain.favorites.events.SelectionRemovedEvent;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -25,7 +25,7 @@ public class Selection {
   private Selection() { }
 
   private Selection(Id id, Username username, ContentType contentType, Id contentId) {
-    SelectionCreatedEvent event = new SelectionCreatedEvent(id, username, contentType, contentId);
+    SelectionAddedEvent event = new SelectionAddedEvent(id, username, contentType, contentId);
     apply(event);
     saveChanges(event);
   }
@@ -36,7 +36,7 @@ public class Selection {
     saveChanges(event);
   }
 
-  public Selection apply(SelectionCreatedEvent event) {
+  public Selection apply(SelectionAddedEvent event) {
     this.id = event.getId();
     this.username = event.getUsername();
     this.contentType = event.getContentType();
@@ -57,11 +57,18 @@ public class Selection {
 
   public static Selection of(String id, String username, ContentType contentType, String contentId) {
     Selection selection = new Selection();
-    selection.apply(new SelectionCreatedEvent(Id.of(id), Username.from(username), contentType, Id.of(contentId)));
+    selection.apply(new SelectionAddedEvent(Id.of(id), Username.from(username), contentType, Id.of(contentId)));
     return selection;
   }
 
   public static Selection newSelection(String id, String username, ContentType contentType, String contentId) {
     return new Selection(Id.of(id), Username.from(username), contentType, Id.of(contentId));
+  }
+
+  public static Selection rebuild(List<DomainEvent> events) {
+    return events.stream()
+            .reduce(new Selection(),
+                    (item, event) -> (Selection) event.apply(item),
+                    (item1, item2) -> item2);
   }
 }

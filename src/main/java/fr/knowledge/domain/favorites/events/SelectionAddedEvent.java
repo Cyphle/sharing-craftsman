@@ -10,13 +10,13 @@ import lombok.ToString;
 
 @EqualsAndHashCode
 @ToString
-public class SelectionCreatedEvent implements DomainEvent<Selection> {
+public class SelectionAddedEvent implements DomainEvent<Selection> {
   private final Id id;
   private final Username username;
   private final ContentType contentType;
   private final Id contentId;
 
-  public SelectionCreatedEvent(Id id, Username username, ContentType contentType, Id contentId) {
+  public SelectionAddedEvent(Id id, Username username, ContentType contentType, Id contentId) {
     this.id = id;
     this.username = username;
     this.contentType = contentType;
@@ -36,12 +36,20 @@ public class SelectionCreatedEvent implements DomainEvent<Selection> {
     return username;
   }
 
+  public String getUsernameContent() {
+    return username.getUsername();
+  }
+
   public ContentType getContentType() {
     return contentType;
   }
 
   public Id getContentId() {
     return contentId;
+  }
+
+  public String getContentIdContent() {
+    return contentId.getId();
   }
 
   @Override

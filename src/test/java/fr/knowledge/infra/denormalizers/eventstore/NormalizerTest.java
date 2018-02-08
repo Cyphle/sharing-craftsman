@@ -9,6 +9,7 @@ import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
+import fr.knowledge.domain.favorites.events.SelectionAddedEvent;
 import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
 import fr.knowledge.domain.library.valueobjects.Name;
 import fr.knowledge.domain.scores.events.ScoreCreatedEvent;
@@ -90,6 +91,22 @@ public class NormalizerTest {
             "saa",
             "fr.knowledge.infra.events.scores.ScoreCreatedInfraEvent",
             "{\"id\":\"saa\",\"giver\":\"john@doe.fr\",\"contentType\":\"KNOWLEDGE\",\"contentId\":\"aaa\",\"mark\":2}"
+    ));
+  }
+
+  @Test
+  public void should_normalize_a_selection_domain_event_to_infra_event() {
+    SelectionAddedEvent selectionAddedEvent = new SelectionAddedEvent(Id.of("saa"), Username.from("john@doe.fr"), ContentType.CATEGORY, Id.of("aaa"));
+
+    EventEntity event = normalizer.normalize(selectionAddedEvent);
+
+    assertThat(event).isEqualTo(new EventEntity(
+            "eaa",
+            1,
+            DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 15, 50, 12)),
+            "saa",
+            "fr.knowledge.infra.events.favorites.SelectionAddedInfraEvent",
+            "{\"id\":\"saa\",\"username\":\"john@doe.fr\",\"contentType\":\"CATEGORY\",\"contentId\":\"aaa\"}"
     ));
   }
 }

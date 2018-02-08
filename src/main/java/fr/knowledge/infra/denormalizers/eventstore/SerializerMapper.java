@@ -5,6 +5,8 @@ import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.infra.events.comments.CommentAddedInfraEvent;
 import fr.knowledge.infra.events.comments.CommentDeletedInfraEvent;
 import fr.knowledge.infra.events.comments.CommentUpdatedInfraEvent;
+import fr.knowledge.infra.events.favorites.SelectionAddedInfraEvent;
+import fr.knowledge.infra.events.favorites.SelectionRemovedInfraEvent;
 import fr.knowledge.infra.events.library.*;
 import fr.knowledge.infra.events.scores.ScoreCreatedInfraEvent;
 import fr.knowledge.infra.events.scores.ScoreDeletedInfraEvent;
@@ -76,6 +78,16 @@ public enum SerializerMapper {
           "ScoreDeletedInfraEvent",
           event -> { return Mapper.fromObjectToJsonString(ScoreDeletedInfraEvent.fromDomainToInfra(event)); },
           "fr.knowledge.infra.events.scores.ScoreDeletedInfraEvent"
+  ),
+  SelectionAddedEvent(
+          "SelectionAddedInfraEvent",
+          event -> { return Mapper.fromObjectToJsonString(SelectionAddedInfraEvent.fromDomainToInfra(event)); },
+          "fr.knowledge.infra.events.favorites.SelectionAddedInfraEvent"
+  ),
+  SelectionRemovedEvent(
+          "SelectionRemovedInfraEvent",
+          event -> { return Mapper.fromObjectToJsonString(SelectionRemovedInfraEvent.fromDomainToInfra(event)); },
+          "fr.knowledge.infra.events.favorites.SelectionRemovedInfraEvent"
   );
 
   public final String eventClass;

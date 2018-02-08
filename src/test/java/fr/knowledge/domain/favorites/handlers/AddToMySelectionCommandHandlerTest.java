@@ -6,7 +6,7 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.domain.favorites.aggregates.Selection;
 import fr.knowledge.domain.favorites.commands.AddToMySelectionCommand;
-import fr.knowledge.domain.favorites.events.SelectionCreatedEvent;
+import fr.knowledge.domain.favorites.events.SelectionAddedEvent;
 import fr.knowledge.domain.favorites.exceptions.AlreadyExistingSelectionException;
 import fr.knowledge.domain.favorites.ports.SelectionRepository;
 import org.junit.Before;
@@ -42,7 +42,7 @@ public class AddToMySelectionCommandHandlerTest {
     addToMySelectionCommandHandler.handle(command);
 
     Selection savedSelection = Selection.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa");
-    savedSelection.saveChanges(new SelectionCreatedEvent(Id.of("aaa"), Username.from("john@doe.fr"), ContentType.CATEGORY, Id.of("aaa")));
+    savedSelection.saveChanges(new SelectionAddedEvent(Id.of("aaa"), Username.from("john@doe.fr"), ContentType.CATEGORY, Id.of("aaa")));
     verify(selectionRepository).save(savedSelection);
   }
 
