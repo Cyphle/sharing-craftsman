@@ -6,6 +6,9 @@ import fr.knowledge.infra.events.comments.CommentAddedInfraEvent;
 import fr.knowledge.infra.events.comments.CommentDeletedInfraEvent;
 import fr.knowledge.infra.events.comments.CommentUpdatedInfraEvent;
 import fr.knowledge.infra.events.library.*;
+import fr.knowledge.infra.events.scores.ScoreCreatedInfraEvent;
+import fr.knowledge.infra.events.scores.ScoreDeletedInfraEvent;
+import fr.knowledge.infra.events.scores.ScoreUpdatedInfraEvent;
 import fr.knowledge.infra.models.EventEntity;
 
 import java.io.IOException;
@@ -16,67 +19,40 @@ import java.util.regex.Pattern;
 
 public enum DeserializerMapper {
   CategoryCreatedEvent("CategoryCreatedInfraEvent", payload -> {
-    try {
-      return Mapper.fromJsonStringToObject(payload, CategoryCreatedInfraEvent.class).fromInfraToDomain();
-    } catch (IOException e) {
-      throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
-    }
+    return Mapper.fromJsonStringToObject(payload, CategoryCreatedInfraEvent.class).fromInfraToDomain();
   }),
   CategoryUpdatedEvent("CategoryUpdatedInfraEvent", payload -> {
-    try {
-      return Mapper.fromJsonStringToObject(payload, CategoryUpdatedInfraEvent.class).fromInfraToDomain();
-    } catch (IOException e) {
-      throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
-    }
+    return Mapper.fromJsonStringToObject(payload, CategoryUpdatedInfraEvent.class).fromInfraToDomain();
   }),
   CategoryDeletedEvent("CategoryDeletedInfraEvent", payload -> {
-    try {
-      return Mapper.fromJsonStringToObject(payload, CategoryDeletedInfraEvent.class).fromInfraToDomain();
-    } catch (IOException e) {
-      throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
-    }
+    return Mapper.fromJsonStringToObject(payload, CategoryDeletedInfraEvent.class).fromInfraToDomain();
   }),
   KnowledgeAddedEvent("KnowledgeAddedInfraEvent", payload -> {
-    try {
-      return Mapper.fromJsonStringToObject(payload, KnowledgeAddedInfraEvent.class).fromInfraToDomain();
-    } catch (IOException e) {
-      throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
-    }
+    return Mapper.fromJsonStringToObject(payload, KnowledgeAddedInfraEvent.class).fromInfraToDomain();
   }),
   KnowledgeUpdatedEvent("KnowledgeUpdatedInfraEvent", payload -> {
-    try {
-      return Mapper.fromJsonStringToObject(payload, KnowledgeUpdatedInfraEvent.class).fromInfraToDomain();
-    } catch (IOException e) {
-      throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
-    }
+    return Mapper.fromJsonStringToObject(payload, KnowledgeUpdatedInfraEvent.class).fromInfraToDomain();
   }),
   KnowledgeDeletedEvent("KnowledgeDeletedInfraEvent", payload -> {
-    try {
-      return Mapper.fromJsonStringToObject(payload, KnowledgeDeletedInfraEvent.class).fromInfraToDomain();
-    } catch (IOException e) {
-      throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
-    }
+    return Mapper.fromJsonStringToObject(payload, KnowledgeDeletedInfraEvent.class).fromInfraToDomain();
   }),
   CommentAddedEvent("CommentAddedInfraEvent", payload -> {
-    try {
-      return Mapper.fromJsonStringToObject(payload, CommentAddedInfraEvent.class).fromInfraToDomain();
-    } catch (IOException e) {
-      throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
-    }
+    return Mapper.fromJsonStringToObject(payload, CommentAddedInfraEvent.class).fromInfraToDomain();
   }),
   CommentUpdatedEvent("CommentUpdatedInfraEvent", payload -> {
-    try {
-      return Mapper.fromJsonStringToObject(payload, CommentUpdatedInfraEvent.class).fromInfraToDomain();
-    } catch (IOException e) {
-      throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
-    }
+    return Mapper.fromJsonStringToObject(payload, CommentUpdatedInfraEvent.class).fromInfraToDomain();
   }),
   CommentDeletedEvent("CommentDeletedInfraEvent", payload -> {
-    try {
-      return Mapper.fromJsonStringToObject(payload, CommentDeletedInfraEvent.class).fromInfraToDomain();
-    } catch (IOException e) {
-      throw new RuntimeException("Error while parsing event payload: " + e.getMessage());
-    }
+    return Mapper.fromJsonStringToObject(payload, CommentDeletedInfraEvent.class).fromInfraToDomain();
+  }),
+  ScoreCreatedEvent("ScoreCreatedInfraEvent", payload -> {
+    return Mapper.fromJsonStringToObject(payload, ScoreCreatedInfraEvent.class).fromInfraToDomain();
+  }),
+  ScoreUpdatedEvent("ScoreUpdatedInfraEvent", payload -> {
+    return Mapper.fromJsonStringToObject(payload, ScoreUpdatedInfraEvent.class).fromInfraToDomain();
+  }),
+  ScoreDeletedEvent("ScoreDeletedInfraEvent", payload -> {
+    return Mapper.fromJsonStringToObject(payload, ScoreDeletedInfraEvent.class).fromInfraToDomain();
   });
 
   public final Function<String, DomainEvent> deserializer;

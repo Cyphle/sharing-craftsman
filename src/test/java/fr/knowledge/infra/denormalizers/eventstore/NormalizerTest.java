@@ -11,6 +11,8 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
 import fr.knowledge.domain.library.valueobjects.Name;
+import fr.knowledge.domain.scores.events.ScoreCreatedEvent;
+import fr.knowledge.domain.scores.valueobjects.Mark;
 import fr.knowledge.infra.models.EventEntity;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,6 +74,22 @@ public class NormalizerTest {
             "aaa",
             "fr.knowledge.infra.events.comments.CommentAddedInfraEvent",
             "{\"id\":\"aaa\",\"commenter\":\"john@doe.fr\",\"contentType\":\"CATEGORY\",\"contentId\":\"caa\",\"content\":\"This is my comment\"}"
+    ));
+  }
+
+  @Test
+  public void should_normalize_a_score_domain_event_to_infra_event() {
+    ScoreCreatedEvent scoreCreatedEvent = new ScoreCreatedEvent(Id.of("saa"), Username.from("john@doe.fr"), ContentType.KNOWLEDGE, Id.of("aaa"), Mark.TWO);
+
+    EventEntity event = normalizer.normalize(scoreCreatedEvent);
+
+    assertThat(event).isEqualTo(new EventEntity(
+            "eaa",
+            1,
+            DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 15, 50, 12)),
+            "saa",
+            "fr.knowledge.infra.events.scores.ScoreCreatedInfraEvent",
+            "{\"id\":\"saa\",\"giver\":\"john@doe.fr\",\"contentType\":\"KNOWLEDGE\",\"contentId\":\"aaa\",\"mark\":2}"
     ));
   }
 }

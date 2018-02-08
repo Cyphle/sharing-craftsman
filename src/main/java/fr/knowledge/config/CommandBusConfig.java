@@ -12,7 +12,7 @@ public class CommandBusConfig {
   public void configure() {
 //    commandBus.subscribe();
     /*
-    Subscribe all command handlers with their repositories (which need event bus maybe)
+    Subscribe all command handlers with their repositories (which need event bus maybe to have to be configured before)
      */
   }
 }

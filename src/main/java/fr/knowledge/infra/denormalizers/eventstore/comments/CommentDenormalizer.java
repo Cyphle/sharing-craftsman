@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
 
 public class CommentDenormalizer {
   public static Optional<Comment> denormalize(List<EventEntity> events) {
+    if (events.isEmpty())
+      return Optional.empty();
+
     events.sort(Comparator.comparing(EventEntity::getTimestamp));
 
     return Optional.of(Comment.rebuild(events.stream()

@@ -1,25 +1,23 @@
-package fr.knowledge.infra.denormalizers.eventstore.library;
+package fr.knowledge.infra.denormalizers.eventstore.scores;
 
-import fr.knowledge.domain.library.aggregates.Category;
+import fr.knowledge.domain.scores.aggregates.Score;
 import fr.knowledge.infra.denormalizers.eventstore.DeserializerMapper;
 import fr.knowledge.infra.models.EventEntity;
-import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class CategoryDenormalizer {
-  public static Optional<Category> denormalize(List<EventEntity> events) {
+public class ScoreDenormalizer {
+  public Optional<Score> denormalize(List<EventEntity> events) {
     if (events.isEmpty())
       return Optional.empty();
 
     events.sort(Comparator.comparing(EventEntity::getTimestamp));
 
-    return Optional.of(Category.rebuild(events.stream()
+    return Optional.of(Score.rebuild(events.stream()
             .map(DeserializerMapper::deserialize)
             .collect(Collectors.toList())));
   }
-
 }

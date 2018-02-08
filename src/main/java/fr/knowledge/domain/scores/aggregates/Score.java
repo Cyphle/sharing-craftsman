@@ -79,4 +79,11 @@ public class Score {
   public static Score newScore(String id, String giver, ContentType contentType, String contentId, Mark mark) {
     return new Score(Id.of(id), Username.from(giver), contentType, Id.of(contentId), mark);
   }
+
+  public static Score rebuild(List<DomainEvent> events) {
+    return events.stream()
+            .reduce(new Score(),
+                    (item, event) -> (Score) event.apply(item),
+                    (item1, item2) -> item2);
+  }
 }

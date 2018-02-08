@@ -44,12 +44,20 @@ public class ScoreCreatedEvent implements DomainEvent<Score> {
     return giver;
   }
 
+  public String getGiverContent() {
+    return giver.getUsername();
+  }
+
   public ContentType getContentType() {
     return contentType;
   }
 
   public Id getContentId() {
     return contentId;
+  }
+
+  public String getContentIdContent() {
+    return contentId.getId();
   }
 
   public Mark getMark() {
