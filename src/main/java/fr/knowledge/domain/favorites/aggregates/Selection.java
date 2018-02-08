@@ -6,6 +6,7 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.domain.favorites.events.SelectionAddedEvent;
 import fr.knowledge.domain.favorites.events.SelectionRemovedEvent;
+import fr.knowledge.domain.favorites.exceptions.SelectionException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -30,7 +31,20 @@ public class Selection {
     saveChanges(event);
   }
 
-  public void delete() {
+  public Username getUsername() {
+    return username;
+  }
+
+  public ContentType getContentType() {
+    return contentType;
+  }
+
+  public Id getContentId() {
+    return contentId;
+  }
+
+  public void delete(Username username) throws SelectionException {
+    verifyUsername(username);
     SelectionRemovedEvent event = new SelectionRemovedEvent(id);
     apply(event);
     saveChanges(event);
@@ -53,6 +67,11 @@ public class Selection {
 
   public void saveChanges(DomainEvent event) {
     changes.add(event);
+  }
+
+  private void verifyUsername(Username username) throws SelectionException {
+    if (!this.username.equals(username))
+      throw new SelectionException("Wrong user.");
   }
 
   public static Selection of(String id, String username, ContentType contentType, String contentId) {

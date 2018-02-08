@@ -7,6 +7,7 @@ import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.favorites.commands.AddToMySelectionCommand;
 import fr.knowledge.domain.favorites.commands.RemoveFromMySelectionCommand;
 import fr.knowledge.domain.favorites.exceptions.AlreadyExistingSelectionException;
+import fr.knowledge.domain.favorites.exceptions.SelectionException;
 import fr.knowledge.domain.favorites.exceptions.SelectionNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,8 @@ public class SelectionService {
       commandBus.send(command);
     } catch (SelectionNotFoundException e) {
       return new ResponseEntity<>("Not found", HttpStatus.NOT_FOUND);
+    } catch (SelectionException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
     } catch (Exception e) {
       return ResponseEntity.badRequest().build();
     }

@@ -9,12 +9,15 @@ import fr.knowledge.domain.favorites.commands.AddToMySelectionCommand;
 import fr.knowledge.domain.favorites.events.SelectionAddedEvent;
 import fr.knowledge.domain.favorites.exceptions.AlreadyExistingSelectionException;
 import fr.knowledge.domain.favorites.ports.SelectionRepository;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
@@ -29,9 +32,9 @@ public class AddToMySelectionCommandHandlerTest {
   private AddToMySelectionCommandHandler addToMySelectionCommandHandler;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(idGenerator.generate()).willReturn("aaa");
-    given(selectionRepository.get(Username.from("john@doe.fr"), ContentType.CATEGORY, Id.of("aaa"))).willReturn(Optional.empty());
+    given(selectionRepository.getAll()).willReturn(Lists.emptyList());
     addToMySelectionCommandHandler = new AddToMySelectionCommandHandler(idGenerator, selectionRepository);
   }
 
@@ -48,7 +51,7 @@ public class AddToMySelectionCommandHandlerTest {
 
   @Test(expected = AlreadyExistingSelectionException.class)
   public void should_throw_exception_if_selection_already_exists() throws Exception {
-    given(selectionRepository.get(Username.from("john@doe.fr"), ContentType.CATEGORY, Id.of("aaa"))).willReturn(Optional.of(Selection.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa")));
+    given(selectionRepository.getAll()).willReturn(Collections.singletonList(Selection.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa")));
     AddToMySelectionCommand command = new AddToMySelectionCommand("john@doe.fr", ContentType.CATEGORY, "aaa");
 
     addToMySelectionCommandHandler.handle(command);

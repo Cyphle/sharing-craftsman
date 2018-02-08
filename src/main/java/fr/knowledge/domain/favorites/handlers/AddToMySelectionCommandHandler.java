@@ -3,13 +3,12 @@ package fr.knowledge.domain.favorites.handlers;
 import fr.knowledge.domain.common.CommandHandler;
 import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.common.IdGenerator;
-import fr.knowledge.domain.common.valueobjects.Id;
-import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.domain.favorites.aggregates.Selection;
 import fr.knowledge.domain.favorites.commands.AddToMySelectionCommand;
 import fr.knowledge.domain.favorites.exceptions.AlreadyExistingSelectionException;
 import fr.knowledge.domain.favorites.ports.SelectionRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 class AddToMySelectionCommandHandler implements CommandHandler {
@@ -23,13 +22,11 @@ class AddToMySelectionCommandHandler implements CommandHandler {
 
   @Override
   public void handle(DomainCommand command) throws AlreadyExistingSelectionException {
-    Optional<Selection> selection = selectionRepository.get(
-            Username.from(((AddToMySelectionCommand) command).getUsername()),
-            ((AddToMySelectionCommand) command).getContentType(),
-            Id.of(((AddToMySelectionCommand) command).getContentId())
-    );
+    List<Selection> selections = selectionRepository.getAll();
 
-    if (selection.isPresent())
+    boolean doesExists = selections.stream()
+            .anyMatch(((AddToMySelectionCommand) command)::hasSameProperties);
+    if (doesExists)
       throw new AlreadyExistingSelectionException();
 
     Selection newSelection = Selection.newSelection(
