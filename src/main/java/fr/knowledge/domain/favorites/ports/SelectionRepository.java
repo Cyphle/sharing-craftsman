@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SelectionRepository {
-  Optional<Selection> get(Id id);
+  Optional<Selection> get(Id aggregateId);
 
   List<Selection> getAll();
 

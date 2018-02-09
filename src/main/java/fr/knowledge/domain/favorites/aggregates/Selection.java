@@ -43,6 +43,14 @@ public class Selection {
     return contentId;
   }
 
+  public List<DomainEvent> getChanges() {
+    return changes;
+  }
+
+  public void saveChanges(DomainEvent event) {
+    changes.add(event);
+  }
+
   public void delete(Username username) throws SelectionException {
     verifyUsername(username);
     SelectionRemovedEvent event = new SelectionRemovedEvent(id);
@@ -63,10 +71,6 @@ public class Selection {
   public Selection apply(SelectionRemovedEvent event) {
     deleted = true;
     return this;
-  }
-
-  public void saveChanges(DomainEvent event) {
-    changes.add(event);
   }
 
   private void verifyUsername(Username username) throws SelectionException {
