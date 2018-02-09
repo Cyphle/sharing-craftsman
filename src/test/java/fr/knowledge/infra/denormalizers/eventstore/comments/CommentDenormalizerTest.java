@@ -17,13 +17,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CommentDenormalizerTest {
-  private CommentDenormalizer commentDenormalizer;
-
-  @Before
-  public void setUp() {
-    commentDenormalizer = new CommentDenormalizer();
-  }
-
   @Test
   public void should_rebuild_comment_state() {
     EventEntity commentAddedEvent = new EventEntity(
@@ -51,7 +44,7 @@ public class CommentDenormalizerTest {
             "{\"id\":\"caa\"}"
     );
 
-    Optional<Comment> denormalizedComment = commentDenormalizer.denormalize(Arrays.asList(commentAddedEvent, commentUpdatedEvent, commentDeletedEvent));
+    Optional<Comment> denormalizedComment = CommentDenormalizer.denormalize(Arrays.asList(commentAddedEvent, commentUpdatedEvent, commentDeletedEvent));
 
     Comment comment = Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "caa", "I am sorry. This is a good comment");
     comment.apply(new CommentDeletedEvent(Id.of("caa")));

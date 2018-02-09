@@ -34,7 +34,6 @@ public class CommentAdapterTest {
   private EventStore eventStore;
   @Mock
   private EventBus eventBus;
-  @Mock
   private Normalizer normalizer;
   @Mock
   private IdGenerator idGenerator;

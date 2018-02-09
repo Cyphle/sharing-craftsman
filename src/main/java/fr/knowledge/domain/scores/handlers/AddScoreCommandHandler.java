@@ -10,6 +10,7 @@ import fr.knowledge.domain.scores.commands.AddScoreCommand;
 import fr.knowledge.domain.scores.exceptions.AlreadyGivenScoreException;
 import fr.knowledge.domain.scores.ports.ScoreRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 class AddScoreCommandHandler implements CommandHandler {
@@ -23,9 +24,11 @@ class AddScoreCommandHandler implements CommandHandler {
 
   @Override
   public void handle(DomainCommand command) throws AlreadyGivenScoreException {
-    Optional<Score> score = scoreRepository.get(Username.from(((AddScoreCommand) command).getGiver()), Id.of(((AddScoreCommand) command).getContentId()));
+    List<Score> scores = scoreRepository.getAll();
 
-    if (score.isPresent())
+    boolean isScoreAlreadyGiven = scores.stream()
+            .anyMatch(((AddScoreCommand) command)::hasSameProperties);
+    if (isScoreAlreadyGiven)
       throw new AlreadyGivenScoreException();
 
     Score newScore = Score.newScore(

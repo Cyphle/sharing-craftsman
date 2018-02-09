@@ -23,7 +23,7 @@ public class Score {
   private ContentType contentType;
   private Id contentId;
   private Mark mark;
-  private List<DomainEvent> events;
+  private List<DomainEvent> changes;
   private boolean deleted;
 
   private Score() { }
@@ -32,6 +32,14 @@ public class Score {
     ScoreCreatedEvent event = new ScoreCreatedEvent(id, giver, contentType, contentId, mark);
     apply(event);
     saveChanges(event);
+  }
+
+  public Username getGiver() {
+    return giver;
+  }
+
+  public Id getContentId() {
+    return contentId;
   }
 
   public void update(Username giver, Mark mark) throws ScoreException {
@@ -55,7 +63,7 @@ public class Score {
     this.contentId = event.getContentId();
     this.mark = event.getMark();
     this.deleted = false;
-    this.events = new ArrayList<>();
+    this.changes = new ArrayList<>();
     return this;
   }
 
@@ -70,7 +78,11 @@ public class Score {
   }
 
   public void saveChanges(DomainEvent event) {
-    events.add(event);
+    changes.add(event);
+  }
+
+  public List<DomainEvent> getChanges() {
+    return changes;
   }
 
   private void verifyUser(Username giver) throws ScoreException {

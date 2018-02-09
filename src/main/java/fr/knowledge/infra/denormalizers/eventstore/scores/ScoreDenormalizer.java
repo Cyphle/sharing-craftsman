@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ScoreDenormalizer {
-  public Optional<Score> denormalize(List<EventEntity> events) {
+  public static Optional<Score> denormalize(List<EventEntity> events) {
     if (events.isEmpty())
       return Optional.empty();
 

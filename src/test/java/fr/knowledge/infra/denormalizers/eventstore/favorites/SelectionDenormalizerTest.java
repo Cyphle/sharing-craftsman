@@ -17,13 +17,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SelectionDenormalizerTest {
-  private SelectionDenormalizer selectionDenormalizer;
-
-  @Before
-  public void setUp() {
-    selectionDenormalizer = new SelectionDenormalizer();
-  }
-
   @Test
   public void should_rebuild_selection_state() {
     EventEntity selectionAddedEvent = new EventEntity(
@@ -43,7 +36,7 @@ public class SelectionDenormalizerTest {
             "{\"id\":\"saa\"}"
     );
 
-    Optional<Selection> denormalizedSelection = selectionDenormalizer.denormalize(Arrays.asList(selectionAddedEvent, selectionRemovedEvent));
+    Optional<Selection> denormalizedSelection = SelectionDenormalizer.denormalize(Arrays.asList(selectionAddedEvent, selectionRemovedEvent));
 
     Selection selection = Selection.of("saa", "john@doe.fr", ContentType.CATEGORY, "aaa");
     selection.apply(new SelectionRemovedEvent(Id.of("saa")));

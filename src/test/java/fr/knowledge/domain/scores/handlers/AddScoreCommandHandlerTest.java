@@ -10,12 +10,15 @@ import fr.knowledge.domain.scores.commands.AddScoreCommand;
 import fr.knowledge.domain.scores.events.ScoreCreatedEvent;
 import fr.knowledge.domain.scores.exceptions.AlreadyGivenScoreException;
 import fr.knowledge.domain.scores.ports.ScoreRepository;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
@@ -32,7 +35,7 @@ public class AddScoreCommandHandlerTest {
   @Before
   public void setUp() {
     given(idGenerator.generate()).willReturn("aaa");
-    given(scoreRepository.get(Username.from("john@doe.fr"), Id.of("aaa"))).willReturn(Optional.empty());
+    given(scoreRepository.getAll()).willReturn(Lists.emptyList());
     addScoreCommandHandler = new AddScoreCommandHandler(idGenerator, scoreRepository);
   }
 
@@ -48,8 +51,9 @@ public class AddScoreCommandHandlerTest {
 
   @Test(expected = AlreadyGivenScoreException.class)
   public void should_throw_exception_if_giver_already_gave_score_to_content() throws Exception {
-    given(scoreRepository.get(Username.from("john@doe.fr"), Id.of("aaa"))).willReturn(Optional.of(Score.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", Mark.FIVE)));
-    AddScoreCommand command = new AddScoreCommand("john@doe.fr", ContentType.CATEGORY, "aaa", Mark.FIVE);
+    given(scoreRepository.getAll()).willReturn(Collections.singletonList(Score.of("aaa", "john@doe.fr", ContentType.CATEGORY, "caa", Mark.FOUR)));
+
+    AddScoreCommand command = new AddScoreCommand("john@doe.fr", ContentType.CATEGORY, "caa", Mark.FIVE);
 
     addScoreCommandHandler.handle(command);
   }

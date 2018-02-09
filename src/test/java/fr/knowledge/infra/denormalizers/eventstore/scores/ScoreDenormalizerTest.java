@@ -18,13 +18,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScoreDenormalizerTest {
-  private ScoreDenormalizer scoreDenormalizer;
-
-  @Before
-  public void setUp() {
-    scoreDenormalizer = new ScoreDenormalizer();
-  }
-
   @Test
   public void should_rebuild_score_state() {
     EventEntity scoreCreatedEvent = new EventEntity(
@@ -52,7 +45,7 @@ public class ScoreDenormalizerTest {
             "{\"id\":\"saa\"}"
     );
 
-    Optional<Score> denormalizedScore = scoreDenormalizer.denormalize(Arrays.asList(scoreCreatedEvent, scoreUpdatedEvent, scoreDeletedEvent));
+    Optional<Score> denormalizedScore = ScoreDenormalizer.denormalize(Arrays.asList(scoreCreatedEvent, scoreUpdatedEvent, scoreDeletedEvent));
 
     Score score = Score.of("saa", "john@doe.fr", ContentType.KNOWLEDGE, "aaa", Mark.FOUR);
     score.apply(new ScoreDeletedEvent(Id.of("saa")));

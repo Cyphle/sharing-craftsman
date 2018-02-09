@@ -77,7 +77,7 @@ public class CategoryAdapterTest {
   }
 
   @Test
-  public void should_get_one_category_by_id() throws Exception {
+  public void should_get_one_category_by_id() {
     Optional<Category> fetchCategory = categoryAdapter.get(Id.of("aaa"));
 
     Category category = Category.of("aaa", "SOLID");

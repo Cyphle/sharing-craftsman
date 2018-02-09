@@ -10,8 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SelectionDenormalizer {
-
-  public Optional<Selection> denormalize(List<EventEntity> events) {
+  public static Optional<Selection> denormalize(List<EventEntity> events) {
     if (events.isEmpty())
       return Optional.empty();
 
