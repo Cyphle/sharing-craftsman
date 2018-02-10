@@ -1,4 +1,4 @@
-package fr.knowledge.infra.models;
+package fr.knowledge.infra.models.library;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
@@ -30,5 +30,9 @@ public class CategoryElastic {
     this.id = id;
     this.name = name;
     this.knowledges = knowledges;
+  }
+
+  public void addKnowledge(KnowledgeElastic knowledge) {
+    knowledges.add(knowledge);
   }
 }

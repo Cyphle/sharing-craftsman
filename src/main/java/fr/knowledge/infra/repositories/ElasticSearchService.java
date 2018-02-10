@@ -108,7 +108,7 @@ public class ElasticSearchService {
     return null;
   }
 
-  public SearchResult searchElementsWilcard(String index, String property, String searchTerm) {
+  public SearchResult searchElementsWildcard(String index, String property, String searchTerm) {
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
     searchSourceBuilder.query(QueryBuilders.wildcardQuery(index.toUpperCase() + "." + property, searchTerm));
 

@@ -2,8 +2,8 @@ package fr.knowledge.infra.repositories;
 
 import fr.knowledge.KnowledgeLibraryApplication;
 import fr.knowledge.common.Mapper;
-import fr.knowledge.infra.models.CategoryElastic;
-import fr.knowledge.infra.models.KnowledgeElastic;
+import fr.knowledge.infra.models.library.CategoryElastic;
+import fr.knowledge.infra.models.library.KnowledgeElastic;
 import io.searchbox.core.SearchResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,7 +63,7 @@ public class ElasticSearchServiceTest {
 
   @Test
   public void should_find_elements_with_wildcard() {
-    SearchResult searchResult = elasticSearchService.searchElementsWilcard(ElasticIndexes.library.name(), "knowledges.title", "*knowledge");
+    SearchResult searchResult = elasticSearchService.searchElementsWildcard(ElasticIndexes.library.name(), "knowledges.title", "*knowledge");
 
     List<SearchResult.Hit<CategoryElastic, Void>> hits = searchResult.getHits(CategoryElastic.class);
 
@@ -77,7 +77,22 @@ public class ElasticSearchServiceTest {
   @Test
   public void should_update_element() {
     Map<String, String> updates = new HashMap<>();
-    updates.put("name", "Architecture");
+    updates.put("name", "SOLID");
     elasticSearchService.updateElement(ElasticIndexes.library.name(), "aaa", updates);
+  }
+
+  @Test
+  public void should_add_knowledge() {
+    SearchResult searchResult = elasticSearchService.searchElementsWildcard(ElasticIndexes.library.name(), "knowledges.title", "*knowledge");
+
+    List<CategoryElastic> categories = searchResult.getHits(CategoryElastic.class).stream()
+            .map(h -> h.source)
+            .collect(Collectors.toList());
+
+    CategoryElastic category = categories.get(0);
+    category.addKnowledge(new KnowledgeElastic("kbb", "foo@bar", "Second knowledge", "Super content"));
+
+    elasticSearchService.deleteElement("aaa", ElasticIndexes.library.name());
+    elasticSearchService.createElement(ElasticIndexes.library.name(), Mapper.fromObjectToJsonString(category));
   }
 }

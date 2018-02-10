@@ -4,7 +4,7 @@ import fr.knowledge.common.Mapper;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.events.CategoryCreatedEvent;
 import fr.knowledge.domain.library.valueobjects.Name;
-import fr.knowledge.infra.models.CategoryElastic;
+import fr.knowledge.infra.models.library.CategoryElastic;
 import fr.knowledge.infra.repositories.ElasticIndexes;
 import fr.knowledge.infra.repositories.ElasticSearchService;
 import org.junit.Before;

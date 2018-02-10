@@ -1,4 +1,4 @@
-package fr.knowledge.infra.models;
+package fr.knowledge.infra.models.library;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
