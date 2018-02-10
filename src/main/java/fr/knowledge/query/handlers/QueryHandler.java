@@ -2,6 +2,8 @@ package fr.knowledge.query.handlers;
 
 import fr.knowledge.query.queries.Query;
 
-public interface QueryHandler {
-  void handle(Query query);
+import java.util.List;
+
+public interface QueryHandler<T> {
+  List<T> handle(Query query);
 }

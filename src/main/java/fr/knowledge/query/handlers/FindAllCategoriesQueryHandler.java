@@ -1,10 +1,13 @@
 package fr.knowledge.query.handlers;
 
+import fr.knowledge.infra.models.library.CategoryElastic;
 import fr.knowledge.query.queries.Query;
 
-public class FindAllCategoriesQueryHandler implements QueryHandler {
-  @Override
-  public void handle(Query query) {
+import java.util.List;
 
+public class FindAllCategoriesQueryHandler implements QueryHandler<CategoryElastic> {
+  @Override
+  public List handle(Query query) {
+    return null;
   }
 }
