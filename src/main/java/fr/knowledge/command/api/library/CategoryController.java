@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/library")
 @Api(description = "Endpoints to interact with the knowledge library categories")
 public class CategoryController {
-  private LibraryService libraryService;
+  private final LibraryService libraryService;
 
   @Autowired
   public CategoryController(LibraryService libraryService) {

@@ -6,7 +6,7 @@ import fr.knowledge.infra.repositories.ElasticIndexes;
 import fr.knowledge.infra.repositories.ElasticSearchService;
 
 public class CategoryDeletedEventHandler implements EventHandler {
-  private ElasticSearchService elasticSearchService;
+  private final ElasticSearchService elasticSearchService;
 
   public CategoryDeletedEventHandler(ElasticSearchService elasticSearchService) {
     this.elasticSearchService = elasticSearchService;

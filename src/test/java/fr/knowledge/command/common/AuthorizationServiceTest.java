@@ -22,7 +22,7 @@ public class AuthorizationServiceTest {
   private AuthorizationService authorizationService;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     authorizationInfoDTO = new AuthorizationInfoDTO(
             "client",
             "secret",
@@ -34,7 +34,7 @@ public class AuthorizationServiceTest {
   }
 
   @Test
-  public void should_return_ok_if_user_is_authorized_with_user_role() throws Exception {
+  public void should_return_ok_if_user_is_authorized_with_user_role() {
     given(userService.verifyToken("client", "secret", "john@doe.fr", "token")).willReturn(ResponseEntity.ok().build());
     AuthorizationsDTO authorizationsDTO = AuthorizationsDTO.from(
             Sets.newHashSet(GroupDTO.from("USERS", Sets.newHashSet(RoleDTO.from("ROLE_USER"))))
@@ -45,14 +45,14 @@ public class AuthorizationServiceTest {
   }
 
   @Test
-  public void should_return_unauthorized_if_user_is_not_authorized() throws Exception {
+  public void should_return_unauthorized_if_user_is_not_authorized() {
     given(userService.verifyToken("client", "secret", "john@doe.fr", "token")).willReturn(new ResponseEntity("Unauthorized", HttpStatus.UNAUTHORIZED));
 
     assertThat(authorizationService.isUserAuthorized(authorizationInfoDTO)).isFalse();
   }
 
   @Test
-  public void should_return_unauthorized_if_user_has_not_role_user() throws Exception {
+  public void should_return_unauthorized_if_user_has_not_role_user() {
     given(userService.verifyToken("client", "secret", "john@doe.fr", "token")).willReturn(ResponseEntity.ok().build());
     AuthorizationsDTO authorizationsDTO = AuthorizationsDTO.from(
             Sets.newHashSet(GroupDTO.from("", Sets.newHashSet()))
@@ -64,7 +64,7 @@ public class AuthorizationServiceTest {
   }
 
   @Test
-  public void should_return_true_if_both_username_are_the_same() throws Exception {
+  public void should_return_true_if_both_username_are_the_same() {
     assertThat(authorizationService.areUsernameEquals("john@doe.fr", "john@doe.fr")).isTrue();
   }
 }

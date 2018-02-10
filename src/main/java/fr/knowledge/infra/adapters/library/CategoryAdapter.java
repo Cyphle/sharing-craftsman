@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class CategoryAdapter implements CategoryRepository {
   private final EventBus eventBus;
   private final EventStore eventStore;
-  private Normalizer normalizer;
+  private final Normalizer normalizer;
 
   @Autowired
   public CategoryAdapter(

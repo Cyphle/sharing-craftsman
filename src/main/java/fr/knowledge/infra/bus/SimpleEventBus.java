@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Component
 public class SimpleEventBus implements EventBus {
-  private Map<Class<? extends DomainEvent>, EventHandler> handlers;
+  private final Map<Class<? extends DomainEvent>, EventHandler> handlers;
 
   public SimpleEventBus() {
     this.handlers = new HashMap<>();

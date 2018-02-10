@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class UpdateCommentCommand implements DomainCommand {
   private final String id;
-  private String commenter;
+  private final String commenter;
   private final String newContent;
 
   public UpdateCommentCommand(String id, String commenter, String newContent) {

@@ -5,7 +5,6 @@ import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.DeleteKnowledgeCommand;
 import fr.knowledge.domain.library.events.KnowledgeAddedEvent;
 import fr.knowledge.domain.library.events.KnowledgeDeletedEvent;
-import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
 import org.junit.Before;

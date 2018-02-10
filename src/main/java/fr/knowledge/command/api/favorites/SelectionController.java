@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/selections")
 @Api(description = "Endpoints to manage favorites")
 public class SelectionController {
-  private SelectionService selectionService;
+  private final SelectionService selectionService;
 
   @Autowired
   public SelectionController(SelectionService selectionService) {

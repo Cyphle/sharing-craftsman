@@ -21,7 +21,7 @@ public class ScoreElastic {
   public ScoreElastic() {
   }
 
-  public ScoreElastic(String id, String giver, String contentType, String contentId, int mark) {
+  private ScoreElastic(String id, String giver, String contentType, String contentId, int mark) {
     this.id = id;
     this.giver = giver;
     this.contentType = contentType;

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/scores")
 @Api(description = "Endpoints to manage scores")
 public class ScoreController {
-  private ScoreService scoreService;
+  private final ScoreService scoreService;
 
   @Autowired
   public ScoreController(ScoreService scoreService) {

@@ -22,7 +22,7 @@ public class Category {
   private List<DomainEvent> changes;
   private boolean deleted;
 
-  public Category() { }
+  private Category() { }
 
   private Category(Id id, Name name) throws CategoryException {
     verifyCategory(name);

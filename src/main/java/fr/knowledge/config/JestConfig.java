@@ -15,7 +15,7 @@ import java.util.Map;
 public class JestConfig implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  JestClient client = null;
+  private JestClient client = null;
 
   @Value("${spring.elasticsearch.jest.uris}")
   String host;

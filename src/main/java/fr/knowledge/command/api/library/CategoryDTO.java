@@ -12,12 +12,12 @@ public class CategoryDTO {
   public CategoryDTO() {
   }
 
-  public CategoryDTO(String id, String name) {
+  private CategoryDTO(String id, String name) {
     this.id = id;
     this.name = name;
   }
 
-  public CategoryDTO(String name) {
+  private CategoryDTO(String name) {
     this.name = name;
   }
 

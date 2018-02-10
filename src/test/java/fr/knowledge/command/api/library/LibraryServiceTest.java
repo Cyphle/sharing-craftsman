@@ -27,7 +27,7 @@ public class LibraryServiceTest {
   private AuthorizationService authorizationService;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(authorizationService.isUserAuthorized(any(AuthorizationInfoDTO.class))).willReturn(true);
 
     authorizationInfoDTO = new AuthorizationInfoDTO(

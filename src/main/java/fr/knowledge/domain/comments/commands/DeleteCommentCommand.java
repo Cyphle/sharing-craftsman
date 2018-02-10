@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class DeleteCommentCommand implements DomainCommand {
   private final String id;
-  private String commenter;
+  private final String commenter;
 
   public DeleteCommentCommand(String id, String commenter) {
     this.id = id;

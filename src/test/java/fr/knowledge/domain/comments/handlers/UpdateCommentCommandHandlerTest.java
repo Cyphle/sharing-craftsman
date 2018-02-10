@@ -29,7 +29,7 @@ public class UpdateCommentCommandHandlerTest {
   private UpdateCommentCommandHandler updateCommentCommandHandler;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(commentRepository.get(Id.of("aaa"))).willReturn(Optional.of(Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my content")));
     updateCommentCommandHandler = new UpdateCommentCommandHandler(commentRepository);
   }

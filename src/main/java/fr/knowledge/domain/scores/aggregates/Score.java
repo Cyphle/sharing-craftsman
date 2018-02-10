@@ -77,7 +77,7 @@ public class Score {
     return this;
   }
 
-  public void saveChanges(DomainEvent event) {
+  private void saveChanges(DomainEvent event) {
     changes.add(event);
   }
 

@@ -10,20 +10,20 @@ public class ScoreDTO {
   public ScoreDTO() {
   }
 
-  public ScoreDTO(String giver, String contentType, String contentId, int mark) {
+  private ScoreDTO(String giver, String contentType, String contentId, int mark) {
     this.giver = giver;
     this.contentType = contentType;
     this.contentId = contentId;
     this.mark = mark;
   }
 
-  public ScoreDTO(String id, String giver, int mark) {
+  private ScoreDTO(String id, String giver, int mark) {
     this.id = id;
     this.giver = giver;
     this.mark = mark;
   }
 
-  public ScoreDTO(String id, String giver) {
+  private ScoreDTO(String id, String giver) {
     this.id = id;
     this.giver = giver;
   }

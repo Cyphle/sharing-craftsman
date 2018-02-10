@@ -22,8 +22,12 @@ import java.util.StringJoiner;
 @Service
 public class ElasticSearchService {
   private final Logger log = LoggerFactory.getLogger(this.getClass());
-  @Autowired
   private JestConfig jestConfig;
+
+  @Autowired
+  public ElasticSearchService(JestConfig jestConfig) {
+    this.jestConfig = jestConfig;
+  }
 
   public void createIndexes() {
     jestConfig.getIndexNames().forEach((key, value) -> {

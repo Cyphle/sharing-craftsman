@@ -10,20 +10,20 @@ public class CommentDTO {
   public CommentDTO() {
   }
 
-  public CommentDTO(String commenter, String contentType, String contentId, String content) {
+  private CommentDTO(String commenter, String contentType, String contentId, String content) {
     this.commenter = commenter;
     this.contentType = contentType;
     this.contentId = contentId;
     this.content = content;
   }
 
-  public CommentDTO(String id, String commenter, String content) {
+  private CommentDTO(String id, String commenter, String content) {
     this.id = id;
     this.commenter = commenter;
     this.content = content;
   }
 
-  public CommentDTO(String id, String commenter) {
+  private CommentDTO(String id, String commenter) {
     this.id = id;
     this.commenter = commenter;
   }

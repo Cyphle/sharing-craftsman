@@ -4,7 +4,6 @@ import fr.knowledge.common.IdGenerator;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.AddKnowledgeCommand;
-import fr.knowledge.domain.library.events.KnowledgeAddedEvent;
 import fr.knowledge.domain.library.exceptions.AddKnowledgeException;
 import fr.knowledge.domain.library.exceptions.CategoryNotFoundException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
@@ -31,7 +30,7 @@ public class AddKnowledgeCommandHandlerTest {
   private CategoryRepository categoryRepository;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(idGenerator.generate()).willReturn("aaa");
     given(categoryRepository.get(Id.of("aaa"))).willReturn(Optional.of(Category.of("aaa", "Architecture")));
     addKnowledgeCommandHandler = new AddKnowledgeCommandHandler(idGenerator, categoryRepository);

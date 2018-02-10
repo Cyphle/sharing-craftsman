@@ -4,7 +4,6 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.commands.UpdateCategoryCommand;
-import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
 import fr.knowledge.domain.library.exceptions.CategoryNotFoundException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.domain.library.valueobjects.Name;
@@ -28,7 +27,7 @@ public class UpdateCategoryCommandHandlerTest {
   private UpdateCategoryCommandHandler updateCategoryCommandHandler;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(categoryRepository.get(Id.of("aaa"))).willReturn(Optional.of(Category.of("aaa", "Architecture")));
     updateCategoryCommandHandler = new UpdateCategoryCommandHandler(categoryRepository);
   }

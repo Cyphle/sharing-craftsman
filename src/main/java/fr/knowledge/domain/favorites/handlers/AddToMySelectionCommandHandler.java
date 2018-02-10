@@ -9,7 +9,6 @@ import fr.knowledge.domain.favorites.exceptions.AlreadyExistingSelectionExceptio
 import fr.knowledge.domain.favorites.ports.SelectionRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public class AddToMySelectionCommandHandler implements CommandHandler {
   private final SelectionRepository selectionRepository;
