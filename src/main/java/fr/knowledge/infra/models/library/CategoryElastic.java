@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ToString
 @EqualsAndHashCode
@@ -43,6 +44,12 @@ public class CategoryElastic {
             .findAny()
             .orElseThrow(RuntimeException::new)
             .update(KnowledgeElastic.fromDomainToElastic(knowledge));
+  }
+
+  public void deleteKnowledge(String knowledgeId) {
+    knowledges = knowledges.stream()
+            .filter(knowledgeElastic -> !knowledgeElastic.getId().equals(knowledgeId))
+            .collect(Collectors.toList());
   }
 
   public static CategoryElastic of(String id, String name) {
