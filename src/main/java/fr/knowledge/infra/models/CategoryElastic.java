@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ToString
@@ -22,6 +23,7 @@ public class CategoryElastic {
   public CategoryElastic(String id, String name) {
     this.id = id;
     this.name = name;
+    this.knowledges = new ArrayList<>();
   }
 
   public CategoryElastic(String id, String name, List<KnowledgeElastic> knowledges) {

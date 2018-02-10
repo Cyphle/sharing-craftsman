@@ -18,12 +18,12 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class CategoryCreatedEventHandlerTest {
   @Mock
-  private ElasticSearchService elasticService;
+  private ElasticSearchService elasticSearchService;
   private CategoryCreatedEventHandler categoryCreatedEventHandler;
 
   @Before
   public void setUp() {
-    categoryCreatedEventHandler = new CategoryCreatedEventHandler();
+    categoryCreatedEventHandler = new CategoryCreatedEventHandler(elasticSearchService);
   }
 
   @Test
@@ -32,6 +32,6 @@ public class CategoryCreatedEventHandlerTest {
     categoryCreatedEventHandler.apply(event);
 
     CategoryElastic category = new CategoryElastic("aaa", "Architecture");
-    verify(elasticService).createElement(ElasticIndexes.library.name(), Mapper.fromObjectToJsonString(category));
+    verify(elasticSearchService).createElement(ElasticIndexes.library.name(), Mapper.fromObjectToJsonString(category));
   }
 }

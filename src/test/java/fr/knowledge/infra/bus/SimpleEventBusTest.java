@@ -1,9 +1,6 @@
 package fr.knowledge.infra.bus;
 
 import fr.knowledge.domain.common.valueobjects.Id;
-import fr.knowledge.domain.library.commands.CreateCategoryCommand;
-import fr.knowledge.domain.library.commands.DeleteCategoryCommand;
-import fr.knowledge.domain.library.commands.UpdateCategoryCommand;
 import fr.knowledge.domain.library.events.CategoryCreatedEvent;
 import fr.knowledge.domain.library.events.CategoryDeletedEvent;
 import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
@@ -12,6 +9,7 @@ import fr.knowledge.infra.handlers.EventHandler;
 import fr.knowledge.infra.handlers.library.CategoryCreatedEventHandler;
 import fr.knowledge.infra.handlers.library.CategoryDeletedEventHandler;
 import fr.knowledge.infra.handlers.library.CategoryUpdatedEventHandler;
+import fr.knowledge.infra.repositories.ElasticSearchService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +31,8 @@ public class SimpleEventBusTest {
   private CategoryUpdatedEventHandler categoryUpdatedEventHandler;
   @Mock
   private CategoryDeletedEventHandler categoryDeletedEventHandler;
+  @Mock
+  private ElasticSearchService elasticSearchService;
 
   @Before
   public void setUp() {
@@ -41,7 +41,7 @@ public class SimpleEventBusTest {
 
   @Test
   public void should_register_category_created_event_handler() {
-    CategoryCreatedEventHandler categoryCreatedEventHandler = new CategoryCreatedEventHandler();
+    CategoryCreatedEventHandler categoryCreatedEventHandler = new CategoryCreatedEventHandler(elasticSearchService);
     eventBus.subscribe(CategoryCreatedEvent.class, categoryCreatedEventHandler);
 
     Map<Class, EventHandler> handlers = new HashMap<>();
