@@ -1,4 +1,4 @@
-package fr.knowledge.infra.denormalizers.eventstore.favorites;
+package fr.knowledge.infra.denormalizers.favorites;
 
 import fr.knowledge.common.DateConverter;
 import fr.knowledge.domain.common.valueobjects.ContentType;
@@ -6,7 +6,6 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.favorites.aggregates.Selection;
 import fr.knowledge.domain.favorites.events.SelectionRemovedEvent;
 import fr.knowledge.infra.models.EventEntity;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;

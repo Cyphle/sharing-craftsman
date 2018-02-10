@@ -1,21 +1,12 @@
-package fr.knowledge.infra.denormalizers.eventstore.library;
+package fr.knowledge.infra.denormalizers.library;
 
 import fr.knowledge.common.DateConverter;
-import fr.knowledge.common.DateService;
-import fr.knowledge.common.IdGenerator;
-import fr.knowledge.config.EventSourcingConfig;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
-import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
 import fr.knowledge.domain.library.events.KnowledgeAddedEvent;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
-import fr.knowledge.domain.library.valueobjects.Name;
 import fr.knowledge.infra.models.EventEntity;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -23,7 +14,6 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 
 public class CategoryDenormalizerTest {
   @Test

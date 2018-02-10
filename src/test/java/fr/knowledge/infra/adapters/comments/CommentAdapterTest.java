@@ -10,7 +10,7 @@ import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.infra.bus.EventBus;
-import fr.knowledge.infra.denormalizers.eventstore.Normalizer;
+import fr.knowledge.infra.denormalizers.Normalizer;
 import fr.knowledge.infra.models.EventEntity;
 import fr.knowledge.infra.repositories.EventStore;
 import org.junit.Before;

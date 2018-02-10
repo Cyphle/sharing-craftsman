@@ -5,12 +5,10 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.infra.bus.EventBus;
-import fr.knowledge.infra.denormalizers.eventstore.Normalizer;
-import fr.knowledge.infra.denormalizers.eventstore.library.CategoryDenormalizer;
+import fr.knowledge.infra.denormalizers.Normalizer;
+import fr.knowledge.infra.denormalizers.library.CategoryDenormalizer;
 import fr.knowledge.infra.models.EventEntity;
 import fr.knowledge.infra.repositories.EventStore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

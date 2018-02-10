@@ -1,4 +1,4 @@
-package fr.knowledge.infra.denormalizers.eventstore;
+package fr.knowledge.infra.denormalizers;
 
 import fr.knowledge.common.DateService;
 import fr.knowledge.common.IdGenerator;

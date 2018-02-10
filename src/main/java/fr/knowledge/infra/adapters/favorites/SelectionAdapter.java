@@ -5,9 +5,8 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.favorites.aggregates.Selection;
 import fr.knowledge.domain.favorites.ports.SelectionRepository;
 import fr.knowledge.infra.bus.EventBus;
-import fr.knowledge.infra.denormalizers.eventstore.Normalizer;
-import fr.knowledge.infra.denormalizers.eventstore.favorites.SelectionDenormalizer;
-import fr.knowledge.infra.denormalizers.eventstore.scores.ScoreDenormalizer;
+import fr.knowledge.infra.denormalizers.Normalizer;
+import fr.knowledge.infra.denormalizers.favorites.SelectionDenormalizer;
 import fr.knowledge.infra.models.EventEntity;
 import fr.knowledge.infra.repositories.EventStore;
 

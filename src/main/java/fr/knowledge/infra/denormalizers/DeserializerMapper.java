@@ -1,4 +1,4 @@
-package fr.knowledge.infra.denormalizers.eventstore;
+package fr.knowledge.infra.denormalizers;
 
 import fr.knowledge.common.Mapper;
 import fr.knowledge.domain.common.DomainEvent;

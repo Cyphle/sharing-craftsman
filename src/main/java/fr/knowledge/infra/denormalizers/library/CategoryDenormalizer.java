@@ -1,9 +1,8 @@
-package fr.knowledge.infra.denormalizers.eventstore.library;
+package fr.knowledge.infra.denormalizers.library;
 
 import fr.knowledge.domain.library.aggregates.Category;
-import fr.knowledge.infra.denormalizers.eventstore.DeserializerMapper;
+import fr.knowledge.infra.denormalizers.DeserializerMapper;
 import fr.knowledge.infra.models.EventEntity;
-import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;

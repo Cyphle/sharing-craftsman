@@ -8,5 +8,9 @@ public class SimpleEventBus implements EventBus {
   @Override
   public void apply(DomainEvent change) {
     throw new UnsupportedOperationException();
+    /*
+      - Dispatch to event handlers
+      - Event handlers update elements in elasticsearch
+     */
   }
 }

@@ -1,4 +1,4 @@
-package fr.knowledge.infra.denormalizers.eventstore.comments;
+package fr.knowledge.infra.denormalizers.comments;
 
 import fr.knowledge.common.DateConverter;
 import fr.knowledge.domain.comments.aggregates.Comment;
@@ -6,7 +6,6 @@ import fr.knowledge.domain.comments.events.CommentDeletedEvent;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.infra.models.EventEntity;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;

@@ -29,7 +29,7 @@ import fr.knowledge.infra.adapters.favorites.SelectionAdapter;
 import fr.knowledge.infra.adapters.library.CategoryAdapter;
 import fr.knowledge.infra.adapters.scores.ScoreAdapter;
 import fr.knowledge.infra.bus.EventBus;
-import fr.knowledge.infra.denormalizers.eventstore.Normalizer;
+import fr.knowledge.infra.denormalizers.Normalizer;
 import fr.knowledge.infra.repositories.EventStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

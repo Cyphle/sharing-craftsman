@@ -1,4 +1,4 @@
-package fr.knowledge.infra.denormalizers.eventstore.scores;
+package fr.knowledge.infra.denormalizers.scores;
 
 import fr.knowledge.common.DateConverter;
 import fr.knowledge.domain.common.valueobjects.ContentType;
@@ -7,7 +7,6 @@ import fr.knowledge.domain.scores.aggregates.Score;
 import fr.knowledge.domain.scores.events.ScoreDeletedEvent;
 import fr.knowledge.domain.scores.valueobjects.Mark;
 import fr.knowledge.infra.models.EventEntity;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
