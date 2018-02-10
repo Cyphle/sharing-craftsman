@@ -91,7 +91,7 @@ public class ElasticSearchService {
     }
   }
 
-  public SearchResult searchElements(String index, String property, String searchTerm) {
+  public SearchResult searchElementsMatch(String index, String property, String searchTerm) {
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
     searchSourceBuilder.query(QueryBuilders.matchQuery(index.toUpperCase() + "." + property, searchTerm));
 
@@ -103,7 +103,24 @@ public class ElasticSearchService {
     try {
       return jestConfig.getClient().execute(search);
     } catch (IOException e) {
-      log.error("[ElasticSearchService::searchElements] Cannot find element: " + e.getMessage());
+      log.error("[ElasticSearchService::searchElementsMatch] Cannot find element: " + e.getMessage());
+    }
+    return null;
+  }
+
+  public SearchResult searchElementsWilcard(String index, String property, String searchTerm) {
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    searchSourceBuilder.query(QueryBuilders.wildcardQuery(index.toUpperCase() + "." + property, searchTerm));
+
+    Search search = new Search.Builder(searchSourceBuilder.toString())
+            .addIndex(index)
+            .addType(index.toUpperCase())
+            .build();
+
+    try {
+      return jestConfig.getClient().execute(search);
+    } catch (IOException e) {
+      log.error("[ElasticSearchService::searchElementsMatch] Cannot find element: " + e.getMessage());
     }
     return null;
   }

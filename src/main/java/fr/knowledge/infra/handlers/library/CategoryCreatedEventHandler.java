@@ -10,6 +10,7 @@ public class CategoryCreatedEventHandler implements EventHandler {
 
     /*
       - Create category in elastic search
+      - ElasticCategory (containing ElasticKnowledge)
      */
   }
 
