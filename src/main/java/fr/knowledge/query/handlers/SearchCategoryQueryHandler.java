@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SearchCategoryQueryHandler implements QueryHandler<CategoryElastic> {
   @Override
-  public List handle(Query query) {
+  public List<CategoryElastic> handle(Query query) {
     return null;
   }
 }
