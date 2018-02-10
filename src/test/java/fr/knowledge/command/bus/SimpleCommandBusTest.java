@@ -36,13 +36,13 @@ public class SimpleCommandBusTest {
   private CommandBus commandBus;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     commandBus = new SimpleCommandBus();
     commandBus.emptyHandlers();
   }
 
   @Test
-  public void should_register_create_category_command_handler() throws Exception {
+  public void should_register_create_category_command_handler() {
     CreateCategoryCommandHandler createCategoryCommandHandler = new CreateCategoryCommandHandler(idGenerator, categoryRepository);
     commandBus.subscribe(CreateCategoryCommand.class, createCategoryCommandHandler);
 
