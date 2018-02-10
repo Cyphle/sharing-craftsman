@@ -21,4 +21,11 @@ public class CategoryQueryService {
             .map(h -> h.source)
             .collect(Collectors.toList());
   }
+
+  public List<CategoryElastic> findOneById(String id) {
+    SearchResult searchResult = elasticSearchService.searchElementsMatch(ElasticIndexes.library.name(), "id", id);
+    return searchResult.getHits(CategoryElastic.class).stream()
+            .map(h -> h.source)
+            .collect(Collectors.toList());
+  }
 }

@@ -11,4 +11,8 @@ public class FindOneCategoryQuery implements Query {
   public FindOneCategoryQuery(String id) {
     this.id = id;
   }
+
+  public String getId() {
+    return id;
+  }
 }
