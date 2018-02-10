@@ -1,0 +1,20 @@
+{
+  "_id": {
+    "path": "id"
+  },
+  "dynamic": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "index": "not_analyzed"
+    },
+    "username": {
+      "type": "string",
+      "index": "not_analyzed"
+    },
+    "contentId": {
+      "type": "string",
+      "index": "not_analyzed"
+    }
+  }
+}

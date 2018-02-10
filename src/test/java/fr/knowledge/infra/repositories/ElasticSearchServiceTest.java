@@ -1,24 +1,19 @@
 package fr.knowledge.infra.repositories;
 
 import fr.knowledge.KnowledgeLibraryApplication;
-import fr.knowledge.config.JestConfig;
-import fr.knowledge.infra.repositories.ElasticSearchService;
-import io.searchbox.core.Search;
+import fr.knowledge.common.Mapper;
+import fr.knowledge.infra.models.library.CategoryElastic;
+import fr.knowledge.infra.models.library.KnowledgeElastic;
 import io.searchbox.core.SearchResult;
-import org.apache.commons.io.FileUtils;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,52 +24,79 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {KnowledgeLibraryApplication.class})
 @TestPropertySource(locations = "classpath:application-test.properties")
-@Ignore
 public class ElasticSearchServiceTest {
   @Autowired
   private ElasticSearchService elasticSearchService;
 
   @Test
   public void should_create_index_and_mapping() {
-    elasticSearchService.createIndex("CATEGORY");
+    elasticSearchService.createIndexes();
   }
 
   @Test
-  public void should_crate_element_in_elasticsearch() {
-    String element = "{\n" +
-            "  \"id\": \"aaa\",\n" +
-            "  \"name\": \"SOLID\"\n" +
-            "}";
-    elasticSearchService.createElement(element);
+  public void should_create_element_in_elasticsearch() {
+    CategoryElastic category = CategoryElastic.of("aaa", "Architecture", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "My knowledge", "My content")));
+
+    String element = Mapper.fromObjectToJsonString(category);
+
+    elasticSearchService.createElement(ElasticIndexes.library.name(), element);
   }
 
   @Test
   public void should_delete_element() {
-    elasticSearchService.deleteElement("aaa", "CATEGORY");
+    elasticSearchService.deleteElement("library", "aaa");
   }
 
   @Test
   public void should_delete_index() {
-    elasticSearchService.deleteIndex();
+    elasticSearchService.deleteIndex("library");
   }
 
   @Test
   public void should_find_elements() {
-    SearchResult searchResult = elasticSearchService.searchElements("CATEGORY", "name", "SOLID");
+    SearchResult searchResult = elasticSearchService.searchElementsMatch(ElasticIndexes.library.name(), "name", "SOLID");
 
-    List<SearchResult.Hit<MockCategory, Void>> hits = searchResult.getHits(MockCategory.class);
+    List<SearchResult.Hit<CategoryElastic, Void>> hits = searchResult.getHits(CategoryElastic.class);
 
-    List<MockCategory> categories = hits.stream()
+    List<CategoryElastic> categories = hits.stream()
             .map(h -> h.source)
             .collect(Collectors.toList());
 
-    assertThat(categories).containsExactly(new MockCategory("aaa", "SOLID"));
+    assertThat(categories).containsExactly(CategoryElastic.of("aaa", "SOLID"));
   }
 
   @Test
-  public void should_update_element() throws Exception {
+  public void should_find_elements_with_wildcard() {
+    SearchResult searchResult = elasticSearchService.searchElementsWildcard(ElasticIndexes.library.name(), "knowledges.title", "*knowledge");
+
+    List<SearchResult.Hit<CategoryElastic, Void>> hits = searchResult.getHits(CategoryElastic.class);
+
+    List<CategoryElastic> categories = hits.stream()
+            .map(h -> h.source)
+            .collect(Collectors.toList());
+
+    assertThat(categories).containsExactly(CategoryElastic.of("aaa", "Architecture", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "My knowledge", "My content"))));
+  }
+
+  @Test
+  public void should_update_element() {
     Map<String, String> updates = new HashMap<>();
     updates.put("name", "SOLID");
-    elasticSearchService.updateElement("CATEGORY", "aaa", updates);
+    elasticSearchService.updateElement(ElasticIndexes.library.name(), "aaa", updates);
+  }
+
+  @Test
+  public void should_add_knowledge() {
+    SearchResult searchResult = elasticSearchService.searchElementsWildcard(ElasticIndexes.library.name(), "knowledges.title", "*knowledge");
+
+    List<CategoryElastic> categories = searchResult.getHits(CategoryElastic.class).stream()
+            .map(h -> h.source)
+            .collect(Collectors.toList());
+
+    CategoryElastic category = categories.get(0);
+    category.addKnowledge(KnowledgeElastic.of("kbb", "foo@bar", "Second knowledge", "Super content"));
+
+    elasticSearchService.deleteElement(ElasticIndexes.library.name(), "aaa");
+    elasticSearchService.createElement(ElasticIndexes.library.name(), Mapper.fromObjectToJsonString(category));
   }
 }

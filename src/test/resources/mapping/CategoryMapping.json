@@ -11,6 +11,22 @@
     "name": {
       "type": "string",
       "index": "not_analyzed"
+    },
+    "knowledges": {
+      "properties": {
+        "knowledgeId": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "creator": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "title": {
+          "type": "string",
+          "index": "not_analyzed"
+        }
+      }
     }
   }
 }

@@ -21,58 +21,60 @@ import java.util.StringJoiner;
 
 @Service
 public class ElasticSearchService {
-  protected final Logger log = LoggerFactory.getLogger(this.getClass());
+  private final Logger log = LoggerFactory.getLogger(this.getClass());
   @Autowired
   private JestConfig jestConfig;
 
-  public void createIndex(String type) {
-    try {
-      File file = new ClassPathResource("mapping/CategoryMapping.json").getFile();
-      String mapping = FileUtils.readFileToString(file);
+  public void createIndexes() {
+    jestConfig.getIndexNames().forEach((key, value) -> {
+      try {
+        File file = new ClassPathResource(value).getFile();
+        String mapping = FileUtils.readFileToString(file);
 
-      CreateIndex index = new CreateIndex.Builder(jestConfig.getIndexName()).build();
-      jestConfig.getClient().execute(index);
+        CreateIndex createIndex = new CreateIndex.Builder(key).build();
+        jestConfig.getClient().execute(createIndex);
 
-      PutMapping putMapping = new PutMapping.Builder(
-              jestConfig.getIndexName(),
-              type,
-              mapping
-      ).build();
-      jestConfig.getClient().execute(putMapping);
-    } catch (IOException e) {
-      log.error("[ElasticSearchService::createIndex] Read mapping: " + e.getMessage());
-    }
+        PutMapping putMapping = new PutMapping.Builder(
+                key,
+                key.toUpperCase(),
+                mapping
+        ).build();
+        jestConfig.getClient().execute(putMapping);
+      } catch (IOException e) {
+        log.error("[ElasticSearchService::createIndexes] Read mapping: " + e.getMessage());
+      }
+    });
   }
 
-  public void deleteIndex() {
+  public void deleteIndex(String index) {
     try {
-      jestConfig.getClient().execute(new DeleteIndex.Builder(jestConfig.getIndexName()).build());
+      jestConfig.getClient().execute(new DeleteIndex.Builder(index).build());
     } catch (IOException e) {
       log.error("[ElasticSearchService::deleteIndex] Cannot delete index: " + e.getMessage());
     }
   }
 
-  public void createElement(String element) {
+  public void createElement(String index, String element) {
     try {
-      Index doc = new Index.Builder(element).index("library").type("CATEGORY").build();
+      Index doc = new Index.Builder(element).index(index).type(index.toUpperCase()).build();
       jestConfig.getClient().execute(doc);
     } catch (IOException e) {
       log.error("[ElasticSearchService::createElement] Cannot insert element: " + e.getMessage());
     }
   }
 
-  public void deleteElement(String id, String type) {
+  public void deleteElement(String index, String id) {
     try {
       jestConfig.getClient().execute(new Delete.Builder(id)
-              .index(jestConfig.getIndexName())
-              .type(type)
+              .index(index)
+              .type(index.toUpperCase())
               .build());
     } catch (IOException e) {
       log.error("[ElasticSearchService::deleteElement] Cannot insert element: " + e.getMessage());
     }
   }
 
-  public void updateElement(String type, String id, Map<String, String> updates) {
+  public void updateElement(String index, String id, Map<String, String> updates) {
     try {
       StringJoiner keyValues = new StringJoiner(", ");
       updates.forEach((key, value) -> keyValues.add("\"" + key + "\": \"" + value + "\""));
@@ -83,25 +85,42 @@ public class ElasticSearchService {
                 "}" +
               "}";
 
-      jestConfig.getClient().execute(new Update.Builder(script).index(jestConfig.getIndexName()).type(type).id(id).build());
+      jestConfig.getClient().execute(new Update.Builder(script).index(index).type(index.toUpperCase()).id(id).build());
     } catch (IOException e) {
       log.error("[ElasticSearchService::updateElement] Cannot find element: " + e.getMessage());
     }
   }
 
-  public SearchResult searchElements(String type, String property, String searchTerm) {
+  public SearchResult searchElementsMatch(String index, String property, String searchTerm) {
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-    searchSourceBuilder.query(QueryBuilders.matchQuery(type + "." + property, searchTerm));
+    searchSourceBuilder.query(QueryBuilders.matchQuery(index.toUpperCase() + "." + property, searchTerm));
 
     Search search = new Search.Builder(searchSourceBuilder.toString())
-            .addIndex(jestConfig.getIndexName())
-            .addType(type)
+            .addIndex(index)
+            .addType(index.toUpperCase())
             .build();
 
     try {
       return jestConfig.getClient().execute(search);
     } catch (IOException e) {
-      log.error("[ElasticSearchService::searchElements] Cannot find element: " + e.getMessage());
+      log.error("[ElasticSearchService::searchElementsMatch] Cannot find element: " + e.getMessage());
+    }
+    return null;
+  }
+
+  public SearchResult searchElementsWildcard(String index, String property, String searchTerm) {
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    searchSourceBuilder.query(QueryBuilders.wildcardQuery(index.toUpperCase() + "." + property, searchTerm));
+
+    Search search = new Search.Builder(searchSourceBuilder.toString())
+            .addIndex(index)
+            .addType(index.toUpperCase())
+            .build();
+
+    try {
+      return jestConfig.getClient().execute(search);
+    } catch (IOException e) {
+      log.error("[ElasticSearchService::searchElementsMatch] Cannot find element: " + e.getMessage());
     }
     return null;
   }

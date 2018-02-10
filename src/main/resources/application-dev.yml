@@ -12,6 +12,11 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL82Dialect
+# ElasticSearch
+  elasticsearch:
+    jest:
+      uris: http://192.168.1.12:9200
+      index: library:mapping/CategoryMapping.json,comments:mapping/CommentsMapping.json,favorites:mapping/FavoritesMapping.json,scores:mapping/ScoresMapping.json
 
 # Eureka
 server:
@@ -50,12 +55,3 @@ bonecp:
 # CQRS Event sourcing
 cqrs:
   version: 1
-
-# ElasticSearch
-jest:
-  elasticsearch:
-    host: 192.168.1.12
-    port: 9200
-    index: library
-    mappings:
-      - mapping/CategoryMapping.json
