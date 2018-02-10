@@ -17,7 +17,7 @@ public class CategoryCreatedEventHandler implements EventHandler {
 
   @Override
   public void apply(DomainEvent event) {
-    CategoryElastic categoryElastic = new CategoryElastic(event.getAggregateId(), ((CategoryCreatedEvent) event).getNameContent());
+    CategoryElastic categoryElastic = CategoryElastic.of(event.getAggregateId(), ((CategoryCreatedEvent) event).getNameContent());
     String element = Mapper.fromObjectToJsonString(categoryElastic);
     elasticSearchService.createElement(ElasticIndexes.library.name(), element);
   }

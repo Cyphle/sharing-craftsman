@@ -20,13 +20,13 @@ public class CategoryElastic {
   public CategoryElastic() {
   }
 
-  public CategoryElastic(String id, String name) {
+  private CategoryElastic(String id, String name) {
     this.id = id;
     this.name = name;
     this.knowledges = new ArrayList<>();
   }
 
-  public CategoryElastic(String id, String name, List<KnowledgeElastic> knowledges) {
+  private CategoryElastic(String id, String name, List<KnowledgeElastic> knowledges) {
     this.id = id;
     this.name = name;
     this.knowledges = knowledges;
@@ -34,5 +34,13 @@ public class CategoryElastic {
 
   public void addKnowledge(KnowledgeElastic knowledge) {
     knowledges.add(knowledge);
+  }
+
+  public static CategoryElastic of(String id, String name) {
+    return new CategoryElastic(id, name);
+  }
+
+  public static CategoryElastic of(String id, String name, List<KnowledgeElastic> knowledges) {
+    return new CategoryElastic(id, name, knowledges);
   }
 }

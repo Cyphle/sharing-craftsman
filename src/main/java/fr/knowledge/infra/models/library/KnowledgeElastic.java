@@ -1,6 +1,7 @@
 package fr.knowledge.infra.models.library;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.knowledge.domain.library.valueobjects.Knowledge;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -19,10 +20,18 @@ public class KnowledgeElastic {
   public KnowledgeElastic() {
   }
 
-  public KnowledgeElastic(String id, String creator, String title, String content) {
+  private KnowledgeElastic(String id, String creator, String title, String content) {
     this.id = id;
     this.creator = creator;
     this.title = title;
     this.content = content;
+  }
+
+  public static KnowledgeElastic of(String id, String creator, String title, String content) {
+    return new KnowledgeElastic(id, creator, title, content);
+  }
+
+  public static KnowledgeElastic fromDomainToElastic(Knowledge knowledge) {
+    return KnowledgeElastic.of(knowledge.getId().getId(), knowledge.getCreatorContent(), knowledge.getTitleContent(), knowledge.getContentContent());
   }
 }

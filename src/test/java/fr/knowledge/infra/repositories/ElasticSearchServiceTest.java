@@ -31,7 +31,7 @@ public class ElasticSearchServiceTest {
 
   @Test
   public void should_create_element_in_elasticsearch() {
-    CategoryElastic category = new CategoryElastic("aaa", "Architecture", Collections.singletonList(new KnowledgeElastic("kaa", "john@doe.fr", "My knowledge", "My content")));
+    CategoryElastic category = CategoryElastic.of("aaa", "Architecture", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "My knowledge", "My content")));
 
     String element = Mapper.fromObjectToJsonString(category);
 
@@ -71,7 +71,7 @@ public class ElasticSearchServiceTest {
             .map(h -> h.source)
             .collect(Collectors.toList());
 
-    assertThat(categories).containsExactly(new CategoryElastic("aaa", "Architecture", Collections.singletonList(new KnowledgeElastic("kaa", "john@doe.fr", "My knowledge", "My content"))));
+    assertThat(categories).containsExactly(CategoryElastic.of("aaa", "Architecture", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "My knowledge", "My content"))));
   }
 
   @Test
@@ -90,7 +90,7 @@ public class ElasticSearchServiceTest {
             .collect(Collectors.toList());
 
     CategoryElastic category = categories.get(0);
-    category.addKnowledge(new KnowledgeElastic("kbb", "foo@bar", "Second knowledge", "Super content"));
+    category.addKnowledge(KnowledgeElastic.of("kbb", "foo@bar", "Second knowledge", "Super content"));
 
     elasticSearchService.deleteElement(ElasticIndexes.library.name(), "aaa");
     elasticSearchService.createElement(ElasticIndexes.library.name(), Mapper.fromObjectToJsonString(category));

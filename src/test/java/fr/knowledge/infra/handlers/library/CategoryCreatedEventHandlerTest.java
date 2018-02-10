@@ -31,7 +31,7 @@ public class CategoryCreatedEventHandlerTest {
     CategoryCreatedEvent event = new CategoryCreatedEvent(Id.of("aaa"), Name.of("Architecture"));
     categoryCreatedEventHandler.apply(event);
 
-    CategoryElastic category = new CategoryElastic("aaa", "Architecture");
+    CategoryElastic category = CategoryElastic.of("aaa", "Architecture");
     verify(elasticSearchService).createElement(ElasticIndexes.library.name(), Mapper.fromObjectToJsonString(category));
   }
 }
