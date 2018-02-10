@@ -128,4 +128,21 @@ public class ElasticSearchService {
     }
     return null;
   }
+
+  public SearchResult findAllElements(String index) {
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    searchSourceBuilder.query(QueryBuilders.matchAllQuery());
+
+    Search search = new Search.Builder(searchSourceBuilder.toString())
+            .addIndex(index)
+            .addType(index.toUpperCase())
+            .build();
+
+    try {
+      return jestConfig.getClient().execute(search);
+    } catch (IOException e) {
+      log.error("[ElasticSearchService::searchElementsMatch] Cannot find element: " + e.getMessage());
+    }
+    return null;
+  }
 }

@@ -80,6 +80,19 @@ public class ElasticSearchServiceTest {
   }
 
   @Test
+  public void should_find_all_elements_of_index() {
+    SearchResult searchResult = elasticSearchService.findAllElements(ElasticIndexes.library.name());
+
+    List<SearchResult.Hit<CategoryElastic, Void>> hits = searchResult.getHits(CategoryElastic.class);
+
+    List<CategoryElastic> categories = hits.stream()
+            .map(h -> h.source)
+            .collect(Collectors.toList());
+
+    assertThat(categories).containsExactly(CategoryElastic.of("d896903d-f9c2-4d60-a10d-9c4bbeb2392d", "SOLID"));
+  }
+
+  @Test
   public void should_update_element() {
     Map<String, String> updates = new HashMap<>();
     updates.put("name", "SOLID");
