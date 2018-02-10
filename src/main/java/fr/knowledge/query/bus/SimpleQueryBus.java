@@ -25,6 +25,6 @@ public class SimpleQueryBus implements QueryBus {
 
   @Override
   public void send(Query query) {
-
+    handlers.get(query.getClass()).handle(query);
   }
 }

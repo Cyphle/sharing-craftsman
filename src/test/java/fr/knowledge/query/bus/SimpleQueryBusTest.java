@@ -1,18 +1,34 @@
 package fr.knowledge.query.bus;
 
+import fr.knowledge.domain.library.commands.CreateCategoryCommand;
 import fr.knowledge.query.handlers.FindAllCategoriesQueryHandler;
+import fr.knowledge.query.handlers.FindOneCategoryQueryHandler;
 import fr.knowledge.query.handlers.QueryHandler;
+import fr.knowledge.query.handlers.SearchCategoryQueryHandler;
 import fr.knowledge.query.queries.FindAllCategoriesQuery;
+import fr.knowledge.query.queries.FindOneCategoryQuery;
+import fr.knowledge.query.queries.SearchCategoryQuery;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SimpleQueryBusTest {
   private QueryBus queryBus;
+  @Mock
+  private FindAllCategoriesQueryHandler findAllCategoriesQueryHandler;
+  @Mock
+  private FindOneCategoryQueryHandler findOneCategoryQueryHandler;
+  @Mock
+  private SearchCategoryQueryHandler searchCategoryQueryHandler;
 
   @Before
   public void setUp() {
@@ -27,5 +43,17 @@ public class SimpleQueryBusTest {
     Map<Class, QueryHandler> handlers = new HashMap<>();
     handlers.put(FindAllCategoriesQuery.class, findAllCategoriesQueryHandler);
     assertThat(queryBus.getHandlers()).isEqualTo(handlers);
+  }
+
+  @Test
+  public void should_dispatch_command_to_right_command_handler() {
+    queryBus.subscribe(FindAllCategoriesQuery.class, findAllCategoriesQueryHandler);
+    queryBus.subscribe(FindOneCategoryQuery.class, findOneCategoryQueryHandler);
+    queryBus.subscribe(SearchCategoryQuery.class, searchCategoryQueryHandler);
+
+    queryBus.send(new FindOneCategoryQuery("aaa"));
+
+    FindOneCategoryQuery query = new FindOneCategoryQuery("aaa");
+    verify(findOneCategoryQueryHandler).handle(query);
   }
 }
