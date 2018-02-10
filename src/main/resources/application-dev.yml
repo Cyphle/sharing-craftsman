@@ -60,3 +60,4 @@ jest:
       - library:mapping/CategoryMapping.json
       - comments:mapping/CommentsMapping.json
       - favorites:mapping/FavoritesMapping.json
+      - scores:mapping/ScoresMapping.json

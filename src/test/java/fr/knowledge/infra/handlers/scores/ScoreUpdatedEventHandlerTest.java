@@ -1,8 +1,8 @@
-package fr.knowledge.infra.handlers.comments;
+package fr.knowledge.infra.handlers.scores;
 
-import fr.knowledge.domain.comments.events.CommentUpdatedEvent;
-import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.scores.events.ScoreUpdatedEvent;
+import fr.knowledge.domain.scores.valueobjects.Mark;
 import fr.knowledge.infra.repositories.ElasticIndexes;
 import fr.knowledge.infra.repositories.ElasticSearchService;
 import org.junit.Before;
@@ -17,24 +17,24 @@ import java.util.Map;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CommentUpdatedEventHandlerTest {
+public class ScoreUpdatedEventHandlerTest {
   @Mock
   private ElasticSearchService elasticSearchService;
-  private CommentUpdatedEventHandler commentUpdatedEventHandler;
+  private ScoreUpdatedEventHandler scoreUpdatedEventHandler;
 
   @Before
   public void setUp() {
-    commentUpdatedEventHandler = new CommentUpdatedEventHandler(elasticSearchService);
+    scoreUpdatedEventHandler = new ScoreUpdatedEventHandler(elasticSearchService);
   }
 
   @Test
   public void should_create_category_in_elastic_search() {
-    CommentUpdatedEvent event = new CommentUpdatedEvent(Id.of("caa"), Content.of("Updated comment"));
+    ScoreUpdatedEvent event = new ScoreUpdatedEvent(Id.of("saa"), Mark.THREE);
 
-    commentUpdatedEventHandler.apply(event);
+    scoreUpdatedEventHandler.apply(event);
 
     Map<String, String> updates = new HashMap<>();
-    updates.put("content", "Updated comment");
-    verify(elasticSearchService).updateElement(ElasticIndexes.comments.name(), "caa", updates);
+    updates.put("mark", "3");
+    verify(elasticSearchService).updateElement(ElasticIndexes.scores.name(), "saa", updates);
   }
 }
