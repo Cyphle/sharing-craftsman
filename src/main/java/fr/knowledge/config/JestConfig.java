@@ -17,13 +17,10 @@ public class JestConfig implements Serializable {
 
   JestClient client = null;
 
-  @Value("${jest.elasticsearch.host}")
+  @Value("${spring.elasticsearch.jest.uris}")
   String host;
 
-  @Value("${jest.elasticsearch.port}")
-  String port;
-
-  @Value("${jest.elasticsearch.index}")
+  @Value("${spring.elasticsearch.jest.index}")
   String[] indexNames;
 
   public Map<String, String> getIndexNames() {
@@ -38,7 +35,7 @@ public class JestConfig implements Serializable {
     if (this.client == null) {
       JestClientFactory factory = new JestClientFactory();
       factory.setHttpClientConfig(new HttpClientConfig
-              .Builder(host + ":" + port)
+              .Builder(host)
               .multiThreaded(true)
               .defaultMaxTotalConnectionPerRoute(2)
               .maxTotalConnection(2)

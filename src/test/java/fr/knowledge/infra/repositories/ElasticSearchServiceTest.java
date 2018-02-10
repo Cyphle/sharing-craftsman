@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {KnowledgeLibraryApplication.class})
 @TestPropertySource(locations = "classpath:application-test.properties")
-@Ignore
 public class ElasticSearchServiceTest {
   @Autowired
   private ElasticSearchService elasticSearchService;
