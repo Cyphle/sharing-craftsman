@@ -57,6 +57,6 @@ jest:
   elasticsearch:
     host: ${ELASTIC_HOST}
     port: ${ELASTIC_PORT}
-    index: ${ELASTIC_INDEX}
-    mappings:
-      - mapping/CategoryMapping.json
+    index:
+      - library:mapping/CategoryMapping.json
+      - comments:mapping/CommentsMapping.json

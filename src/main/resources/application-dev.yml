@@ -56,6 +56,6 @@ jest:
   elasticsearch:
     host: 192.168.1.12
     port: 9200
-    index: library
-    mappings:
-      - mapping/CategoryMapping.json
+    index:
+      - library:mapping/CategoryMapping.json
+      - comments:mapping/CommentsMapping.json

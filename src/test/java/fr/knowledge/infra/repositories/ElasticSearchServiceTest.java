@@ -1,24 +1,14 @@
 package fr.knowledge.infra.repositories;
 
 import fr.knowledge.KnowledgeLibraryApplication;
-import fr.knowledge.config.JestConfig;
-import fr.knowledge.infra.repositories.ElasticSearchService;
-import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
-import org.apache.commons.io.FileUtils;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,14 +19,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {KnowledgeLibraryApplication.class})
 @TestPropertySource(locations = "classpath:application-test.properties")
-@Ignore
 public class ElasticSearchServiceTest {
   @Autowired
   private ElasticSearchService elasticSearchService;
 
   @Test
   public void should_create_index_and_mapping() {
-    elasticSearchService.createIndex("CATEGORY");
+    elasticSearchService.createIndexes();
   }
 
   @Test
@@ -45,22 +34,22 @@ public class ElasticSearchServiceTest {
             "  \"id\": \"aaa\",\n" +
             "  \"name\": \"SOLID\"\n" +
             "}";
-    elasticSearchService.createElement(element);
+    elasticSearchService.createElement("library", element);
   }
 
   @Test
   public void should_delete_element() {
-    elasticSearchService.deleteElement("aaa", "CATEGORY");
+    elasticSearchService.deleteElement("aaa", "library");
   }
 
   @Test
   public void should_delete_index() {
-    elasticSearchService.deleteIndex();
+    elasticSearchService.deleteIndex("library");
   }
 
   @Test
   public void should_find_elements() {
-    SearchResult searchResult = elasticSearchService.searchElements("CATEGORY", "name", "SOLID");
+    SearchResult searchResult = elasticSearchService.searchElements(ElasticIndexes.library.name(), "name", "SOLID");
 
     List<SearchResult.Hit<MockCategory, Void>> hits = searchResult.getHits(MockCategory.class);
 
@@ -72,9 +61,9 @@ public class ElasticSearchServiceTest {
   }
 
   @Test
-  public void should_update_element() throws Exception {
+  public void should_update_element() {
     Map<String, String> updates = new HashMap<>();
-    updates.put("name", "SOLID");
-    elasticSearchService.updateElement("CATEGORY", "aaa", updates);
+    updates.put("name", "Architecture");
+    elasticSearchService.updateElement(ElasticIndexes.library.name(), "aaa", updates);
   }
 }

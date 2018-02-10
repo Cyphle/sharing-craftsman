@@ -7,6 +7,10 @@ public class CategoryCreatedEventHandler implements EventHandler {
   @Override
   public void apply(DomainEvent event) {
     throw new UnsupportedOperationException();
+
+    /*
+      - Create category in elastic search
+     */
   }
 
   /*

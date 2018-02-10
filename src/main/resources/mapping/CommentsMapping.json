@@ -1,0 +1,24 @@
+{
+  "_id": {
+    "path": "id"
+  },
+  "dynamic": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "index": "not_analyzed"
+    },
+    "commenter": {
+      "type": "string",
+      "index": "not_analyzed"
+    },
+    "contentId": {
+      "type": "string",
+      "index": "not_analyzed"
+    },
+    "content": {
+      "type": "string",
+      "index": "not_analyzed"
+    }
+  }
+}
