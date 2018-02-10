@@ -1,6 +1,7 @@
 package fr.knowledge.infra.models.library;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.knowledge.domain.library.valueobjects.Knowledge;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -34,6 +35,14 @@ public class CategoryElastic {
 
   public void addKnowledge(KnowledgeElastic knowledge) {
     knowledges.add(knowledge);
+  }
+
+  public void updateKnowledge(Knowledge knowledge) {
+    knowledges.stream()
+            .filter(knowledgeElastic -> knowledgeElastic.getId().equals(knowledge.getId().getId()))
+            .findAny()
+            .orElseThrow(RuntimeException::new)
+            .update(KnowledgeElastic.fromDomainToElastic(knowledge));
   }
 
   public static CategoryElastic of(String id, String name) {

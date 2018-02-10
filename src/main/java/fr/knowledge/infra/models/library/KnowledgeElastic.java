@@ -27,6 +27,16 @@ public class KnowledgeElastic {
     this.content = content;
   }
 
+  public String getId() {
+    return id;
+  }
+
+  public void update(KnowledgeElastic knowledge) {
+    creator = knowledge.creator;
+    title = knowledge.title;
+    content = knowledge.content;
+  }
+
   public static KnowledgeElastic of(String id, String creator, String title, String content) {
     return new KnowledgeElastic(id, creator, title, content);
   }
