@@ -8,7 +8,7 @@ import fr.knowledge.domain.favorites.exceptions.SelectionException;
 import fr.knowledge.domain.favorites.exceptions.SelectionNotFoundException;
 import fr.knowledge.domain.favorites.ports.SelectionRepository;
 
-class RemoveFromMySelectionCommandHandler implements CommandHandler {
+public class RemoveFromMySelectionCommandHandler implements CommandHandler {
   private final SelectionRepository selectionRepository;
 
   public RemoveFromMySelectionCommandHandler(SelectionRepository selectionRepository) {

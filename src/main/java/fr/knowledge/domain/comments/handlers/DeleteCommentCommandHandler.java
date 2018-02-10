@@ -10,7 +10,7 @@ import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 
-class DeleteCommentCommandHandler implements CommandHandler {
+public class DeleteCommentCommandHandler implements CommandHandler {
   private final CommentRepository commentRepository;
 
   public DeleteCommentCommandHandler(CommentRepository commentRepository) {

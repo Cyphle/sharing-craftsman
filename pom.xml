@@ -48,6 +48,11 @@
       <artifactId>bonecp</artifactId>
       <version>0.8.0.RELEASE</version>
     </dependency>
+    <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
+      <version>3.4.1</version>
+    </dependency>
 
     <dependency>
       <groupId>org.elasticsearch.client</groupId>

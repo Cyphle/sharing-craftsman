@@ -13,7 +13,7 @@ import fr.knowledge.domain.scores.ports.ScoreRepository;
 import java.util.List;
 import java.util.Optional;
 
-class AddScoreCommandHandler implements CommandHandler {
+public class AddScoreCommandHandler implements CommandHandler {
   private final ScoreRepository scoreRepository;
   private final IdGenerator idGenerator;
 

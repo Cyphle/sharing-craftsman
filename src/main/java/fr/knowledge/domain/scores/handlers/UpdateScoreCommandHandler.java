@@ -10,7 +10,7 @@ import fr.knowledge.domain.scores.exceptions.ScoreException;
 import fr.knowledge.domain.scores.exceptions.ScoreNotFoundException;
 import fr.knowledge.domain.scores.ports.ScoreRepository;
 
-class UpdateScoreCommandHandler implements CommandHandler {
+public class UpdateScoreCommandHandler implements CommandHandler {
   private final ScoreRepository scoreRepository;
 
   public UpdateScoreCommandHandler(ScoreRepository scoreRepository) {

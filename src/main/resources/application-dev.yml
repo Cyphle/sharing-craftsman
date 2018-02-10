@@ -8,7 +8,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL82Dialect
@@ -23,7 +23,6 @@ eureka:
     fetch-registry: true
   instance:
     preferIpAddress: true
-    hostname: 127.0.0.1
 
 # Logging
 logging:
@@ -58,4 +57,5 @@ jest:
     host: 192.168.1.12
     port: 9200
     index: library
-    mapping: mapping/CategoryMapping.json
+    mappings:
+      - mapping/CategoryMapping.json

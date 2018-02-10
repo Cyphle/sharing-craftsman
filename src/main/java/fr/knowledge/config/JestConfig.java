@@ -23,7 +23,7 @@ public class JestConfig implements Serializable {
   @Value("${jest.elasticsearch.index}")
   String indexName;
 
-  @Value("${jest.elasticsearch.mapping}")
+  @Value("${jest.elasticsearch.mappings}")
   String mapping;
 
   public String getIndexName() {

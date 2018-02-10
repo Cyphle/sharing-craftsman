@@ -11,7 +11,7 @@ import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 
-class UpdateCommentCommandHandler implements CommandHandler {
+public class UpdateCommentCommandHandler implements CommandHandler {
   private final CommentRepository commentRepository;
 
   public UpdateCommentCommandHandler(CommentRepository commentRepository) {

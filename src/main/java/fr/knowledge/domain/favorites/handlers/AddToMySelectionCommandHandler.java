@@ -11,7 +11,7 @@ import fr.knowledge.domain.favorites.ports.SelectionRepository;
 import java.util.List;
 import java.util.Optional;
 
-class AddToMySelectionCommandHandler implements CommandHandler {
+public class AddToMySelectionCommandHandler implements CommandHandler {
   private final SelectionRepository selectionRepository;
   private final IdGenerator idGenerator;
 

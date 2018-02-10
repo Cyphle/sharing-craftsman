@@ -7,7 +7,7 @@ import fr.knowledge.domain.common.CommandHandler;
 import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.common.IdGenerator;
 
-class AddCommentCommandHandler implements CommandHandler {
+public class AddCommentCommandHandler implements CommandHandler {
   private final IdGenerator idGenerator;
   private final CommentRepository commentRepository;
 
