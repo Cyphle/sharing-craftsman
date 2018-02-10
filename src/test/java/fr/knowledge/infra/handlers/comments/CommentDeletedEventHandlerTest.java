@@ -1,7 +1,9 @@
-package fr.knowledge.infra.handlers.library;
+package fr.knowledge.infra.handlers.comments;
 
+import fr.knowledge.domain.comments.events.CommentDeletedEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.events.CategoryDeletedEvent;
+import fr.knowledge.infra.handlers.library.CategoryDeletedEventHandler;
 import fr.knowledge.infra.repositories.ElasticIndexes;
 import fr.knowledge.infra.repositories.ElasticSearchService;
 import org.junit.Before;
@@ -13,22 +15,22 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CategoryDeletedEventHandlerTest {
+public class CommentDeletedEventHandlerTest {
   @Mock
   private ElasticSearchService elasticSearchService;
-  private CategoryDeletedEventHandler categoryDeletedEventHandler;
+  private CommentDeletedEventHandler commentDeletedEventHandler;
 
   @Before
   public void setUp() {
-    categoryDeletedEventHandler = new CategoryDeletedEventHandler(elasticSearchService);
+    commentDeletedEventHandler = new CommentDeletedEventHandler(elasticSearchService);
   }
 
   @Test
   public void should_delete_category() {
-    CategoryDeletedEvent event = new CategoryDeletedEvent(Id.of("aaa"));
+    CommentDeletedEvent event = new CommentDeletedEvent(Id.of("aaa"));
 
-    categoryDeletedEventHandler.apply(event);
+    commentDeletedEventHandler.apply(event);
 
-    verify(elasticSearchService).deleteElement(ElasticIndexes.library.name(), "aaa");
+    verify(elasticSearchService).deleteElement(ElasticIndexes.comments.name(), "aaa");
   }
 }
