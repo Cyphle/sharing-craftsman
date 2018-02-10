@@ -40,7 +40,7 @@ public class ElasticSearchServiceTest {
 
   @Test
   public void should_delete_element() {
-    elasticSearchService.deleteElement("aaa", "library");
+    elasticSearchService.deleteElement("library", "aaa");
   }
 
   @Test
@@ -92,7 +92,7 @@ public class ElasticSearchServiceTest {
     CategoryElastic category = categories.get(0);
     category.addKnowledge(new KnowledgeElastic("kbb", "foo@bar", "Second knowledge", "Super content"));
 
-    elasticSearchService.deleteElement("aaa", ElasticIndexes.library.name());
+    elasticSearchService.deleteElement(ElasticIndexes.library.name(), "aaa");
     elasticSearchService.createElement(ElasticIndexes.library.name(), Mapper.fromObjectToJsonString(category));
   }
 }

@@ -63,7 +63,7 @@ public class ElasticSearchService {
     }
   }
 
-  public void deleteElement(String id, String index) {
+  public void deleteElement(String index, String id) {
     try {
       jestConfig.getClient().execute(new Delete.Builder(id)
               .index(index)
