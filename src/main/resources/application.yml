@@ -3,6 +3,3 @@ spring:
     active: ${SPRING_ACTIVE_PROFILE}
   application:
     name: sharing-craftsman-knowledge-library
-
-status:
-  toinitialize: ${TO_INITIALIZE}

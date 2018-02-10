@@ -97,6 +97,23 @@ sed -i -e 's|<UPLOAD_PATH>|'$dockerUploadPath'|g' $composeTarget
 sed -i -e 's|<LOGS_PATH>|'$dockerLogsPath'|g' $composeTarget
 sed -i -e "s/<DOCKER_NETWORK>/${dockerNetwork}/g" $composeTarget
 
+# ELASTIC SEARCH
+elasticHostEntry='library_elastic_host'
+elasticPortEntry='library_elastic_port'
+elasticIndexNameEntry='library_elastic_index'
+
+elasticHostLength=$((${#infos[14]} - ${#elasticHostEntry} - 5))
+elasticPortLength=$((${#infos[15]} - ${#elasticPortEntry} - 5))
+elasticIndexNameLength=$((${#infos[16]} - ${#elasticIndexNameEntry} - 5))
+
+elasticHost=${infos[14]:${#elasticHostEntry} + 3:elasticHostLength}
+elasticPort=${infos[15]:${#elasticPortEntry} + 3:elasticPortLength}
+elasticIndexName=${infos[16]:${#elasticIndexNameEntry} + 3:elasticIndexNameLength}
+
+sed -i -e "s/<ELASTIC_HOST>/\"${elasticHost}\"/g" $target
+sed -i -e "s/<ELASTIC_PORT>/\"${elasticPort}\"/g" $target
+sed -i -e "s/<ELASTIC_INDEX>/\"${elasticIndexName}\"/g" $target
+
 # LAUNCH DOCKER
 docker-compose up -d
 

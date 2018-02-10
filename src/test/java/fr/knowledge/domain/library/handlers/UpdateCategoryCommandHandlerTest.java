@@ -2,7 +2,7 @@ package fr.knowledge.domain.library.handlers;
 
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
-import fr.knowledge.domain.library.aggregates.UpdateCategoryException;
+import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.commands.UpdateCategoryCommand;
 import fr.knowledge.domain.library.events.CategoryUpdatedEvent;
 import fr.knowledge.domain.library.exceptions.CategoryNotFoundException;
@@ -39,8 +39,8 @@ public class UpdateCategoryCommandHandlerTest {
 
     updateCategoryCommandHandler.handle(command);
 
-    Category category = Category.of("aaa", "SOLID");
-    category.saveChanges(new CategoryUpdatedEvent(Id.of("aaa"), Name.of("SOLID")));
+    Category category = Category.of("aaa", "Architecture");
+    category.update(Name.of("SOLID"));
     verify(categoryRepository).save(category);
   }
 
@@ -58,8 +58,8 @@ public class UpdateCategoryCommandHandlerTest {
 
     try {
       updateCategoryCommandHandler.handle(command);
-      fail("Should have thrown UpdateCategoryException.");
-    } catch (UpdateCategoryException e) {
+      fail("Should have thrown CategoryException.");
+    } catch (CategoryException e) {
       assertThat(e.getMessage()).isEqualTo("Name cannot be empty.");
     }
   }

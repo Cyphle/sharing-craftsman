@@ -1,0 +1,62 @@
+package fr.knowledge.remote.elastic;
+
+import fr.knowledge.KnowledgeLibraryApplication;
+import fr.knowledge.domain.library.aggregates.Category;
+import fr.knowledge.utils.Mapper;
+import io.searchbox.core.Index;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
+import io.searchbox.indices.CreateIndex;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {KnowledgeLibraryApplication.class})
+@TestPropertySource(locations = "classpath:application-test.properties")
+public class JestClientServiceTest {
+  @Autowired
+  private JestClientService jestClientService;
+
+  @Test
+  public void should_create_index_and_data() throws Exception {
+    // Create elasticsearch index
+    String category = Mapper.fromObjectToJsonString(Category.of("aaa", "Architecture"));
+
+//    jestClientService.getClient().execute(new CreateIndex.Builder("library").build());
+
+//    Index index = new Index.Builder(category).index("library").type("CATEGORY").build();
+//    jestClientService.getClient().execute(index);
+
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    searchSourceBuilder.query(QueryBuilders.matchQuery("_all", "Architecture"));
+
+    Search search = new Search.Builder(searchSourceBuilder.toString())
+            // multiple index or types can be added.
+            .addIndex("library")
+            .addType("CATEGORY")
+            .build();
+
+    SearchResult result = jestClientService.getClient().execute(search);
+
+    List<SearchResult.Hit<Category, Void>> hits = result.getHits(Category.class);
+
+    String toto = "test";
+
+
+            /*
+    Search search = new Search.Builder(query)
+            // multiple index or types can be added.
+            .addIndex("library")
+            .addType("CATEGORY")
+            .build();
+            */
+  }
+}

@@ -8,15 +8,10 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
-# Upload
-  http:
-    multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
+        dialect: org.hibernate.dialect.PostgreSQL82Dialect
 
 # Eureka
 server:
@@ -28,8 +23,8 @@ eureka:
     fetch-registry: true
   instance:
     preferIpAddress: true
-    hostname: 127.0.0.1
 
+# Logging
 logging:
   level:
     org:
@@ -38,11 +33,12 @@ logging:
       hibernate: ERROR
   file: /logs/app.log
 
+# DB Pool
 bonecp:
-  driverClass: com.mysql.jdbc.Driver
-  url: jdbc:mysql://192.168.1.12:3380/sharingcraftsmanknowledgelibrary?useUnicode=yes&characterEncoding=UTF-8
-  username: root
-  password: root
+  driverClass: org.postgresql.Driver
+  url: jdbc:postgresql://192.168.1.12:5432/sharincraftsmanlibrary
+  username: docker
+  password: docker
   idleMaxAgeInMinutes: 240
   idleConnectionTestPeriodInMinutes: 60
   maxConnectionsPerPartition: 10
@@ -50,3 +46,16 @@ bonecp:
   partitionCount: 2
   acquireIncrement: 5
   statementsCacheSize: 100
+
+# CQRS Event sourcing
+cqrs:
+  version: 1
+
+# ElasticSearch
+jest:
+  elasticsearch:
+    host: 192.168.1.12
+    port: 9200
+    index: library
+    mappings:
+      - mapping/CategoryMapping.json

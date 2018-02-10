@@ -3,7 +3,7 @@ package fr.knowledge.command.api.library;
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.bus.CommandBus;
-import fr.knowledge.domain.library.aggregates.UpdateCategoryException;
+import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.commands.*;
 import fr.knowledge.domain.library.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +31,6 @@ public class LibraryService {
       commandBus.send(command);
     } catch (AlreadyExistingCategoryException e) {
       return ResponseEntity.badRequest().body("Category already exists.");
-    } catch (CreateCategoryException e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
     } catch (Exception e) {
       return ResponseEntity.badRequest().build();
     }
@@ -48,7 +46,7 @@ public class LibraryService {
       commandBus.send(command);
     } catch (CategoryNotFoundException e) {
       return new ResponseEntity<>("Not found", HttpStatus.NOT_FOUND);
-    } catch (UpdateCategoryException e) {
+    } catch (CategoryException e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     } catch (Exception e) {
       return ResponseEntity.badRequest().build();

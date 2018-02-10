@@ -11,7 +11,6 @@ library:
       path: /app/upload
     logs:
       path: /app/logs
-    toinitialize: true
   docker:
     port: "172.17.0.1:8081:8080"
     logs:
@@ -19,3 +18,7 @@ library:
     network: scnetwork
   eureka:
     path: http://172.18.0.2:8099/eureka
+  elastic:
+    host: 192.168.1.12
+    port: 9200
+    index: library

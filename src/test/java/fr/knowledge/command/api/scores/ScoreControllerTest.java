@@ -4,7 +4,7 @@ import fr.knowledge.KnowledgeLibraryApplication;
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.scores.valueobjects.Mark;
-import fr.knowledge.utils.Mapper;
+import fr.knowledge.common.Mapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

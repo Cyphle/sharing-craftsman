@@ -2,6 +2,9 @@ package fr.knowledge.domain.favorites.commands;
 
 import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.valueobjects.ContentType;
+import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.common.valueobjects.Username;
+import fr.knowledge.domain.favorites.aggregates.Selection;
 
 import java.util.Objects;
 
@@ -26,6 +29,10 @@ public class AddToMySelectionCommand implements DomainCommand {
 
   public String getContentId() {
     return contentId;
+  }
+
+  public boolean hasSameProperties(Selection selection) {
+    return selection.getUsername().equals(Username.from(username)) && selection.getContentType().equals(contentType) && selection.getContentId().equals(Id.of(contentId));
   }
 
   @Override

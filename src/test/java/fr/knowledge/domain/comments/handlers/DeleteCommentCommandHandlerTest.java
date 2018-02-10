@@ -2,7 +2,7 @@ package fr.knowledge.domain.comments.handlers;
 
 import fr.knowledge.domain.comments.aggregates.Comment;
 import fr.knowledge.domain.comments.commands.DeleteCommentCommand;
-import fr.knowledge.domain.comments.events.CommentDeletedEvent;
+import fr.knowledge.domain.comments.exceptions.CommentException;
 import fr.knowledge.domain.comments.ports.CommentRepository;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
@@ -15,6 +15,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -25,8 +27,8 @@ public class DeleteCommentCommandHandlerTest {
   private DeleteCommentCommandHandler deleteCommentCommandHandler;
 
   @Before
-  public void setUp() throws Exception {
-    given(commentRepository.get(Id.of("aaa"), Username.from("john@doe.fr"))).willReturn(Optional.of(Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my content")));
+  public void setUp() {
+    given(commentRepository.get(Id.of("aaa"))).willReturn(Optional.of(Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my content")));
     deleteCommentCommandHandler = new DeleteCommentCommandHandler(commentRepository);
   }
 
@@ -37,7 +39,19 @@ public class DeleteCommentCommandHandlerTest {
     deleteCommentCommandHandler.handle(command);
 
     Comment comment = Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my content");
-    comment.saveChanges(new CommentDeletedEvent(Id.of("aaa")));
+    comment.delete(Username.from("john@doe.fr"));
     verify(commentRepository).save(comment);
+  }
+
+  @Test
+  public void should_not_delete_comment_if_commenter_is_not_the_one_who_commented() throws Exception {
+    DeleteCommentCommand command = new DeleteCommentCommand("aaa", "foo@bar.fr");
+
+    try {
+      deleteCommentCommandHandler.handle(command);
+      fail("Should have throw comment exception");
+    } catch (CommentException e) {
+      assertThat(e.getMessage()).isEqualTo("Wrong commenter.");
+    }
   }
 }

@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01-create-events-table.yaml
+      author: cphamle
+      changes:
+      - sqlFile:
+          encoding: utf8
+          path: ../sql/01-create-events-table.sql
+          relativeToChangelogFile: true
+          splitStatements: true
+          stripComments: true

@@ -3,107 +3,105 @@ package fr.knowledge.domain.comments.aggregates;
 import fr.knowledge.domain.comments.events.CommentAddedEvent;
 import fr.knowledge.domain.comments.events.CommentDeletedEvent;
 import fr.knowledge.domain.comments.events.CommentUpdatedEvent;
-import fr.knowledge.domain.comments.exceptions.UpdateCommentException;
+import fr.knowledge.domain.comments.exceptions.CommentException;
 import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Content;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode
+@ToString
 public class Comment {
-  private final Id id;
-  private final Username commenter;
-  private final ContentType contentType;
-  private final Id contentId;
+  private Id id;
+  private Username commenter;
+  private ContentType contentType;
+  private Id contentId;
   private Content content;
-  private final List<DomainEvent> events;
+  private boolean deleted;
+  private List<DomainEvent> changes;
+
+  private Comment() { }
 
   private Comment(Id id, Username commenter, ContentType contentType, Id contentId, Content content) {
-    this.id = id;
-    this.commenter = commenter;
-    this.contentType = contentType;
-    this.contentId = contentId;
-    this.content = content;
-    events = new ArrayList<>();
+    CommentAddedEvent event = new CommentAddedEvent(id, commenter, contentType, contentId, content);
+    apply(event);
+    saveChanges(event);
   }
 
-  public void update(Content newContent) throws UpdateCommentException {
+  public void update(Username commenter, Content newContent) throws CommentException {
+    verifyCommenter(commenter);
     verifyContent(newContent);
     CommentUpdatedEvent event = new CommentUpdatedEvent(id, newContent);
     apply(event);
+    saveChanges(event);
   }
 
-  public void delete() {
+  public void delete(Username commenter) throws CommentException {
+    verifyCommenter(commenter);
     CommentDeletedEvent event = new CommentDeletedEvent(id);
     apply(event);
+    saveChanges(event);
   }
 
-  public void saveChanges(DomainEvent event) {
-    events.add(event);
+  public void saveChanges(DomainEvent<Comment> event) {
+    changes.add(event);
   }
 
-  private void apply(CommentUpdatedEvent event) {
+  public Comment apply(CommentAddedEvent event) {
+    this.id = event.getId();
+    this.commenter = event.getCommenter();
+    this.contentType = event.getContentType();
+    this.contentId = event.getContentId();
+    this.content = event.getContent();
+    this.deleted = false;
+    changes = new ArrayList<>();
+    return this;
+  }
+
+  public Comment apply(CommentUpdatedEvent event) {
     content = event.getContent();
-    saveChanges(event);
+    return this;
   }
 
-  private void apply(CommentDeletedEvent event) {
-    saveChanges(event);
+  public Comment apply(CommentDeletedEvent event) {
+    deleted = true;
+    return this;
   }
 
-  private void verifyContent(Content newContent) throws UpdateCommentException {
+  public List<DomainEvent> getChanges() {
+    return changes;
+  }
+
+  private void verifyCommenter(Username commenter) throws CommentException {
+    if (!this.commenter.equals(commenter))
+      throw new CommentException("Wrong commenter.");
+  }
+
+  private void verifyContent(Content newContent) throws CommentException {
     if (newContent.isEmpty())
-      throw new UpdateCommentException("Content cannot be empty.");
+      throw new CommentException("Content cannot be empty.");
   }
 
   public static Comment of(String id, String commenter, ContentType contentType, String contentId, String content) {
-    return new Comment(Id.of(id), Username.from(commenter), contentType, Id.of(contentId), Content.of(content));
-  }
-
-  public static Comment newComment(String id, String commenter, ContentType contentType, String contentId, String content) {
-    Comment comment = Comment.of(id, commenter, contentType, contentId, content);
-    comment.saveChanges(new CommentAddedEvent(Id.of(id), Username.from(commenter), contentType, Id.of(contentId), Content.of(content)));
+    Comment comment = new Comment();
+    comment.apply(new CommentAddedEvent(Id.of(id), Username.from(commenter), contentType, Id.of(contentId), Content.of(content)));
     return comment;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    Comment comment = (Comment) o;
-
-    if (id != null ? !id.equals(comment.id) : comment.id != null) return false;
-    if (commenter != null ? !commenter.equals(comment.commenter) : comment.commenter != null) return false;
-    if (contentType != comment.contentType) return false;
-    if (contentId != null ? !contentId.equals(comment.contentId) : comment.contentId != null) return false;
-    if (content != null ? !content.equals(comment.content) : comment.content != null) return false;
-    return events != null ? events.equals(comment.events) : comment.events == null;
+  public static Comment newComment(String id, String commenter, ContentType contentType, String contentId, String content) {
+    return new Comment(Id.of(id), Username.from(commenter), contentType, Id.of(contentId), Content.of(content));
   }
 
-  @Override
-  public int hashCode() {
-    int result = id != null ? id.hashCode() : 0;
-    result = 31 * result + (commenter != null ? commenter.hashCode() : 0);
-    result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
-    result = 31 * result + (contentId != null ? contentId.hashCode() : 0);
-    result = 31 * result + (content != null ? content.hashCode() : 0);
-    result = 31 * result + (events != null ? events.hashCode() : 0);
-    return result;
-  }
-
-  @Override
-  public String toString() {
-    return "Comment{" +
-            "id=" + id +
-            ", commenter=" + commenter +
-            ", contentType=" + contentType +
-            ", contentId=" + contentId +
-            ", content=" + content +
-            ", events=" + events +
-            '}';
+  public static Comment rebuild(List<DomainEvent> events) {
+    return events.stream()
+            .reduce(new Comment(),
+                    (item, event) -> (Comment) event.apply(item),
+                    (item1, item2) -> item2);
   }
 }

@@ -2,7 +2,7 @@ package fr.knowledge.domain.library.handlers;
 
 import fr.knowledge.domain.common.CommandHandler;
 import fr.knowledge.domain.common.DomainCommand;
-import fr.knowledge.domain.common.utils.IdGenerator;
+import fr.knowledge.common.IdGenerator;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.AddKnowledgeCommand;
 import fr.knowledge.domain.library.exceptions.AddKnowledgeException;
@@ -10,7 +10,7 @@ import fr.knowledge.domain.library.exceptions.CategoryNotFoundException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import fr.knowledge.domain.library.valueobjects.Knowledge;
 
-class AddKnowledgeCommandHandler implements CommandHandler {
+public class AddKnowledgeCommandHandler implements CommandHandler {
   private final IdGenerator idGenerator;
   private final CategoryRepository categoryRepository;
 

@@ -4,6 +4,7 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.DeleteCategoryCommand;
 import fr.knowledge.domain.library.events.CategoryDeletedEvent;
+import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +36,7 @@ public class DeleteCategoryCommandHandlerTest {
     deleteCategoryCommandHandler.handle(command);
 
     Category category = Category.of("aaa", "Architecture");
-    category.saveChanges(new CategoryDeletedEvent(Id.of("aaa")));
+    category.delete();
     verify(categoryRepository).save(category);
   }
 }

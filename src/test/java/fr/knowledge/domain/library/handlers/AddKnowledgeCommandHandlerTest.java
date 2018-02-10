@@ -1,6 +1,6 @@
 package fr.knowledge.domain.library.handlers;
 
-import fr.knowledge.domain.common.utils.IdGenerator;
+import fr.knowledge.common.IdGenerator;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.AddKnowledgeCommand;
@@ -45,7 +45,7 @@ public class AddKnowledgeCommandHandlerTest {
 
     Knowledge knowledge = Knowledge.of("aaa", "john@doe.fr", "Architecture hexagonale", "This is my content");
     Category updatedCategory = Category.of("aaa", "Architecture");
-    updatedCategory.apply(new KnowledgeAddedEvent(Id.of("aaa"), knowledge));
+    updatedCategory.addKnowledge(knowledge);
     verify(categoryRepository).save(updatedCategory);
   }
 

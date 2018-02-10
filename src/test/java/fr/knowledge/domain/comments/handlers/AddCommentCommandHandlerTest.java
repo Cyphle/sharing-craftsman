@@ -4,7 +4,7 @@ import fr.knowledge.domain.comments.aggregates.Comment;
 import fr.knowledge.domain.comments.commands.AddCommentCommand;
 import fr.knowledge.domain.comments.events.CommentAddedEvent;
 import fr.knowledge.domain.comments.ports.CommentRepository;
-import fr.knowledge.domain.common.utils.IdGenerator;
+import fr.knowledge.common.IdGenerator;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
@@ -27,19 +27,17 @@ public class AddCommentCommandHandlerTest {
   private AddCommentCommandHandler addCommentCommandHandler;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(idGenerator.generate()).willReturn("aaa");
     addCommentCommandHandler = new AddCommentCommandHandler(idGenerator, commentRepository);
   }
 
   @Test
-  public void should_add_comment_to_content() throws Exception {
+  public void should_add_comment_to_content() {
     AddCommentCommand command = new AddCommentCommand("john@doe.fr", ContentType.CATEGORY, "aaa", "This is my comment");
 
     addCommentCommandHandler.handle(command);
 
-    Comment comment = Comment.of("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my comment");
-    comment.saveChanges(new CommentAddedEvent(Id.of("aaa"), Username.from("john@doe.fr"), ContentType.CATEGORY, Id.of("aaa"), Content.of("This is my comment")));
-    verify(commentRepository).save(comment);
+    verify(commentRepository).save(Comment.newComment("aaa", "john@doe.fr", ContentType.CATEGORY, "aaa", "This is my comment"));
   }
 }

@@ -6,10 +6,11 @@ import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.common.valueobjects.Username;
 import fr.knowledge.domain.scores.aggregates.Score;
 import fr.knowledge.domain.scores.commands.DeleteScoreCommand;
+import fr.knowledge.domain.scores.exceptions.ScoreException;
 import fr.knowledge.domain.scores.exceptions.ScoreNotFoundException;
 import fr.knowledge.domain.scores.ports.ScoreRepository;
 
-class DeleteScoreCommandHandler implements CommandHandler {
+public class DeleteScoreCommandHandler implements CommandHandler {
   private final ScoreRepository scoreRepository;
 
   public DeleteScoreCommandHandler(ScoreRepository scoreRepository) {
@@ -17,10 +18,10 @@ class DeleteScoreCommandHandler implements CommandHandler {
   }
 
   @Override
-  public void handle(DomainCommand command) throws ScoreNotFoundException {
-    Score score = scoreRepository.get(Id.of(((DeleteScoreCommand) command).getId()), Username.from(((DeleteScoreCommand) command).getGiver()))
+  public void handle(DomainCommand command) throws ScoreNotFoundException, ScoreException {
+    Score score = scoreRepository.get(Id.of(((DeleteScoreCommand) command).getId()))
             .orElseThrow(ScoreNotFoundException::new);
-    score.delete();
+    score.delete(Username.from(((DeleteScoreCommand) command).getGiver()));
     scoreRepository.save(score);
   }
 }

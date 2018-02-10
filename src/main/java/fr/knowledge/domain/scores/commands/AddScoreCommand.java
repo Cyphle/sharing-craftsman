@@ -2,6 +2,9 @@ package fr.knowledge.domain.scores.commands;
 
 import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.valueobjects.ContentType;
+import fr.knowledge.domain.common.valueobjects.Id;
+import fr.knowledge.domain.common.valueobjects.Username;
+import fr.knowledge.domain.scores.aggregates.Score;
 import fr.knowledge.domain.scores.valueobjects.Mark;
 
 import java.util.Objects;
@@ -33,6 +36,10 @@ public class AddScoreCommand implements DomainCommand {
 
   public Mark getMark() {
     return mark;
+  }
+
+  public boolean hasSameProperties(Score score) {
+    return score.getGiver().equals(Username.from(giver)) && score.getContentId().equals(Id.of(contentId));
   }
 
   @Override
