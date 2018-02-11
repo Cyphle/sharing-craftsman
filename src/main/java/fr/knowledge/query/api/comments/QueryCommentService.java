@@ -27,4 +27,11 @@ public class QueryCommentService {
     FindCommentsForContentQuery query = new FindCommentsForContentQuery(contentId);
     return ResponseEntity.ok(queryBus.send(query));
   }
+
+  public ResponseEntity getCommentById(AuthorizationInfoDTO authorizationInfoDTO, String commentId) {
+    if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
+      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+
+    return null;
+  }
 }

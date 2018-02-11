@@ -21,12 +21,12 @@ public class QueryCommentsController {
     this.queryCommentService = queryCommentService;
   }
 
-  @ApiOperation(value = "Endpoint to comments for a given content", response = CommentElastic.class)
+  @ApiOperation(value = "Endpoint to get comments for a given content", response = CommentElastic.class)
   @ApiResponses(value = {
           @ApiResponse(code = 200, message = ""),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @RequestMapping(method = RequestMethod.GET, value = "{contentId}")
+  @RequestMapping(method = RequestMethod.GET, value = "/contentid/{contentId}")
   public ResponseEntity getCommentsForContent(@RequestHeader("client") String client,
                                               @RequestHeader("secret") String secret,
                                               @RequestHeader("username") String username,
@@ -34,5 +34,20 @@ public class QueryCommentsController {
                                               @PathVariable String contentId) {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
     return queryCommentService.getCommentsForContent(authorizationInfoDTO, contentId);
+  }
+
+  @ApiOperation(value = "Endpoint to get a comment by id", response = CommentElastic.class)
+  @ApiResponses(value = {
+          @ApiResponse(code = 200, message = ""),
+          @ApiResponse(code = 401, message = "Unauthorized")
+  })
+  @RequestMapping(method = RequestMethod.GET, value = "/{commentId}")
+  public ResponseEntity getCommentsById(@RequestHeader("client") String client,
+                                              @RequestHeader("secret") String secret,
+                                              @RequestHeader("username") String username,
+                                              @RequestHeader("access-token") String accessToken,
+                                              @PathVariable String commentId) {
+    AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
+    return queryCommentService.getCommentById(authorizationInfoDTO, commentId);
   }
 }

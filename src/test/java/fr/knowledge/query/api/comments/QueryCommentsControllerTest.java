@@ -54,6 +54,23 @@ public class QueryCommentsControllerTest {
             "aaa"
     )).willReturn(ResponseEntity.ok(Collections.singletonList(CommentElastic.of("caa", "john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa", "My comment"))));
 
+    this.mvc.perform(get("/comments/contentid/aaa")
+            .header("client", "client")
+            .header("secret", "clientsecret")
+            .header("username", "john@doe.fr")
+            .header("access-token", "aaa")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(Mapper.fromObjectToJsonString(Collections.singletonList(CommentElastic.of("caa", "john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa", "My comment")))))
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  public void should_get_comment_by_id() throws Exception {
+    given(commentService.getCommentById(
+            new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
+            "aaa"
+    )).willReturn(ResponseEntity.ok(Collections.singletonList(CommentElastic.of("caa", "john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa", "My comment"))));
+
     this.mvc.perform(get("/comments/aaa")
             .header("client", "client")
             .header("secret", "clientsecret")
