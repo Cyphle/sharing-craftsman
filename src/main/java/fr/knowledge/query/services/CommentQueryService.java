@@ -21,4 +21,11 @@ public class CommentQueryService {
             .map(h -> h.source)
             .collect(Collectors.toList());
   }
+
+  public List<CommentElastic> findCommentsFor(String contentId) {
+    SearchResult searchResult = elasticSearchService.searchElementsMatch(ElasticIndexes.comments.name(), "contentId", contentId);
+    return searchResult.getHits(CommentElastic.class).stream()
+            .map(h -> h.source)
+            .collect(Collectors.toList());
+  }
 }
