@@ -29,8 +29,7 @@ public class SearchCategoryQueryHandlerTest {
 
   @Before
   public void setUp() {
-    given(categoryQueryService.search(any(SearchCriteria.class))).willReturn(Arrays.asList(
-            CategoryElastic.of("d896903d-f9c2-4d60-a10d-9c4bbeb2392d", "SOLID"),
+    given(categoryQueryService.search(any(SearchCriteria.class))).willReturn(Collections.singletonList(
             CategoryElastic.of("aaa", "Architecture", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "My knowledge", "My content")))
     ));
     searchCategoryQueryHandler = new SearchCategoryQueryHandler(categoryQueryService);
@@ -45,7 +44,6 @@ public class SearchCategoryQueryHandlerTest {
 
     List<CategoryElastic> categories = searchCategoryQueryHandler.handle(query);
     assertThat(categories).containsExactly(
-            CategoryElastic.of("d896903d-f9c2-4d60-a10d-9c4bbeb2392d", "SOLID"),
             CategoryElastic.of("aaa", "Architecture", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "My knowledge", "My content")))
     );
   }

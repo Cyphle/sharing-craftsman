@@ -36,7 +36,7 @@ public class CategoryQueryService {
     Map<String, String> searchCriteria = new HashMap<>();
     criteria.getCriteria()
             .forEach((key, value) -> searchCriteria.put(ElasticIndexes.library.name().toUpperCase() + "." + key.searchKey, value));
-    SearchResult searchResult = elasticSearchService.criteriaSearchElements(ElasticIndexes.library.name(), searchCriteria);
+    SearchResult searchResult = elasticSearchService.andCriteriaSearchElements(ElasticIndexes.library.name(), searchCriteria);
     return searchResult.getHits(CategoryElastic.class).stream()
             .map(h -> h.source)
             .collect(Collectors.toList());

@@ -130,7 +130,7 @@ public class ElasticSearchService {
     return null;
   }
 
-  public SearchResult criteriaSearchElements(String index, Map<String, String> criterias) {
+  public SearchResult orCriteriaSearchElements(String index, Map<String, String> criterias) {
     StringJoiner searchCriteria = new StringJoiner(", ");
     criterias.forEach((key, value) -> searchCriteria.add("{\"query\": {\"wildcard\": {\"" + key + "\": {\"value\": \"*" + value + "*\"}}}}"));
 
@@ -150,6 +150,41 @@ public class ElasticSearchService {
             "    }\n" +
             "  }\n" +
             "}";
+
+    Search search = new Search.Builder(query)
+            .addIndex(index)
+            .addType(index.toUpperCase())
+            .build();
+
+    try {
+      return jestConfig.getClient().execute(search);
+    } catch (IOException e) {
+      log.error("[ElasticSearchService::searchElementsMatch] Cannot find element: " + e.getMessage());
+    }
+    return null;
+  }
+
+  public SearchResult andCriteriaSearchElements(String index, Map<String, String> criterias) {
+    StringJoiner searchCriteria = new StringJoiner(", ");
+    criterias.forEach((key, value) -> searchCriteria.add("{\n" +
+            "          \"wildcard\": {\n" +
+            "            \"" + key + "\": {\n" +
+            "              \"value\": \"*" + value + "*\"\n" +
+            "            }\n" +
+            "          }\n" +
+            "        }"));
+
+    String query = "{\n" +
+            "  \"query\": {\n" +
+            "    \"bool\": {\n" +
+            "      \"must\": [\n" +
+                    searchCriteria.toString() +
+            "      ]\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+
+    System.out.println(query);
 
     Search search = new Search.Builder(query)
             .addIndex(index)

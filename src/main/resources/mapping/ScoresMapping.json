@@ -15,6 +15,10 @@
     "contentId": {
       "type": "string",
       "index": "not_analyzed"
+    },
+    "mark": {
+      "type": "string",
+      "index": "not_analyzed"
     }
   }
 }

@@ -24,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {KnowledgeLibraryApplication.class})
 @TestPropertySource(locations = "classpath:application-test.properties")
+@Ignore
 public class ElasticSearchServiceTest {
   @Autowired
   private ElasticSearchService elasticSearchService;
@@ -66,11 +67,11 @@ public class ElasticSearchServiceTest {
   }
 
   @Test
-  public void should_find_elements_with_search_criteria() {
+  public void should_find_elements_with_or_search_criteria() {
     Map<String, String> criterias = new HashMap<>();
     criterias.put("LIBRARY.name", "SOLID");
     criterias.put("LIBRARY.knowledges.title", "know");
-    SearchResult searchResult = elasticSearchService.criteriaSearchElements(ElasticIndexes.library.name(), criterias);
+    SearchResult searchResult = elasticSearchService.orCriteriaSearchElements(ElasticIndexes.library.name(), criterias);
 
     List<SearchResult.Hit<CategoryElastic, Void>> hits = searchResult.getHits(CategoryElastic.class);
 
@@ -80,6 +81,24 @@ public class ElasticSearchServiceTest {
 
     assertThat(categories).containsExactly(
             CategoryElastic.of("d896903d-f9c2-4d60-a10d-9c4bbeb2392d", "SOLID"),
+            CategoryElastic.of("aaa", "Architecture", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "My knowledge", "My content")))
+    );
+  }
+
+  @Test
+  public void should_find_elements_with_and_search_criteria() {
+    Map<String, String> criterias = new HashMap<>();
+    criterias.put("name", "Arc");
+    criterias.put("knowledges.title", "know");
+    SearchResult searchResult = elasticSearchService.andCriteriaSearchElements(ElasticIndexes.library.name(), criterias);
+
+    List<SearchResult.Hit<CategoryElastic, Void>> hits = searchResult.getHits(CategoryElastic.class);
+
+    List<CategoryElastic> categories = hits.stream()
+            .map(h -> h.source)
+            .collect(Collectors.toList());
+
+    assertThat(categories).containsExactly(
             CategoryElastic.of("aaa", "Architecture", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "My knowledge", "My content")))
     );
   }
