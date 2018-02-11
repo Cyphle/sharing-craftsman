@@ -1,13 +1,12 @@
 package fr.knowledge.query.bus;
 
-import fr.knowledge.infra.repositories.ElasticSearchService;
-import fr.knowledge.query.handlers.FindAllCategoriesQueryHandler;
-import fr.knowledge.query.handlers.FindOneCategoryQueryHandler;
+import fr.knowledge.query.handlers.library.FindAllCategoriesQueryHandler;
+import fr.knowledge.query.handlers.library.FindOneCategoryQueryHandler;
 import fr.knowledge.query.handlers.QueryHandler;
-import fr.knowledge.query.handlers.SearchCategoryQueryHandler;
-import fr.knowledge.query.queries.FindAllCategoriesQuery;
-import fr.knowledge.query.queries.FindOneCategoryQuery;
-import fr.knowledge.query.queries.SearchCategoryQuery;
+import fr.knowledge.query.handlers.library.SearchCategoryQueryHandler;
+import fr.knowledge.query.queries.library.FindAllCategoriesQuery;
+import fr.knowledge.query.queries.library.FindOneCategoryQuery;
+import fr.knowledge.query.queries.library.SearchCategoryQuery;
 import fr.knowledge.query.services.CategoryQueryService;
 import org.junit.Before;
 import org.junit.Test;

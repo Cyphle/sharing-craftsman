@@ -1,5 +1,6 @@
-package fr.knowledge.query.queries;
+package fr.knowledge.query.queries.library;
 
+import fr.knowledge.query.queries.Query;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 

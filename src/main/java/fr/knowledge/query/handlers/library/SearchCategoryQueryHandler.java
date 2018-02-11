@@ -1,8 +1,9 @@
-package fr.knowledge.query.handlers;
+package fr.knowledge.query.handlers.library;
 
 import fr.knowledge.infra.models.library.CategoryElastic;
+import fr.knowledge.query.handlers.QueryHandler;
 import fr.knowledge.query.queries.Query;
-import fr.knowledge.query.queries.SearchCategoryQuery;
+import fr.knowledge.query.queries.library.SearchCategoryQuery;
 import fr.knowledge.query.services.CategoryQueryService;
 
 import java.util.List;

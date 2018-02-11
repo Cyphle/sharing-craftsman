@@ -1,4 +1,7 @@
-package fr.knowledge.query.queries;
+package fr.knowledge.query.queries.library;
+
+import fr.knowledge.query.queries.Query;
+import fr.knowledge.query.queries.SearchCriteria;
 
 public class SearchCategoryQuery implements Query {
   private SearchCriteria searchCriteria;

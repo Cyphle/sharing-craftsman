@@ -1,8 +1,9 @@
-package fr.knowledge.query.handlers;
+package fr.knowledge.query.handlers.library;
 
 import fr.knowledge.infra.models.library.CategoryElastic;
 import fr.knowledge.infra.models.library.KnowledgeElastic;
-import fr.knowledge.query.queries.SearchCategoryQuery;
+import fr.knowledge.query.handlers.library.SearchCategoryQueryHandler;
+import fr.knowledge.query.queries.library.SearchCategoryQuery;
 import fr.knowledge.query.queries.SearchCriteria;
 import fr.knowledge.query.queries.SearchKey;
 import fr.knowledge.query.services.CategoryQueryService;

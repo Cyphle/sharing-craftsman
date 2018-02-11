@@ -1,8 +1,8 @@
-package fr.knowledge.query.handlers;
+package fr.knowledge.query.handlers.library;
 
 import fr.knowledge.infra.models.library.CategoryElastic;
-import fr.knowledge.infra.repositories.ElasticSearchService;
-import fr.knowledge.query.queries.FindAllCategoriesQuery;
+import fr.knowledge.query.handlers.library.FindAllCategoriesQueryHandler;
+import fr.knowledge.query.queries.library.FindAllCategoriesQuery;
 import fr.knowledge.query.services.CategoryQueryService;
 import org.junit.Before;
 import org.junit.Test;
