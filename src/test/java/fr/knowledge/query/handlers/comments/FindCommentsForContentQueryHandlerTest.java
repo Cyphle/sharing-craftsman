@@ -32,7 +32,7 @@ public class FindCommentsForContentQueryHandlerTest {
   }
 
   @Test
-  public void should_find_one_comment_by_id() {
+  public void should_find_comments_for_content() {
     FindCommentsForContentQuery query = new FindCommentsForContentQuery("aaa");
 
     List<CommentElastic> comments = findCommentsForContentQueryHandler.handle(query);
