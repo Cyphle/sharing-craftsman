@@ -2,10 +2,12 @@ package fr.knowledge.query.bus;
 
 import fr.knowledge.query.handlers.QueryHandler;
 import fr.knowledge.query.queries.Query;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class SimpleQueryBus implements QueryBus {
   private Map<Class<? extends Query>, QueryHandler> handlers;
 

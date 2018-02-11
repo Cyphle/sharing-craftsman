@@ -2,6 +2,7 @@ package fr.knowledge;
 
 import fr.knowledge.config.CommandBusConfig;
 import fr.knowledge.config.EventBusConfig;
+import fr.knowledge.config.QueryBusConfig;
 import fr.knowledge.infra.repositories.ElasticSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -15,6 +16,8 @@ public class ApplicationInitializer implements ApplicationListener<ContextRefres
   @Autowired
   private EventBusConfig eventBusConfig;
   @Autowired
+  private QueryBusConfig queryBusConfig;
+  @Autowired
   private ElasticSearchService elasticSearchService;
 
   @Override
@@ -22,5 +25,6 @@ public class ApplicationInitializer implements ApplicationListener<ContextRefres
     eventBusConfig.configure();
     commandBusConfig.configure();
     elasticSearchService.createIndexes();
+    queryBusConfig.configure();
   }
 }
