@@ -1,7 +1,11 @@
 package fr.knowledge.query.queries.comments;
 
 import fr.knowledge.query.queries.Query;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 public class FindCommentsForContentQuery implements Query {
   private String id;
 

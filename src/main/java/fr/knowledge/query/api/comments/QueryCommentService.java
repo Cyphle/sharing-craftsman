@@ -3,6 +3,7 @@ package fr.knowledge.query.api.comments;
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.query.bus.QueryBus;
+import fr.knowledge.query.queries.comments.FindCommentsForContentQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ public class QueryCommentService {
     if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
       return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
 
-    return null;
+    FindCommentsForContentQuery query = new FindCommentsForContentQuery(contentId);
+    return ResponseEntity.ok(queryBus.send(query));
   }
 }

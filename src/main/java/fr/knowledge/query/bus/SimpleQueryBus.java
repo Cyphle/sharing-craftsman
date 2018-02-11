@@ -5,6 +5,7 @@ import fr.knowledge.query.queries.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -26,7 +27,7 @@ public class SimpleQueryBus implements QueryBus {
   }
 
   @Override
-  public void send(Query query) {
-    handlers.get(query.getClass()).handle(query);
+  public List send(Query query) {
+    return handlers.get(query.getClass()).handle(query);
   }
 }

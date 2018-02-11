@@ -1,5 +1,6 @@
 package fr.knowledge.query.bus;
 
+import fr.knowledge.infra.models.library.CategoryElastic;
 import fr.knowledge.query.handlers.library.FindAllCategoriesQueryHandler;
 import fr.knowledge.query.handlers.library.FindOneCategoryQueryHandler;
 import fr.knowledge.query.handlers.QueryHandler;
@@ -14,10 +15,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,6 +39,7 @@ public class SimpleQueryBusTest {
 
   @Before
   public void setUp() {
+    given(findOneCategoryQueryHandler.handle(any(FindOneCategoryQuery.class))).willReturn(Collections.singletonList(CategoryElastic.of("aaa", "Architecture")));
     queryBus = new SimpleQueryBus();
   }
 
@@ -56,6 +62,8 @@ public class SimpleQueryBusTest {
     queryBus.send(new FindOneCategoryQuery("aaa"));
 
     FindOneCategoryQuery query = new FindOneCategoryQuery("aaa");
-    verify(findOneCategoryQueryHandler).handle(query);
+    assertThat(findOneCategoryQueryHandler.handle(query)).isEqualTo(Collections.singletonList(
+            CategoryElastic.of("aaa", "Architecture")
+    ));
   }
 }
