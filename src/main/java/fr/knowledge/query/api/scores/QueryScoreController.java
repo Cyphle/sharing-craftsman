@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/scores")
 @Api(description = "Endpoints to get favorites")
-public class QueryScoresController {
+public class QueryScoreController {
   private QueryScoreService queryScoreService;
 
   @Autowired
-  public QueryScoresController(QueryScoreService queryScoreService) {
+  public QueryScoreController(QueryScoreService queryScoreService) {
     this.queryScoreService = queryScoreService;
   }
 

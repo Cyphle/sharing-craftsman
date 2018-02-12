@@ -31,9 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {KnowledgeLibraryApplication.class})
-@WebMvcTest(QueryScoresController.class)
+@WebMvcTest(QueryScoreController.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class QueryScoresControllerTest {
+public class QueryScoreControllerTest {
   @Autowired
   private MockMvc mvc;
 
