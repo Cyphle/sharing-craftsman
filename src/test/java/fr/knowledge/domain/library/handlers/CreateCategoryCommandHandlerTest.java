@@ -1,14 +1,11 @@
 package fr.knowledge.domain.library.handlers;
 
 import fr.knowledge.common.IdGenerator;
-import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.commands.CreateCategoryCommand;
-import fr.knowledge.domain.library.events.CategoryCreatedEvent;
 import fr.knowledge.domain.library.exceptions.AlreadyExistingCategoryException;
 import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.ports.CategoryRepository;
-import fr.knowledge.domain.library.valueobjects.Name;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

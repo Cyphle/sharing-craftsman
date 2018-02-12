@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CategoryUpdatedEventHandler implements EventHandler {
-  private ElasticSearchService elasticSearchService;
+  private final ElasticSearchService elasticSearchService;
 
   public CategoryUpdatedEventHandler(ElasticSearchService elasticSearchService) {
     this.elasticSearchService = elasticSearchService;

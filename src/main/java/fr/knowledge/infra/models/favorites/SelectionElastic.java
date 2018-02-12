@@ -19,7 +19,7 @@ public class SelectionElastic {
   public SelectionElastic() {
   }
 
-  public SelectionElastic(String id, String username, String contentType, String contentId) {
+  private SelectionElastic(String id, String username, String contentType, String contentId) {
     this.id = id;
     this.username = username;
     this.contentType = contentType;

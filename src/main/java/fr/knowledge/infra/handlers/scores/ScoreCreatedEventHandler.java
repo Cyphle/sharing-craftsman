@@ -9,7 +9,7 @@ import fr.knowledge.infra.repositories.ElasticIndexes;
 import fr.knowledge.infra.repositories.ElasticSearchService;
 
 public class ScoreCreatedEventHandler implements EventHandler {
-  private ElasticSearchService elasticSearchService;
+  private final ElasticSearchService elasticSearchService;
 
   public ScoreCreatedEventHandler(ElasticSearchService elasticSearchService) {
     this.elasticSearchService = elasticSearchService;

@@ -2,13 +2,9 @@ package fr.knowledge.domain.comments.handlers;
 
 import fr.knowledge.domain.comments.aggregates.Comment;
 import fr.knowledge.domain.comments.commands.AddCommentCommand;
-import fr.knowledge.domain.comments.events.CommentAddedEvent;
 import fr.knowledge.domain.comments.ports.CommentRepository;
 import fr.knowledge.common.IdGenerator;
 import fr.knowledge.domain.common.valueobjects.ContentType;
-import fr.knowledge.domain.common.valueobjects.Id;
-import fr.knowledge.domain.common.valueobjects.Username;
-import fr.knowledge.domain.common.valueobjects.Content;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

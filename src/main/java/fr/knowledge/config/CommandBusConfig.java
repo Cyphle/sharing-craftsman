@@ -36,11 +36,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CommandBusConfig {
-  private CommandBus commandBus;
-  private IdGenerator idGenerator;
-  private EventBus eventBus;
-  private EventStore eventStore;
-  private Normalizer normalizer;
+  private final CommandBus commandBus;
+  private final IdGenerator idGenerator;
+  private final EventBus eventBus;
+  private final EventStore eventStore;
+  private final Normalizer normalizer;
 
   @Autowired
   public CommandBusConfig(

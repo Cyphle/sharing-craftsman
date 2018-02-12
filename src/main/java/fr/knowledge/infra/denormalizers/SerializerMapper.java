@@ -12,7 +12,6 @@ import fr.knowledge.infra.events.scores.ScoreCreatedInfraEvent;
 import fr.knowledge.infra.events.scores.ScoreDeletedInfraEvent;
 import fr.knowledge.infra.events.scores.ScoreUpdatedInfraEvent;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -90,9 +89,9 @@ public enum SerializerMapper {
           "fr.knowledge.infra.events.favorites.SelectionRemovedInfraEvent"
   );
 
-  public final String eventClass;
-  public final Function<DomainEvent, String> serializer;
-  private String eventFullClass;
+  private final String eventClass;
+  private final Function<DomainEvent, String> serializer;
+  private final String eventFullClass;
 
   SerializerMapper(String eventClass, Function<DomainEvent, String> serializer, String eventFullClass) {
     this.eventClass = eventClass;

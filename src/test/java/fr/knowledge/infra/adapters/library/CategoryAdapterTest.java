@@ -44,7 +44,7 @@ public class CategoryAdapterTest {
   private Normalizer normalizer;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(eventStore.findByAggregateId("aaa")).willReturn(Arrays.asList(
             new EventEntity(
                     "aaa",

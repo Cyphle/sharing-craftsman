@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Normalizer {
-  private IdGenerator idGenerator;
-  private EventSourcingConfig eventSourcingConfig;
-  private DateService dateTimeService;
+  private final IdGenerator idGenerator;
+  private final EventSourcingConfig eventSourcingConfig;
+  private final DateService dateTimeService;
 
   @Autowired
   public Normalizer(IdGenerator idGenerator, EventSourcingConfig eventSourcingConfig, DateService dateTimeService) {

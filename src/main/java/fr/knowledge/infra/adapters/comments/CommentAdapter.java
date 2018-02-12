@@ -16,9 +16,9 @@ import java.util.Optional;
 
 @Service
 public class CommentAdapter implements CommentRepository {
-  private EventBus eventBus;
-  private EventStore eventStore;
-  private Normalizer normalizer;
+  private final EventBus eventBus;
+  private final EventStore eventStore;
+  private final Normalizer normalizer;
 
   @Autowired
   public CommentAdapter(EventBus eventBus, EventStore eventStore, Normalizer normalizer) {

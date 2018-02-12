@@ -30,7 +30,7 @@ public class EventStoreTest {
   private EventStore eventStore;
 
   @Test
-  public void should_save_something() throws Exception {
+  public void should_save_something() {
     EventEntity entity = new EventEntity("aaa", 1, DateConverter.fromLocalDateTimeToDate(LocalDateTime.of(2018, Month.FEBRUARY, 3, 15, 37, 12)), "aaa", CreateCategoryCommand.class.getName(), "{id: \"aaa\"}");
     eventStore.save(entity);
 

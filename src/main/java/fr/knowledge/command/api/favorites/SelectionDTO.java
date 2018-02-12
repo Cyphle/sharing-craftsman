@@ -9,13 +9,13 @@ public class SelectionDTO {
   public SelectionDTO() {
   }
 
-  public SelectionDTO(String username, String contentType, String contentId) {
+  private SelectionDTO(String username, String contentType, String contentId) {
     this.username = username;
     this.contentType = contentType;
     this.contentId = contentId;
   }
 
-  public SelectionDTO(String id, String username) {
+  private SelectionDTO(String id, String username) {
     this.id = id;
     this.username = username;
   }

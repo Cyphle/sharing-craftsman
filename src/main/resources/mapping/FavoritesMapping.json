@@ -12,6 +12,10 @@
       "type": "string",
       "index": "not_analyzed"
     },
+    "contentType": {
+      "type": "string",
+      "index": "not_analyzed"
+    },
     "contentId": {
       "type": "string",
       "index": "not_analyzed"

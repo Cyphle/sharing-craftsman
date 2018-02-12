@@ -4,10 +4,14 @@ import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.aggregates.Category;
 import fr.knowledge.domain.library.valueobjects.Name;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 public class CategoryUpdatedEvent implements DomainEvent<Category> {
-  private Id id;
-  private Name newName;
+  private final Id id;
+  private final Name newName;
 
   public CategoryUpdatedEvent(Id id, Name newName) {
     this.id = id;
@@ -30,31 +34,5 @@ public class CategoryUpdatedEvent implements DomainEvent<Category> {
 
   public String getNewNameContent() {
     return newName.getName();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    CategoryUpdatedEvent that = (CategoryUpdatedEvent) o;
-
-    if (id != null ? !id.equals(that.id) : that.id != null) return false;
-    return newName != null ? newName.equals(that.newName) : that.newName == null;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = id != null ? id.hashCode() : 0;
-    result = 31 * result + (newName != null ? newName.hashCode() : 0);
-    return result;
-  }
-
-  @Override
-  public String toString() {
-    return "CategoryUpdatedEvent{" +
-            "id=" + id +
-            ", newName=" + newName +
-            '}';
   }
 }

@@ -47,9 +47,7 @@ public class AuthorizationsDTO {
               .findAny()
               .orElse(RoleDTO.from(""));
 
-      if (roleUser.getName().equals("ROLE_USER")) {
-        return true;
-      }
+      return roleUser.getName().equals("ROLE_USER");
     }
     return false;
   }

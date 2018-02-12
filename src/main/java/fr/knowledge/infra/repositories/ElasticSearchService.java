@@ -18,12 +18,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 @Service
 public class ElasticSearchService {
   private final Logger log = LoggerFactory.getLogger(this.getClass());
-  @Autowired
   private JestConfig jestConfig;
+
+  @Autowired
+  public ElasticSearchService(JestConfig jestConfig) {
+    this.jestConfig = jestConfig;
+  }
 
   public void createIndexes() {
     jestConfig.getIndexNames().forEach((key, value) -> {
@@ -80,9 +85,9 @@ public class ElasticSearchService {
       updates.forEach((key, value) -> keyValues.add("\"" + key + "\": \"" + value + "\""));
 
       String script = "{" +
-                "\"doc\" : {\n" +
-                  keyValues.toString() +
-                "}" +
+              "\"doc\" : {\n" +
+              keyValues.toString() +
+              "}" +
               "}";
 
       jestConfig.getClient().execute(new Update.Builder(script).index(index).type(index.toUpperCase()).id(id).build());
@@ -111,6 +116,92 @@ public class ElasticSearchService {
   public SearchResult searchElementsWildcard(String index, String property, String searchTerm) {
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
     searchSourceBuilder.query(QueryBuilders.wildcardQuery(index.toUpperCase() + "." + property, searchTerm));
+
+    Search search = new Search.Builder(searchSourceBuilder.toString())
+            .addIndex(index)
+            .addType(index.toUpperCase())
+            .build();
+
+    try {
+      return jestConfig.getClient().execute(search);
+    } catch (IOException e) {
+      log.error("[ElasticSearchService::searchElementsMatch] Cannot find element: " + e.getMessage());
+    }
+    return null;
+  }
+
+  public SearchResult orCriteriaSearchElements(String index, Map<String, String> criterias) {
+    StringJoiner searchCriteria = new StringJoiner(", ");
+    criterias.forEach((key, value) -> searchCriteria.add("{\"query\": {\"wildcard\": {\"" + key + "\": {\"value\": \"*" + value + "*\"}}}}"));
+
+    String query = "{\n" +
+            "  \"query\": {\n" +
+            "    \"filtered\": {\n" +
+            "      \"query\": {\n" +
+            "        \"match_all\": {}\n" +
+            "      },\n" +
+            "      \"filter\": {\n" +
+            "        \"bool\": {\n" +
+            "          \"should\": [\n" +
+                          searchCriteria.toString() +
+            "          ]\n" +
+            "        }\n" +
+            "      }\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+
+    Search search = new Search.Builder(query)
+            .addIndex(index)
+            .addType(index.toUpperCase())
+            .build();
+
+    try {
+      return jestConfig.getClient().execute(search);
+    } catch (IOException e) {
+      log.error("[ElasticSearchService::searchElementsMatch] Cannot find element: " + e.getMessage());
+    }
+    return null;
+  }
+
+  public SearchResult andCriteriaSearchElements(String index, Map<String, String> criterias) {
+    StringJoiner searchCriteria = new StringJoiner(", ");
+    criterias.forEach((key, value) -> searchCriteria.add("{\n" +
+            "          \"wildcard\": {\n" +
+            "            \"" + key + "\": {\n" +
+            "              \"value\": \"*" + value + "*\"\n" +
+            "            }\n" +
+            "          }\n" +
+            "        }"));
+
+    String query = "{\n" +
+            "  \"query\": {\n" +
+            "    \"bool\": {\n" +
+            "      \"must\": [\n" +
+                    searchCriteria.toString() +
+            "      ]\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+
+    System.out.println(query);
+
+    Search search = new Search.Builder(query)
+            .addIndex(index)
+            .addType(index.toUpperCase())
+            .build();
+
+    try {
+      return jestConfig.getClient().execute(search);
+    } catch (IOException e) {
+      log.error("[ElasticSearchService::searchElementsMatch] Cannot find element: " + e.getMessage());
+    }
+    return null;
+  }
+
+  public SearchResult findAllElements(String index) {
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    searchSourceBuilder.query(QueryBuilders.matchAllQuery());
 
     Search search = new Search.Builder(searchSourceBuilder.toString())
             .addIndex(index)

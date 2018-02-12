@@ -30,7 +30,7 @@ public class CommentServiceTest {
   private AuthorizationService authorizationService;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     given(authorizationService.isUserAuthorized(any(AuthorizationInfoDTO.class))).willReturn(true);
     given(authorizationService.areUsernameEquals("john@doe.fr", "john@doe.fr")).willReturn(true);
 

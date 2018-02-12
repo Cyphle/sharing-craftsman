@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthorizationService {
-  private UserService userService;
+  private final UserService userService;
 
   @Autowired
   public AuthorizationService(UserService userService) {

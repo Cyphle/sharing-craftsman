@@ -10,19 +10,19 @@ public class KnowledgeDTO {
   public KnowledgeDTO() {
   }
 
-  public KnowledgeDTO(String categoryId, String creator, String title, String content) {
+  private KnowledgeDTO(String categoryId, String creator, String title, String content) {
     this.categoryId = categoryId;
     this.creator = creator;
     this.title = title;
     this.content = content;
   }
 
-  public KnowledgeDTO(String categoryId, String id, String creator, String title, String content) {
+  private KnowledgeDTO(String categoryId, String id, String creator, String title, String content) {
     this(categoryId, creator, title, content);
     this.id = id;
   }
 
-  public KnowledgeDTO(String categoryId, String id) {
+  private KnowledgeDTO(String categoryId, String id) {
     this.categoryId = categoryId;
     this.id = id;
   }

@@ -1,7 +1,6 @@
 package fr.knowledge.infra.handlers.library;
 
 import fr.knowledge.common.Mapper;
-import fr.knowledge.domain.common.DomainEvent;
 import fr.knowledge.domain.common.valueobjects.Id;
 import fr.knowledge.domain.library.events.KnowledgeUpdatedEvent;
 import fr.knowledge.domain.library.valueobjects.Knowledge;

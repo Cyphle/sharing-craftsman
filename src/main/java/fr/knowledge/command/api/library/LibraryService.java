@@ -3,7 +3,6 @@ package fr.knowledge.command.api.library;
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.command.api.common.AuthorizationService;
 import fr.knowledge.command.bus.CommandBus;
-import fr.knowledge.domain.library.exceptions.CategoryException;
 import fr.knowledge.domain.library.commands.*;
 import fr.knowledge.domain.library.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LibraryService {
-  private CommandBus commandBus;
-  private AuthorizationService authorizationService;
+  private final CommandBus commandBus;
+  private final AuthorizationService authorizationService;
 
   @Autowired
   public LibraryService(AuthorizationService authorizationService, CommandBus commandBus) {

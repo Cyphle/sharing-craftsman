@@ -62,8 +62,8 @@ public enum DeserializerMapper {
     return Mapper.fromJsonStringToObject(payload, SelectionRemovedInfraEvent.class).fromInfraToDomain();
   });
 
-  public final Function<String, DomainEvent> deserializer;
-  public final String eventClass;
+  private final Function<String, DomainEvent> deserializer;
+  private final String eventClass;
 
   DeserializerMapper(String eventClass, Function<String, DomainEvent> deserializer) {
     this.eventClass = eventClass;

@@ -11,7 +11,7 @@ import fr.knowledge.infra.repositories.ElasticSearchService;
 import io.searchbox.core.SearchResult;
 
 public class KnowledgeAddedEventHandler implements EventHandler {
-  private ElasticSearchService elasticSearchService;
+  private final ElasticSearchService elasticSearchService;
 
   public KnowledgeAddedEventHandler(ElasticSearchService elasticSearchService) {
     this.elasticSearchService = elasticSearchService;

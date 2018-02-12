@@ -49,7 +49,7 @@ public class Comment {
     saveChanges(event);
   }
 
-  public void saveChanges(DomainEvent<Comment> event) {
+  private void saveChanges(DomainEvent<Comment> event) {
     changes.add(event);
   }
 

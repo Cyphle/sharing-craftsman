@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScoreUpdatedEventHandler implements EventHandler {
-  private ElasticSearchService elasticSearchService;
+  private final ElasticSearchService elasticSearchService;
 
   public ScoreUpdatedEventHandler(ElasticSearchService elasticSearchService) {
     this.elasticSearchService = elasticSearchService;

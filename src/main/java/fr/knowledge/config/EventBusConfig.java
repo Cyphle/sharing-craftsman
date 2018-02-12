@@ -25,8 +25,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EventBusConfig {
-  private EventBus eventBus;
-  private ElasticSearchService elasticSearchService;
+  private final EventBus eventBus;
+  private final ElasticSearchService elasticSearchService;
 
   @Autowired
   public EventBusConfig(EventBus eventBus, ElasticSearchService elasticSearchService) {

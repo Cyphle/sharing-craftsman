@@ -19,7 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-public class SpringAcceptanceTestConfig {
+class SpringAcceptanceTestConfig {
   private final String BASE_URI = "http://localhost";
   private final int PORT = 8080;
 
