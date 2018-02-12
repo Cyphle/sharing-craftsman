@@ -39,7 +39,6 @@ public class QueryCommentService {
     List comments = queryBus.send(query);
     if (comments.isEmpty())
       return new ResponseEntity<>("No comment for given id", HttpStatus.NO_CONTENT);
-    else
-      return ResponseEntity.ok(comments.get(0));
+    return ResponseEntity.ok(comments.get(0));
   }
 }

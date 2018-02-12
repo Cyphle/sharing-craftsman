@@ -1,8 +1,11 @@
 package fr.knowledge.query.queries;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@EqualsAndHashCode
 public class SearchCriteria {
   private Map<SearchKey, String> criteria;
 

@@ -106,8 +106,8 @@ public class QueryCategoryControllerTest {
   @Test
   public void should_search_for_categories() throws Exception {
     Map<String, String> searchKeys = new HashMap<>();
-    searchKeys.put(SearchKey.CategoryName.searchKey, "Arch");
-    searchKeys.put(SearchKey.KnowledgeTitle.searchKey, "know");
+    searchKeys.put("KnowledgeTitle", "Arch");
+    searchKeys.put("KnowledgeTitle", "know");
 
     given(queryCategoryService.searchCategories(
             new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
