@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/selections")
+@RequestMapping("/favorites")
 @Api(description = "Endpoints to manage favorites")
 public class SelectionController {
   private final SelectionService selectionService;

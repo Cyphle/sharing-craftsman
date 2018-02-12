@@ -1,5 +1,8 @@
 package fr.knowledge.command.api.common;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class AuthorizationInfoDTO {
   private final String client;
   private final String clientSecret;

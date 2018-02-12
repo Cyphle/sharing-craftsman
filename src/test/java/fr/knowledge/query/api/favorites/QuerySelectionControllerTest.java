@@ -22,8 +22,11 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Collections;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -48,19 +51,24 @@ public class QuerySelectionControllerTest {
   }
 
   @Test
-  public void should_get_comments_for_a_content() throws Exception {
+  public void should_get_favorites_for_a_content() throws Exception {
     given(querySelectionService.getSelectionsOfUser(
             new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
             "john@doe.fr"
     )).willReturn(ResponseEntity.ok(Collections.singletonList(SelectionElastic.of("saa", "john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa"))));
 
-    this.mvc.perform(get("/favorites/john@doe.fr")
+    this.mvc.perform(post("/favorites/search")
             .header("client", "client")
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")
             .header("access-token", "aaa")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(Mapper.fromObjectToJsonString(Collections.singletonList(SelectionElastic.of("saa", "john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa")))))
-            .andExpect(status().isOk());
+            .content(Mapper.fromObjectToJsonString(UsernameDTO.of("john@doe.fr"))))
+            .andExpect(status().isOk())
+            .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$[0].id", is("saa")))
+            .andExpect(jsonPath("$[0].username", is("john@doe.fr")))
+            .andExpect(jsonPath("$[0].contentType", is("KNOWLEDGE")))
+            .andExpect(jsonPath("$[0].contentId", is("aaa")));
   }
 }

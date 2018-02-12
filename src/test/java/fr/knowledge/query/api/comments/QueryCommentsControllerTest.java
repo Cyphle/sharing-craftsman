@@ -17,13 +17,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Collections;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -59,9 +63,14 @@ public class QueryCommentsControllerTest {
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")
             .header("access-token", "aaa")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(Mapper.fromObjectToJsonString(Collections.singletonList(CommentElastic.of("caa", "john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa", "My comment")))))
-            .andExpect(status().isOk());
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$[0].id", is("caa")))
+            .andExpect(jsonPath("$[0].commenter", is("john@doe.fr")))
+            .andExpect(jsonPath("$[0].contentType", is("KNOWLEDGE")))
+            .andExpect(jsonPath("$[0].contentId", is("aaa")))
+            .andExpect(jsonPath("$[0].content", is("My comment")));
   }
 
   @Test
@@ -76,8 +85,12 @@ public class QueryCommentsControllerTest {
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")
             .header("access-token", "aaa")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(Mapper.fromObjectToJsonString(CommentElastic.of("caa", "john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa", "My comment"))))
-            .andExpect(status().isOk());
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id", is("caa")))
+            .andExpect(jsonPath("$.commenter", is("john@doe.fr")))
+            .andExpect(jsonPath("$.contentType", is("KNOWLEDGE")))
+            .andExpect(jsonPath("$.contentId", is("aaa")))
+            .andExpect(jsonPath("$.content", is("My comment")));
   }
 }
