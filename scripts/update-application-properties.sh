@@ -29,8 +29,8 @@ infos=(${ymldata// / })
 # DOCKER
 eurekaPathEntry='library_eureka_path'
 
-eurekaPathLength=$((${#infos[13]} - ${#eurekaPathEntry} - 5))
+eurekaPathLength=$((${#infos[0]} - ${#eurekaPathEntry} - 5))
 
-eurekaPath=${infos[13]:${#eurekaPathEntry} + 3:eurekaPathLength}
+eurekaPath=${infos[0]:${#eurekaPathEntry} + 3:eurekaPathLength}
 
 sed -i -e 's|<EUREKA_PATH>|'$eurekaPath'|g' src/main/resources/application-prod.yml

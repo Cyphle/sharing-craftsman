@@ -1,0 +1,70 @@
+{
+  "library": [
+    {
+      "name": "Dockerfile",
+      "database": {
+        "host": {
+          "key": "<DB_HOST>",
+          "value": "192.168.1.18"
+        },
+        "port": {
+          "key": "<DB_PORT>",
+          "value": "3306"
+        },
+        "user": {
+          "key": "<DB_USER>",
+          "value": "root"
+        },
+        "password": {
+          "key": "<DB_PASSWORD>",
+          "value": "root"
+        },
+        "name": {
+          "key": "<DB_NAME>",
+          "value": "sharingcraftsmanlibrary"
+        }
+      },
+      "app": {
+        "profile": {
+          "key": "<PROFILE>",
+          "value": "prod"
+        },
+        "logs": {
+          "path": {
+            "key": "<LOGS_PATH>",
+            "value": "/app/logs"
+          }
+        }
+      },
+      "elastic": {
+        "host": {
+          "key": "<ELASTIC_HOST>",
+          "value": "192.168.1.12"
+        },
+        "port": {
+          "key": "<ELASTIC_PORT>",
+          "value": "9200"
+        }
+      }
+    },
+    {
+      "name": "docker-compose.yml",
+      "docker": {
+        "port": {
+          "key": "<APP_PORT>",
+          "value": "172.17.0.1:8081:8080"
+        },
+        "logs": {
+          "path": {
+            "key": "<LOGS_PATH>",
+            "value": "/home/sclibrary/logs"
+          }
+        },
+        "network": {
+          "key": "<DOCKER_NETWORK>",
+          "value": "scnetwork"
+        }
+      }
+    }
+  ]
+}
