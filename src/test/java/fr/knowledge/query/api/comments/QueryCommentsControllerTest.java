@@ -2,7 +2,6 @@ package fr.knowledge.query.api.comments;
 
 import fr.knowledge.KnowledgeLibraryApplication;
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
-import fr.knowledge.common.Mapper;
 import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.infra.models.comments.CommentElastic;
 import org.junit.Before;
@@ -17,7 +16,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 

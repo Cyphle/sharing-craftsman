@@ -55,7 +55,7 @@ public class QuerySelectionServiceTest {
     FindSelectionForUserQuery query = new FindSelectionForUserQuery("john@doe.fr");
     verify(queryBus).send(query);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThat(response.getBody()).isEqualTo(Arrays.asList(
+    assertThat(response.getBody()).isEqualTo(Collections.singletonList(
             SelectionElastic.of("saa", "john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa")
     ));
   }

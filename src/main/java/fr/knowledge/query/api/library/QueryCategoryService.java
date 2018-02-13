@@ -2,7 +2,6 @@ package fr.knowledge.query.api.library;
 
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.command.api.common.AuthorizationService;
-import fr.knowledge.infra.models.library.CategoryElastic;
 import fr.knowledge.query.bus.QueryBus;
 import fr.knowledge.query.queries.SearchCriteria;
 import fr.knowledge.query.queries.library.FindAllCategoriesQuery;

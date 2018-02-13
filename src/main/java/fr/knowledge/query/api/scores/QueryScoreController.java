@@ -2,7 +2,6 @@ package fr.knowledge.query.api.scores;
 
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.infra.models.favorites.SelectionElastic;
-import fr.knowledge.query.api.favorites.UsernameDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

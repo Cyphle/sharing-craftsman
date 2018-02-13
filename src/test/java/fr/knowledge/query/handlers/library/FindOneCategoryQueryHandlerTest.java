@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +24,7 @@ public class FindOneCategoryQueryHandlerTest {
 
   @Before
   public void setUp() {
-    given(categoryQueryService.findOneById("aaa")).willReturn(Arrays.asList(CategoryElastic.of("aaa", "Architecture")));
+    given(categoryQueryService.findOneById("aaa")).willReturn(Collections.singletonList(CategoryElastic.of("aaa", "Architecture")));
     findOneCategoryQueryHandler = new FindOneCategoryQueryHandler(categoryQueryService);
   }
 

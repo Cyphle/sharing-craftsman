@@ -4,7 +4,6 @@ import fr.knowledge.domain.common.valueobjects.ContentType;
 import fr.knowledge.domain.scores.valueobjects.Mark;
 import fr.knowledge.infra.models.scores.ScoreElastic;
 import fr.knowledge.query.queries.scores.FindScoresByMarkQuery;
-import fr.knowledge.query.queries.scores.FindScoresForContentQuery;
 import fr.knowledge.query.services.ScoreQueryService;
 import org.junit.Before;
 import org.junit.Test;

@@ -28,9 +28,7 @@ class SearchCriteriaDTO {
 
   public SearchCriteria fromApiToQuery() {
     SearchCriteria criteria = new SearchCriteria();
-    searchKeys.forEach((key, value) -> {
-      criteria.with(SearchKey.findFromName(key), value);
-    });
+    searchKeys.forEach((key, value) -> criteria.with(SearchKey.findFromName(key), value));
     return criteria;
   }
 }

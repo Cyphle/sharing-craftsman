@@ -4,8 +4,6 @@ import fr.knowledge.domain.common.DomainCommand;
 import fr.knowledge.domain.common.valueobjects.Id;
 import lombok.EqualsAndHashCode;
 
-import java.util.Objects;
-
 @EqualsAndHashCode
 public class AddKnowledgeCommand implements DomainCommand {
   private final String id;

@@ -5,7 +5,6 @@ import fr.knowledge.command.api.common.AuthorizationInfoDTO;
 import fr.knowledge.common.Mapper;
 import fr.knowledge.infra.models.library.CategoryElastic;
 import fr.knowledge.infra.models.library.KnowledgeElastic;
-import fr.knowledge.query.queries.SearchKey;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -112,7 +111,7 @@ public class QueryCategoryControllerTest {
     given(queryCategoryService.searchCategories(
             new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
             new SearchCriteriaDTO(searchKeys)
-    )).willReturn(ResponseEntity.ok(Arrays.asList(
+    )).willReturn(ResponseEntity.ok(Collections.singletonList(
             CategoryElastic.of("bbb", "Architecture", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "My knowledge", "Toto is tata")))
     )));
 

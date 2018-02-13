@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +25,7 @@ public class FindAllCategoriesQueryHandlerTest {
 
   @Before
   public void setUp() {
-    given(categoryQueryService.findAllCategories()).willReturn(Arrays.asList(CategoryElastic.of("aaa", "Architecture")));
+    given(categoryQueryService.findAllCategories()).willReturn(Collections.singletonList(CategoryElastic.of("aaa", "Architecture")));
     findAllCategoriesQueryHandler = new FindAllCategoriesQueryHandler(categoryQueryService);
   }
 

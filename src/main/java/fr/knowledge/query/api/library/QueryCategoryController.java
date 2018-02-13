@@ -1,10 +1,7 @@
 package fr.knowledge.query.api.library;
 
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
-import fr.knowledge.common.Mapper;
-import fr.knowledge.infra.models.comments.CommentElastic;
 import fr.knowledge.infra.models.library.CategoryElastic;
-import fr.knowledge.query.api.favorites.QuerySelectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
