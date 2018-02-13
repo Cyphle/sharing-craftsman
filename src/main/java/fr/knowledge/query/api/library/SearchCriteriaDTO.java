@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.util.Map;
 
 @EqualsAndHashCode
-public class SearchCriteriaDTO {
+class SearchCriteriaDTO {
   private Map<String, String> searchKeys;
 
   public SearchCriteriaDTO() {

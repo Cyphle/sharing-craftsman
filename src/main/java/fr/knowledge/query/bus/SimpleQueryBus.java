@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Service
 public class SimpleQueryBus implements QueryBus {
-  private Map<Class<? extends Query>, QueryHandler> handlers;
+  private final Map<Class<? extends Query>, QueryHandler> handlers;
 
   public SimpleQueryBus() {
     this.handlers = new HashMap<>();

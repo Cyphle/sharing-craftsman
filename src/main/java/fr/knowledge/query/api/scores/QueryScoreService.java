@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class QueryScoreService {
-  private AuthorizationService authorizationService;
-  private QueryBus queryBus;
+  private final AuthorizationService authorizationService;
+  private final QueryBus queryBus;
 
   @Autowired
   public QueryScoreService(AuthorizationService authorizationService, QueryBus queryBus) {

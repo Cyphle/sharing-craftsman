@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
 public class FindScoresByMarkQuery implements Query {
-  private int mark;
+  private final int mark;
 
   public FindScoresByMarkQuery(int mark) {
     this.mark = mark;

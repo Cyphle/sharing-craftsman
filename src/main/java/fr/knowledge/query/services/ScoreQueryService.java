@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ScoreQueryService {
-  private ElasticSearchService elasticSearchService;
+  private final ElasticSearchService elasticSearchService;
 
   public ScoreQueryService(ElasticSearchService elasticSearchService) {
     this.elasticSearchService = elasticSearchService;

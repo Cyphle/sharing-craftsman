@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/library")
 @Api(description = "Endpoints to get categories and knowledges")
 public class QueryCategoryController {
-  private QueryCategoryService queryCategoryService;
+  private final QueryCategoryService queryCategoryService;
 
   @Autowired
   public QueryCategoryController(QueryCategoryService queryCategoryService) {

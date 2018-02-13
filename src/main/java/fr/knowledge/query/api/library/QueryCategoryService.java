@@ -17,8 +17,8 @@ import java.util.List;
 
 @Service
 public class QueryCategoryService {
-  private AuthorizationService authorizationService;
-  private QueryBus queryBus;
+  private final AuthorizationService authorizationService;
+  private final QueryBus queryBus;
 
   @Autowired
   public QueryCategoryService(AuthorizationService authorizationService, QueryBus queryBus) {

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/favorites")
 @Api(description = "Endpoints to get favorites")
 public class QuerySelectionController {
-  private QuerySelectionService querySelectionService;
+  private final QuerySelectionService querySelectionService;
 
   @Autowired
   public QuerySelectionController(QuerySelectionService querySelectionService) {

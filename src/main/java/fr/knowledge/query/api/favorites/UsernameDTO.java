@@ -6,7 +6,7 @@ public class UsernameDTO {
   public UsernameDTO() {
   }
 
-  public UsernameDTO(String username) {
+  private UsernameDTO(String username) {
     this.username = username;
   }
 

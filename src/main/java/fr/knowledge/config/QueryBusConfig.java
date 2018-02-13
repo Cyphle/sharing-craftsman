@@ -27,8 +27,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class QueryBusConfig {
-  private QueryBus queryBus;
-  private ElasticSearchService elasticSearchService;
+  private final QueryBus queryBus;
+  private final ElasticSearchService elasticSearchService;
 
   @Autowired
   public QueryBusConfig(QueryBus queryBus, ElasticSearchService elasticSearchService) {

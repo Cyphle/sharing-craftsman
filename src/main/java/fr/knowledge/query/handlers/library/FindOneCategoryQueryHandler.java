@@ -9,7 +9,7 @@ import fr.knowledge.query.services.CategoryQueryService;
 import java.util.List;
 
 public class FindOneCategoryQueryHandler implements QueryHandler<CategoryElastic> {
-  private CategoryQueryService categoryQueryService;
+  private final CategoryQueryService categoryQueryService;
 
   public FindOneCategoryQueryHandler(CategoryQueryService categoryQueryService) {
     this.categoryQueryService = categoryQueryService;

@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
 public class FindScoresForContentQuery implements Query {
-  private String id;
+  private final String id;
 
   public FindScoresForContentQuery(String id) {
     this.id = id;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/scores")
 @Api(description = "Endpoints to get favorites")
 public class QueryScoreController {
-  private QueryScoreService queryScoreService;
+  private final QueryScoreService queryScoreService;
 
   @Autowired
   public QueryScoreController(QueryScoreService queryScoreService) {

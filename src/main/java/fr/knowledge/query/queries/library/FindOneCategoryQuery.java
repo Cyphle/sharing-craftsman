@@ -7,7 +7,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class FindOneCategoryQuery implements Query {
-  private String id;
+  private final String id;
 
   public FindOneCategoryQuery(String id) {
     this.id = id;

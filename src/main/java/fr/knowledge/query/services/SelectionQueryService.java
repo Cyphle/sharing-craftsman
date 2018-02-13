@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SelectionQueryService {
-  private ElasticSearchService elasticSearchService;
+  private final ElasticSearchService elasticSearchService;
 
   public SelectionQueryService(ElasticSearchService elasticSearchService) {
     this.elasticSearchService = elasticSearchService;

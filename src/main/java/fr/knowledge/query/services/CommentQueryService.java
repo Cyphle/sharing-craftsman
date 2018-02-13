@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CommentQueryService {
-  private ElasticSearchService elasticSearchService;
+  private final ElasticSearchService elasticSearchService;
 
   public CommentQueryService(ElasticSearchService elasticSearchService) {
     this.elasticSearchService = elasticSearchService;

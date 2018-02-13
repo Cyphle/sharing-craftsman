@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class ElasticSearchService {
   private final Logger log = LoggerFactory.getLogger(this.getClass());
-  private JestConfig jestConfig;
+  private final JestConfig jestConfig;
 
   @Autowired
   public ElasticSearchService(JestConfig jestConfig) {

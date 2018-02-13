@@ -7,7 +7,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class FindSelectionForUserQuery implements Query {
-  private String username;
+  private final String username;
 
   public FindSelectionForUserQuery(String username) {
     this.username = username;

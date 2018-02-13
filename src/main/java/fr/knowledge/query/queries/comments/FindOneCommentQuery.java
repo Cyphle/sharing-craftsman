@@ -3,7 +3,7 @@ package fr.knowledge.query.queries.comments;
 import fr.knowledge.query.queries.Query;
 
 public class FindOneCommentQuery implements Query {
-  private String id;
+  private final String id;
 
   public FindOneCommentQuery(String id) {
     this.id = id;

@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CategoryQueryService {
-  private ElasticSearchService elasticSearchService;
+  private final ElasticSearchService elasticSearchService;
 
   public CategoryQueryService(ElasticSearchService elasticSearchService) {
     this.elasticSearchService = elasticSearchService;

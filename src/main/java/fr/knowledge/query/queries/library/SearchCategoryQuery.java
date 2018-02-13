@@ -8,7 +8,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class SearchCategoryQuery implements Query {
-  private SearchCriteria searchCriteria;
+  private final SearchCriteria searchCriteria;
 
   public SearchCategoryQuery(SearchCriteria searchCriteria) {
     this.searchCriteria = searchCriteria;

@@ -9,7 +9,7 @@ import fr.knowledge.query.services.CommentQueryService;
 import java.util.List;
 
 public class FindCommentsForContentQueryHandler implements QueryHandler<CommentElastic> {
-  private CommentQueryService commentQueryService;
+  private final CommentQueryService commentQueryService;
 
   public FindCommentsForContentQueryHandler(CommentQueryService commentQueryService) {
     this.commentQueryService = commentQueryService;

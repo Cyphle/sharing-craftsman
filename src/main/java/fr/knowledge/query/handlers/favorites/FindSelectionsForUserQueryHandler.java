@@ -9,7 +9,7 @@ import fr.knowledge.query.services.SelectionQueryService;
 import java.util.List;
 
 public class FindSelectionsForUserQueryHandler implements QueryHandler<SelectionElastic> {
-  private SelectionQueryService selectionQueryService;
+  private final SelectionQueryService selectionQueryService;
 
   public FindSelectionsForUserQueryHandler(SelectionQueryService selectionQueryService) {
     this.selectionQueryService = selectionQueryService;

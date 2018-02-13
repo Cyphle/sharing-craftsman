@@ -7,7 +7,7 @@ import java.util.Map;
 
 @EqualsAndHashCode
 public class SearchCriteria {
-  private Map<SearchKey, String> criteria;
+  private final Map<SearchKey, String> criteria;
 
   public SearchCriteria() {
     criteria = new HashMap<>();

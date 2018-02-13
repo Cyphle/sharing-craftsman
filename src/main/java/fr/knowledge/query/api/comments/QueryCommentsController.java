@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/comments")
 @Api(description = "Endpoints to get comments")
 public class QueryCommentsController {
-  private QueryCommentService queryCommentService;
+  private final QueryCommentService queryCommentService;
 
   @Autowired
   public QueryCommentsController(QueryCommentService queryCommentService) {

@@ -9,7 +9,7 @@ import fr.knowledge.query.services.ScoreQueryService;
 import java.util.List;
 
 public class FindScoresByMarkQueryHandler implements QueryHandler<ScoreElastic> {
-  private ScoreQueryService scoreQueryService;
+  private final ScoreQueryService scoreQueryService;
 
   public FindScoresByMarkQueryHandler(ScoreQueryService scoreQueryService) {
     this.scoreQueryService = scoreQueryService;
