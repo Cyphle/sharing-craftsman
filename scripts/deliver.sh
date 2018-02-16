@@ -6,7 +6,7 @@ mkdir $1
 cp scripts/docker-compose.yml $1/docker-compose.yml
 cp scripts/Dockerfile $1/Dockerfile
 cp target/knowledge-library-1.0.jar $1/knowledge-library.jar
-cp scripts/update-dockerfile.sh $1/update-dockerfile.sh
+cp scripts/update_docker_files.py $1/update_docker_files.py
 cp scripts/knowledge-library-infos.yml $1/knowledge-library-infos.yml
 cp scripts/README.md $1/README.md
 echo "End copying deployable files in app folder"
