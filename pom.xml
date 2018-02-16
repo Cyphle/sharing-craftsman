@@ -140,17 +140,5 @@
         </configuration>
       </plugin>
     </plugins>
-
-    <testResources>
-      <testResource>
-        <directory>src/test/resources</directory>
-      </testResource>
-      <testResource>
-        <directory>src/test/java</directory>
-        <includes>
-          <include>**/*.feature</include>
-        </includes>
-      </testResource>
-    </testResources>
   </build>
 </project>
