@@ -9,6 +9,8 @@ import fr.knowledge.infra.denormalizers.Normalizer;
 import fr.knowledge.infra.denormalizers.library.CategoryDenormalizer;
 import fr.knowledge.infra.models.EventEntity;
 import fr.knowledge.infra.repositories.EventStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CategoryAdapter implements CategoryRepository {
+  private final Logger log = LoggerFactory.getLogger(this.getClass());
   private final EventBus eventBus;
   private final EventStore eventStore;
   private final Normalizer normalizer;
@@ -66,6 +69,7 @@ public class CategoryAdapter implements CategoryRepository {
     category.getChanges()
             .forEach(change -> {
               EventEntity event = normalizer.normalize(change);
+              log.info("[CategoryAdapter::save] -- Save infrastructure event");
               eventStore.save(event);
               eventBus.apply(change);
             });

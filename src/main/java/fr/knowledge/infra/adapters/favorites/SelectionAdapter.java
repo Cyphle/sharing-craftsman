@@ -9,6 +9,8 @@ import fr.knowledge.infra.denormalizers.Normalizer;
 import fr.knowledge.infra.denormalizers.favorites.SelectionDenormalizer;
 import fr.knowledge.infra.models.EventEntity;
 import fr.knowledge.infra.repositories.EventStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class SelectionAdapter implements SelectionRepository {
+  private final Logger log = LoggerFactory.getLogger(this.getClass());
   private final EventBus eventBus;
   private final EventStore eventStore;
   private final Normalizer normalizer;
@@ -65,6 +68,7 @@ public class SelectionAdapter implements SelectionRepository {
     selection.getChanges()
             .forEach(change -> {
               EventEntity event = normalizer.normalize(change);
+              log.info("[SelectionAdapter::save] -- Save infrastructure event");
               eventStore.save(event);
               eventBus.apply(change);
             });
