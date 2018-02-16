@@ -34,3 +34,6 @@ eurekaPathLength=$((${#infos[0]} - ${#eurekaPathEntry} - 5))
 eurekaPath=${infos[0]:${#eurekaPathEntry} + 3:eurekaPathLength}
 
 sed -i -e 's|<EUREKA_PATH>|'$eurekaPath'|g' src/main/resources/application-prod.yml
+
+FILE="src/main/resources/application-prod.yml"
+cat $FILE
