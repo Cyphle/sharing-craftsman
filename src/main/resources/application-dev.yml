@@ -41,7 +41,7 @@ logging:
 # DB Pool
 bonecp:
   driverClass: org.postgresql.Driver
-  url: jdbc:postgresql://192.168.1.12:8084/sharincraftsmanlibrary
+  url: jdbc:postgresql://192.168.1.12:9200/sharincraftsmanlibrary
   username: docker
   password: docker
   idleMaxAgeInMinutes: 240

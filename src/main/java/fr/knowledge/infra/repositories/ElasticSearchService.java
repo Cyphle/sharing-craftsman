@@ -36,13 +36,16 @@ public class ElasticSearchService {
   public void createIndexes() {
     jestConfig.getIndexNames().forEach((key, value) -> {
       try {
+        log.info("[ElasticSearchService::createIndexes] Read mapping.");
         Resource resource = resourceLoader.getResource("classpath:" + value);
         InputStream inputStream = resource.getInputStream();
         String mapping = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
 
+        log.info("[ElasticSearchService::createIndexes] Create index.");
         CreateIndex createIndex = new CreateIndex.Builder(key).build();
         jestConfig.getClient().execute(createIndex);
 
+        log.info("[ElasticSearchService::createIndexes] Create mapping.");
         PutMapping putMapping = new PutMapping.Builder(
                 key,
                 key.toUpperCase(),
