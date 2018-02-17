@@ -40,19 +40,18 @@ public class ElasticSearchService {
         Resource resource = resourceLoader.getResource("classpath:" + value);
         InputStream inputStream = resource.getInputStream();
         String mapping = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
-        log.info("[ElasticSearchService::createIndexes] Mapping: " + mapping);
 
         log.info("[ElasticSearchService::createIndexes] Create index: " + key);
-        CreateIndex createIndex = new CreateIndex.Builder("library").build();
+        CreateIndex createIndex = new CreateIndex.Builder(key).build();
         jestConfig.getClient().execute(createIndex);
 
         log.info("[ElasticSearchService::createIndexes] Create mapping.");
-//        PutMapping putMapping = new PutMapping.Builder(
-//                key,
-//                key.toUpperCase(),
-//                mapping
-//        ).build();
-//        jestConfig.getClient().execute(putMapping);
+        PutMapping putMapping = new PutMapping.Builder(
+                key,
+                key.toUpperCase(),
+                mapping
+        ).build();
+        jestConfig.getClient().execute(putMapping);
       } catch (IOException e) {
         log.error("[ElasticSearchService::createIndexes] Read mapping: " + e.getMessage());
       }
