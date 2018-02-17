@@ -18,7 +18,7 @@ spring:
   elasticsearch:
     jest:
       uris: ${ELASTIC_HOST}:${ELASTIC_PORT}
-      index: library:mapping/CategoryMapping.json,comments:mapping/CommentsMapping.json,favorites:mapping/FavoritesMapping.json,scores:mapping/ScoresMapping.json
+      index: library:mapping/CategoryMapping.json
 
 # Eureka
 server:
