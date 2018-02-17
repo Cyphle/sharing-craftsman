@@ -15,7 +15,7 @@ spring:
 # ElasticSearch
   elasticsearch:
     jest:
-      uris: http://192.168.1.12:9200
+      uris: http://192.168.1.12:8084
       index: library:mapping/CategoryMapping.json,comments:mapping/CommentsMapping.json,favorites:mapping/FavoritesMapping.json,scores:mapping/ScoresMapping.json
 
 # Eureka
@@ -41,9 +41,9 @@ logging:
 # DB Pool
 bonecp:
   driverClass: org.postgresql.Driver
-  url: jdbc:postgresql://192.168.1.12:9200/sharincraftsmanlibrary
-  username: docker
-  password: docker
+  url: jdbc:postgresql://192.168.1.12:8083/sharingcraftsmanlibrary
+  username: scpostgres
+  password: scdbp4ss!!
   idleMaxAgeInMinutes: 240
   idleConnectionTestPeriodInMinutes: 60
   maxConnectionsPerPartition: 10

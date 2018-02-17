@@ -12,8 +12,6 @@ import java.util.Date;
 @Table(name = "events")
 public class EventEntity {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private long id;
   @Column(name = "event_id")
   private String eventId;
   @Column(name = "event_version")
@@ -37,14 +35,6 @@ public class EventEntity {
     this.aggregateId = aggregateId;
     this.payloadType = payloadType;
     this.payload = payload;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public String getEventId() {
