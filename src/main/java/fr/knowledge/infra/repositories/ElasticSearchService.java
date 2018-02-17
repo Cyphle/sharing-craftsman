@@ -5,17 +5,19 @@ import io.searchbox.core.*;
 import io.searchbox.indices.CreateIndex;
 import io.searchbox.indices.DeleteIndex;
 import io.searchbox.indices.mapping.PutMapping;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -23,17 +25,20 @@ import java.util.StringJoiner;
 public class ElasticSearchService {
   private final Logger log = LoggerFactory.getLogger(this.getClass());
   private final JestConfig jestConfig;
+  private ResourceLoader resourceLoader;
 
   @Autowired
-  public ElasticSearchService(JestConfig jestConfig) {
+  public ElasticSearchService(JestConfig jestConfig, ResourceLoader resourceLoader) {
     this.jestConfig = jestConfig;
+    this.resourceLoader = resourceLoader;
   }
 
   public void createIndexes() {
     jestConfig.getIndexNames().forEach((key, value) -> {
       try {
-        File file = new ClassPathResource(value).getFile();
-        String mapping = FileUtils.readFileToString(file);
+        Resource resource = resourceLoader.getResource("classpath:" + value);
+        InputStream inputStream = resource.getInputStream();
+        String mapping = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
 
         CreateIndex createIndex = new CreateIndex.Builder(key).build();
         jestConfig.getClient().execute(createIndex);
