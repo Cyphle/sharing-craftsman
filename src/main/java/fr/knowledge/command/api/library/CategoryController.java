@@ -57,13 +57,13 @@ public class CategoryController {
           @ApiResponse(code = 200, message = ""),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @RequestMapping(method = RequestMethod.DELETE, value = "/categories")
+  @RequestMapping(method = RequestMethod.DELETE, value = "/categories/{categoryId}")
   public ResponseEntity deleteCategory(@RequestHeader("client") String client,
                                        @RequestHeader("secret") String secret,
                                        @RequestHeader("username") String username,
                                        @RequestHeader("access-token") String accessToken,
-                                       @RequestBody CategoryDTO categoryDTO) {
+                                       @PathVariable String categoryId) {
     AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
-    return libraryService.deleteCategory(authorizationInfoDTO, categoryDTO);
+    return libraryService.deleteCategory(authorizationInfoDTO, categoryId);
   }
 }

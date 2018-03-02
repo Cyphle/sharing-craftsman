@@ -55,7 +55,7 @@ public class CommentController {
           @ApiResponse(code = 200, message = ""),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @RequestMapping(method = RequestMethod.DELETE)
+  @RequestMapping(method = RequestMethod.POST, value = "/delete")
   public ResponseEntity deleteComment(@RequestHeader("client") String client,
                                          @RequestHeader("secret") String secret,
                                          @RequestHeader("username") String username,

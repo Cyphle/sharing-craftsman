@@ -88,7 +88,7 @@ public class ScoreControllerTest {
             ScoreDTO.from("aaa", "john@doe.fr"), "john@doe.fr")
     ).willReturn(ResponseEntity.ok().build());
 
-    this.mvc.perform(delete("/scores")
+    this.mvc.perform(post("/scores/delete")
             .header("client", "client")
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")

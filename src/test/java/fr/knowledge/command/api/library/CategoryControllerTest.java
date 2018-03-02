@@ -75,15 +75,14 @@ public class CategoryControllerTest {
 
   @Test
   public void should_delete_category() throws Exception {
-    given(libraryService.deleteCategory(new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"), CategoryDTO.from("aaa"))).willReturn(ResponseEntity.ok().build());
+    given(libraryService.deleteCategory(new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"), "aaa")).willReturn(ResponseEntity.ok().build());
 
-    this.mvc.perform(delete("/library/categories")
+    this.mvc.perform(delete("/library/categories/aaa")
             .header("client", "client")
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")
             .header("access-token", "aaa")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(Mapper.fromObjectToJsonString(CategoryDTO.fromId("aaa"))))
+            .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
   }
 }

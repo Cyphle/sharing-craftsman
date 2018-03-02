@@ -88,7 +88,7 @@ public class CommentControllerTest {
             "john@doe.fr")
     ).willReturn(ResponseEntity.ok().build());
 
-    this.mvc.perform(delete("/comments")
+    this.mvc.perform(post("/comments/delete")
             .header("client", "client")
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")

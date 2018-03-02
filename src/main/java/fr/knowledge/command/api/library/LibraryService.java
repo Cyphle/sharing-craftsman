@@ -53,11 +53,11 @@ public class LibraryService {
     return ResponseEntity.ok().build();
   }
 
-  public ResponseEntity deleteCategory(AuthorizationInfoDTO authorizationInfoDTO, CategoryDTO categoryDTO) {
+  public ResponseEntity deleteCategory(AuthorizationInfoDTO authorizationInfoDTO, String categoryId) {
     if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
       return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
 
-    DeleteCategoryCommand command = new DeleteCategoryCommand(categoryDTO.getId());
+    DeleteCategoryCommand command = new DeleteCategoryCommand(categoryId);
     try {
       commandBus.send(command);
     } catch (CategoryNotFoundException e) {

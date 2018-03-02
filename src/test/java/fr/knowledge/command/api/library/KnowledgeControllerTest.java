@@ -86,7 +86,7 @@ public class KnowledgeControllerTest {
             KnowledgeDTO.from("aaa", "aaa"))
     ).willReturn(ResponseEntity.ok().build());
 
-    this.mvc.perform(delete("/library/knowledges")
+    this.mvc.perform(post("/library/knowledges/delete")
             .header("client", "client")
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")

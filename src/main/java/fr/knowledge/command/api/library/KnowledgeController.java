@@ -55,7 +55,7 @@ public class KnowledgeController {
           @ApiResponse(code = 200, message = ""),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @RequestMapping(method = RequestMethod.DELETE, value = "/knowledges")
+  @RequestMapping(method = RequestMethod.POST, value = "/knowledges/delete")
   public ResponseEntity deleteKnowledge(@RequestHeader("client") String client,
                                        @RequestHeader("secret") String secret,
                                        @RequestHeader("username") String username,

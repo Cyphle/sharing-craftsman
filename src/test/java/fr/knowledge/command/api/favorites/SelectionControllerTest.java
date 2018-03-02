@@ -71,7 +71,7 @@ public class SelectionControllerTest {
             "john@doe.fr")
     ).willReturn(ResponseEntity.ok().build());
 
-    this.mvc.perform(delete("/favorites")
+    this.mvc.perform(post("/favorites/delete")
             .header("client", "client")
             .header("secret", "clientsecret")
             .header("username", "john@doe.fr")

@@ -59,7 +59,7 @@ public class LibraryServiceTest {
 
   @Test
   public void should_delete_category() throws Exception {
-    ResponseEntity response = libraryService.deleteCategory(authorizationInfoDTO, CategoryDTO.fromId("aaa"));
+    ResponseEntity response = libraryService.deleteCategory(authorizationInfoDTO, "aaa");
 
     DeleteCategoryCommand command = new DeleteCategoryCommand("aaa");
     verify(commandBus).send(command);
