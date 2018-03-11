@@ -14,7 +14,7 @@
     },
     "knowledges": {
       "properties": {
-        "knowledgeId": {
+        "id": {
           "type": "string",
           "index": "not_analyzed"
         },

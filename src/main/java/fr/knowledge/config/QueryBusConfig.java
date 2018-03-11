@@ -7,6 +7,7 @@ import fr.knowledge.query.handlers.comments.FindOneCommentQueryHandler;
 import fr.knowledge.query.handlers.favorites.FindSelectionsForUserQueryHandler;
 import fr.knowledge.query.handlers.library.FindAllCategoriesQueryHandler;
 import fr.knowledge.query.handlers.library.FindOneCategoryQueryHandler;
+import fr.knowledge.query.handlers.library.FindOneKnowledgeQueryHandler;
 import fr.knowledge.query.handlers.library.SearchCategoryQueryHandler;
 import fr.knowledge.query.handlers.scores.FindScoresByMarkQueryHandler;
 import fr.knowledge.query.handlers.scores.FindScoresForContentQueryHandler;
@@ -15,13 +16,11 @@ import fr.knowledge.query.queries.comments.FindOneCommentQuery;
 import fr.knowledge.query.queries.favorites.FindSelectionForUserQuery;
 import fr.knowledge.query.queries.library.FindAllCategoriesQuery;
 import fr.knowledge.query.queries.library.FindOneCategoryQuery;
+import fr.knowledge.query.queries.library.FindOneKnowledgeQuery;
 import fr.knowledge.query.queries.library.SearchCategoryQuery;
 import fr.knowledge.query.queries.scores.FindScoresByMarkQuery;
 import fr.knowledge.query.queries.scores.FindScoresForContentQuery;
-import fr.knowledge.query.services.CategoryQueryService;
-import fr.knowledge.query.services.CommentQueryService;
-import fr.knowledge.query.services.ScoreQueryService;
-import fr.knowledge.query.services.SelectionQueryService;
+import fr.knowledge.query.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,6 +48,8 @@ public class QueryBusConfig {
     queryBus.subscribe(FindAllCategoriesQuery.class, new FindAllCategoriesQueryHandler(categoryQueryService));
     queryBus.subscribe(FindOneCategoryQuery.class, new FindOneCategoryQueryHandler(categoryQueryService));
     queryBus.subscribe(SearchCategoryQuery.class, new SearchCategoryQueryHandler(categoryQueryService));
+    KnowledgeQueryService knowledgeQueryService = new KnowledgeQueryService(elasticSearchService);
+    queryBus.subscribe(FindOneKnowledgeQuery.class, new FindOneKnowledgeQueryHandler(knowledgeQueryService));
     // Scores
     ScoreQueryService scoreQueryService = new ScoreQueryService(elasticSearchService);
     queryBus.subscribe(FindScoresByMarkQuery.class, new FindScoresByMarkQueryHandler(scoreQueryService));

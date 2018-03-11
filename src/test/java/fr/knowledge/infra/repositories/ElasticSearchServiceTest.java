@@ -13,10 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -149,5 +146,18 @@ public class ElasticSearchServiceTest {
 
     elasticSearchService.deleteElement(ElasticIndexes.library.name(), "aaa");
     elasticSearchService.createElement(ElasticIndexes.library.name(), Mapper.fromObjectToJsonString(category));
+  }
+
+  @Test
+  public void should_find_knowledge_from_its_id() {
+    SearchResult searchResult = elasticSearchService.searchElementsMatch(ElasticIndexes.library.name(), "knowledges.id", "kaa");
+
+    List<SearchResult.Hit<CategoryElastic, Void>> hits = searchResult.getHits(CategoryElastic.class);
+
+    List<CategoryElastic> categories = hits.stream()
+            .map(h -> h.source)
+            .collect(Collectors.toList());
+
+    assertThat(categories).containsExactly(CategoryElastic.of("aaa", "Architecture", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "My knowledge", "My content"))));
   }
 }

@@ -34,6 +34,10 @@ public class CategoryElastic {
     this.knowledges = knowledges;
   }
 
+  public List<KnowledgeElastic> getKnowledges() {
+    return this.knowledges;
+  }
+
   public void addKnowledge(KnowledgeElastic knowledge) {
     knowledges.add(knowledge);
   }
