@@ -1,5 +1,6 @@
 package fr.knowledge.query.handlers.library;
 
+import fr.knowledge.infra.models.library.CategoryElastic;
 import fr.knowledge.infra.models.library.KnowledgeElastic;
 import fr.knowledge.query.queries.library.FindOneKnowledgeQuery;
 import fr.knowledge.query.services.KnowledgeQueryService;
@@ -24,7 +25,7 @@ public class FindOneKnowledgeQueryHandlerTest {
 
   @Before
   public void setUp() {
-    given(knowledgeQueryService.findOneById("kaa")).willReturn(Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "CQRS", "Command query segregation principle")));
+    given(knowledgeQueryService.findOneById("kaa")).willReturn(Collections.singletonList(CategoryElastic.of("aaa", "Architecture", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "CQRS", "Command query segregation principle")))));
     findOneKnowledgeQueryHandler = new FindOneKnowledgeQueryHandler(knowledgeQueryService);
   }
 
@@ -32,9 +33,9 @@ public class FindOneKnowledgeQueryHandlerTest {
   public void should_find_one_category_by_id() {
     FindOneKnowledgeQuery query = new FindOneKnowledgeQuery("kaa");
 
-    List<KnowledgeElastic> knowledge = findOneKnowledgeQueryHandler.handle(query);
+    List<CategoryElastic> knowledge = findOneKnowledgeQueryHandler.handle(query);
 
     assertThat(knowledge).hasSize(1);
-    assertThat(knowledge).containsExactly(KnowledgeElastic.of("kaa", "john@doe.fr", "CQRS", "Command query segregation principle"));
+    assertThat(knowledge).containsExactly(CategoryElastic.of("aaa", "Architecture", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "CQRS", "Command query segregation principle"))));
   }
 }

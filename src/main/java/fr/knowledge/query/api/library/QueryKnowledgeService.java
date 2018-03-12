@@ -28,9 +28,9 @@ public class QueryKnowledgeService {
       return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
 
     FindOneKnowledgeQuery query = new FindOneKnowledgeQuery(knowledgeId);
-    List knowledges = queryBus.send(query);
-    if (knowledges.isEmpty())
+    List categories = queryBus.send(query);
+    if (categories.isEmpty())
       return new ResponseEntity<>("No knowledge for given id", HttpStatus.NO_CONTENT);
-    return ResponseEntity.ok(knowledges.get(0));
+    return ResponseEntity.ok(categories.get(0));
   }
 }

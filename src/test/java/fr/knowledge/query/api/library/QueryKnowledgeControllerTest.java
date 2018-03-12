@@ -60,7 +60,13 @@ public class QueryKnowledgeControllerTest {
             new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
             "kaa"
     )).willReturn(ResponseEntity.ok(
-            KnowledgeElastic.of("kaa", "john@doe.fr", "CQRS", "Command query segregation principle")
+            CategoryElastic.of(
+                    "aaa",
+                    "Architecture",
+                    Collections.singletonList(
+                            KnowledgeElastic.of("kaa", "john@doe.fr", "CQRS", "Command query segregation principle")
+                    )
+            )
     ));
 
     this.mvc.perform(get("/library/knowledges/kaa")
@@ -69,9 +75,11 @@ public class QueryKnowledgeControllerTest {
             .header("username", "john@doe.fr")
             .header("access-token", "aaa"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id", is("kaa")))
-            .andExpect(jsonPath("$.creator", is("john@doe.fr")))
-            .andExpect(jsonPath("$.title", is("CQRS")))
-            .andExpect(jsonPath("$.content", is("Command query segregation principle")));
+            .andExpect(jsonPath("$.id", is("aaa")))
+            .andExpect(jsonPath("$.name", is("Architecture")))
+            .andExpect(jsonPath("$.knowledges[0].id", is("kaa")))
+            .andExpect(jsonPath("$.knowledges[0].creator", is("john@doe.fr")))
+            .andExpect(jsonPath("$.knowledges[0].title", is("CQRS")))
+            .andExpect(jsonPath("$.knowledges[0].content", is("Command query segregation principle")));
   }
 }

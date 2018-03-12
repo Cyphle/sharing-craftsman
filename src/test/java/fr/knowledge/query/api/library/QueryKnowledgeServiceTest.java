@@ -56,7 +56,11 @@ public class QueryKnowledgeServiceTest {
   @Test
   public void should_get_knowledge_by_id() {
     given(queryBus.send(new FindOneKnowledgeQuery("kaa"))).willReturn(Collections.singletonList(
-            KnowledgeElastic.of("kaa", "john@doe.fr", "CQRS", "Command query responsibility principle")
+            CategoryElastic.of(
+                    "aaa",
+                    "Architecture",
+                    Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "CQRS", "Command query responsibility principle"))
+            )
     ));
 
     ResponseEntity response = queryKnowledgeService.getKnowledgeById(authorizationInfoDTO, "kaa");
@@ -64,6 +68,10 @@ public class QueryKnowledgeServiceTest {
     FindOneKnowledgeQuery query = new FindOneKnowledgeQuery("kaa");
     verify(queryBus).send(query);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThat(response.getBody()).isEqualTo(KnowledgeElastic.of("kaa", "john@doe.fr", "CQRS", "Command query responsibility principle"));
+    assertThat(response.getBody()).isEqualTo(CategoryElastic.of(
+            "aaa",
+            "Architecture",
+            Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "CQRS", "Command query responsibility principle"))
+    ));
   }
 }
