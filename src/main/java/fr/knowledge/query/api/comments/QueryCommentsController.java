@@ -26,7 +26,7 @@ public class QueryCommentsController {
           @ApiResponse(code = 200, message = ""),
           @ApiResponse(code = 401, message = "Unauthorized")
   })
-  @RequestMapping(method = RequestMethod.GET, value = "/contentid/{contentId}")
+  @RequestMapping(method = RequestMethod.GET, value = "/contentId/{contentId}")
   public ResponseEntity getCommentsForContent(@PathVariable String contentId) {
     return queryCommentService.getCommentsForContent(contentId);
   }

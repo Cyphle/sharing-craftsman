@@ -55,7 +55,7 @@ public class QueryCommentsControllerTest {
             "aaa"
     )).willReturn(ResponseEntity.ok(Collections.singletonList(CommentElastic.of("caa", "john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa", "My comment"))));
 
-    this.mvc.perform(get("/comments/contentid/aaa")
+    this.mvc.perform(get("/comments/contentId/aaa")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(1)))
