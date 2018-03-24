@@ -53,7 +53,6 @@ public class QueryScoreControllerTest {
   @Test
   public void should_get_scores_of_content_by_id() throws Exception {
     given(queryScoreService.getScoresByContentId(
-            new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
             "aaa"
     )).willReturn(ResponseEntity.ok(Arrays.asList(
             ScoreElastic.of("saa", "john@doe.fr", ContentType.CATEGORY.name(), "aaa", Mark.FOUR.value),

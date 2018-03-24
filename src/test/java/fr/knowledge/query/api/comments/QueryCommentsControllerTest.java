@@ -52,15 +52,10 @@ public class QueryCommentsControllerTest {
   @Test
   public void should_get_comments_for_a_content() throws Exception {
     given(commentService.getCommentsForContent(
-            new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa"),
             "aaa"
     )).willReturn(ResponseEntity.ok(Collections.singletonList(CommentElastic.of("caa", "john@doe.fr", ContentType.KNOWLEDGE.name(), "aaa", "My comment"))));
 
     this.mvc.perform(get("/comments/contentid/aaa")
-            .header("client", "client")
-            .header("secret", "clientsecret")
-            .header("username", "john@doe.fr")
-            .header("access-token", "aaa")
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(1)))

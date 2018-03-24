@@ -27,12 +27,8 @@ public class QueryCategoryController {
           @ApiResponse(code = 401, message = "Unauthorized")
   })
   @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity getAllCategories(@RequestHeader("client") String client,
-                                         @RequestHeader("secret") String secret,
-                                         @RequestHeader("username") String username,
-                                         @RequestHeader("access-token") String accessToken) {
-    AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
-    return queryCategoryService.getAllCategories(authorizationInfoDTO);
+  public ResponseEntity getAllCategories() {
+    return queryCategoryService.getAllCategories();
   }
 
   @ApiOperation(value = "Endpoint to get one category by id", response = CategoryElastic.class)

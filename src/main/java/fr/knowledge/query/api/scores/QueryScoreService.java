@@ -21,10 +21,7 @@ public class QueryScoreService {
     this.queryBus = queryBus;
   }
 
-  public ResponseEntity getScoresByContentId(AuthorizationInfoDTO authorizationInfoDTO, String contentId) {
-    if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
-      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-
+  public ResponseEntity getScoresByContentId(String contentId) {
     FindScoresForContentQuery query = new FindScoresForContentQuery(contentId);
     return ResponseEntity.ok(queryBus.send(query));
   }

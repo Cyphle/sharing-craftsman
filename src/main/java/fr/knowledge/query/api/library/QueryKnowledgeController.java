@@ -1,7 +1,6 @@
 package fr.knowledge.query.api.library;
 
 import fr.knowledge.command.api.common.AuthorizationInfoDTO;
-import fr.knowledge.infra.models.library.CategoryElastic;
 import fr.knowledge.infra.models.library.KnowledgeElastic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

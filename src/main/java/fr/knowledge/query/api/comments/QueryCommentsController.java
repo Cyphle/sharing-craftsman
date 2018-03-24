@@ -27,13 +27,8 @@ public class QueryCommentsController {
           @ApiResponse(code = 401, message = "Unauthorized")
   })
   @RequestMapping(method = RequestMethod.GET, value = "/contentid/{contentId}")
-  public ResponseEntity getCommentsForContent(@RequestHeader("client") String client,
-                                              @RequestHeader("secret") String secret,
-                                              @RequestHeader("username") String username,
-                                              @RequestHeader("access-token") String accessToken,
-                                              @PathVariable String contentId) {
-    AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
-    return queryCommentService.getCommentsForContent(authorizationInfoDTO, contentId);
+  public ResponseEntity getCommentsForContent(@PathVariable String contentId) {
+    return queryCommentService.getCommentsForContent(contentId);
   }
 
   @ApiOperation(value = "Endpoint to get a comment by id", response = CommentElastic.class)

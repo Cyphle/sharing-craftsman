@@ -57,17 +57,12 @@ public class QueryCategoryControllerTest {
   @Test
   public void should_get_all_categories() throws Exception {
     given(queryCategoryService.getAllCategories(
-            new AuthorizationInfoDTO("client", "clientsecret", "john@doe.fr", "aaa")
     )).willReturn(ResponseEntity.ok(Arrays.asList(
             CategoryElastic.of("aaa", "Architecture"),
             CategoryElastic.of("bbb", "SOLID", Collections.singletonList(KnowledgeElastic.of("kaa", "john@doe.fr", "My knowledge", "Toto is tata")))
     )));
 
-    this.mvc.perform(get("/library")
-            .header("client", "client")
-            .header("secret", "clientsecret")
-            .header("username", "john@doe.fr")
-            .header("access-token", "aaa"))
+    this.mvc.perform(get("/library"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", hasSize(2)))
             .andExpect(jsonPath("$[0].id", is("aaa")))

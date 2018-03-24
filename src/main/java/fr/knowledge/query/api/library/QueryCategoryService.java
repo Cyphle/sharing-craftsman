@@ -25,10 +25,7 @@ public class QueryCategoryService {
     this.queryBus = queryBus;
   }
 
-  public ResponseEntity getAllCategories(AuthorizationInfoDTO authorizationInfoDTO) {
-    if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
-      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-
+  public ResponseEntity getAllCategories() {
     FindAllCategoriesQuery query = new FindAllCategoriesQuery();
     return ResponseEntity.ok(queryBus.send(query));
   }

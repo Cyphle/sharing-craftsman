@@ -55,7 +55,7 @@ public class QueryCommentServiceTest {
 
   @Test
   public void should_get_comments_of_content() {
-    ResponseEntity response = queryCommentService.getCommentsForContent(authorizationInfoDTO, "aaa");
+    ResponseEntity response = queryCommentService.getCommentsForContent("aaa");
 
     FindCommentsForContentQuery query = new FindCommentsForContentQuery("aaa");
     verify(queryBus).send(query);

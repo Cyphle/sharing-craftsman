@@ -27,13 +27,8 @@ public class QueryScoreController {
           @ApiResponse(code = 401, message = "Unauthorized")
   })
   @RequestMapping(method = RequestMethod.GET, value = "/contentId/{contentId}")
-  public ResponseEntity getScoresByContentId(@RequestHeader("client") String client,
-                                            @RequestHeader("secret") String secret,
-                                            @RequestHeader("username") String username,
-                                            @RequestHeader("access-token") String accessToken,
-                                             @PathVariable String contentId) {
-    AuthorizationInfoDTO authorizationInfoDTO = new AuthorizationInfoDTO(client, secret, username, accessToken);
-    return queryScoreService.getScoresByContentId(authorizationInfoDTO, contentId);
+  public ResponseEntity getScoresByContentId(@PathVariable String contentId) {
+    return queryScoreService.getScoresByContentId(contentId);
   }
 
   @ApiOperation(value = "Endpoint to get scores for a given mark", response = SelectionElastic.class)

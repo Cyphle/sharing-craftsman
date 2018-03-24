@@ -53,7 +53,7 @@ public class QueryScoreServiceTest {
             ScoreElastic.of("saa", "john@doe.fr", ContentType.CATEGORY.name(), "aaa", Mark.FOUR.value)
     ));
 
-    ResponseEntity response = queryScoreService.getScoresByContentId(authorizationInfoDTO, "aaa");
+    ResponseEntity response = queryScoreService.getScoresByContentId("aaa");
 
     FindScoresForContentQuery query = new FindScoresForContentQuery("aaa");
     verify(queryBus).send(query);

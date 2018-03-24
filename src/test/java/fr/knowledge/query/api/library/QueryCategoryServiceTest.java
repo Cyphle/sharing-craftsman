@@ -58,7 +58,7 @@ public class QueryCategoryServiceTest {
 
   @Test
   public void should_get_all_categories() {
-    ResponseEntity response = queryCategoryService.getAllCategories(authorizationInfoDTO);
+    ResponseEntity response = queryCategoryService.getAllCategories();
 
     FindAllCategoriesQuery query = new FindAllCategoriesQuery();
     verify(queryBus).send(query);

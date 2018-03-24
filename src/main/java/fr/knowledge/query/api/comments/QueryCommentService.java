@@ -23,10 +23,7 @@ public class QueryCommentService {
     this.queryBus = queryBus;
   }
 
-  public ResponseEntity getCommentsForContent(AuthorizationInfoDTO authorizationInfoDTO, String contentId) {
-    if (!authorizationService.isUserAuthorized(authorizationInfoDTO))
-      return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-
+  public ResponseEntity getCommentsForContent(String contentId) {
     FindCommentsForContentQuery query = new FindCommentsForContentQuery(contentId);
     return ResponseEntity.ok(queryBus.send(query));
   }
