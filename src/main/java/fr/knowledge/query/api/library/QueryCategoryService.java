@@ -7,6 +7,8 @@ import fr.knowledge.query.queries.SearchCriteria;
 import fr.knowledge.query.queries.library.FindAllCategoriesQuery;
 import fr.knowledge.query.queries.library.FindOneCategoryQuery;
 import fr.knowledge.query.queries.library.SearchCategoryQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Service
 public class QueryCategoryService {
+  private final Logger log = LoggerFactory.getLogger(this.getClass());
   private final AuthorizationService authorizationService;
   private final QueryBus queryBus;
 
@@ -26,6 +29,7 @@ public class QueryCategoryService {
   }
 
   public ResponseEntity getAllCategories() {
+    log.info("[QueryCategoryService::getAllCategories] -- get all categories");
     FindAllCategoriesQuery query = new FindAllCategoriesQuery();
     return ResponseEntity.ok(queryBus.send(query));
   }
